@@ -102,3 +102,9 @@ mid <- function(x)
 }
 
 
+# Return a portion of a matrix. This is useful for debugging.
+peek <- function(x, upper=5, lower=1)
+{
+  return(x[lower:upper,lower:upper])
+}
+
