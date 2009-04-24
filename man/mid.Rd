@@ -1,15 +1,15 @@
-\name{mid}
-\alias{mid}
+\name{peek}
 \alias{peek}
-\title{ Gets the mid point value in a sequence }
+\alias{mid}
+\title{ Peeks inside a matrix or vector }
 \description{
-  This is similar to the median except it is unordered and operates on both 1 
-  and 2 dimensional data. So rather than calculating the median per se, mid is
-  retrieving the unordered mid point value within a sequence or tabular data.
-
   Peek is a simple utility to conveniently look at a portion of a matrix. This
   is similar to head and tail but provides a 2-dimensional slice instead of a
   complete row.
+
+  This is similar to the median except it is unordered and operates on both 1 
+  and 2 dimensional data. So rather than calculating the median per se, mid is
+  retrieving the unordered mid point value within a sequence or tabular data.
 }
 \usage{
 mid(x)
