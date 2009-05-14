@@ -115,7 +115,14 @@ mid <- function(x)
 # Return a portion of a matrix. This is useful for debugging.
 peek <- function(x, upper=5, lower=1)
 {
-  if (is.null(dim(x))) return(x[lower:upper])
-  return(x[lower:upper,lower:upper])
+  if (is.null(dim(x)))
+  {
+    my.upper <- min(upper, anylength(x))
+    return(x[lower:my.upper])
+  }
+
+  upper.row <- min(upper, anylength(x))
+  upper.col <- min(upper, ncol(x))
+  return(x[lower:upper.row,lower:upper.col])
 }
 
