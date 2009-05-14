@@ -22,6 +22,16 @@ anylength <- function(data)
   len
 }
 
+# Lists out the types of a data.frame or other object that supports anynames
+anytypes <- function(data, fun=class)
+{
+  ts <- apply(matrix(anynames(data), ncol=1), 1, function(x) fun(data[,x]))
+  names(ts) <- anynames(data)
+
+  return(ts)
+}
+
+
 # Similar to rollapply but the values are inline, such that the next iteration
 # can act on the newly minted values
 # Example
