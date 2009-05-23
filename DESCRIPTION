@@ -1,8 +1,8 @@
 Package: futile
 Type: Package
 Title: Futile function utilities
-Version: 1.0.1
-Date: 2009-05-20
+Version: {version}
+Date: {date}
 Author: Brian Lee Yung Rowe
 Maintainer: Brian Lee Yung Rowe <r@nurometic.com>
 Suggests: zoo, xts, quantmod
