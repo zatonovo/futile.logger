@@ -7,7 +7,7 @@
   data structures with a single common interface.
 }
 \usage{
-anytypes(data)
+anytypes(data, fun = class)
 }
 \arguments{
   \item{data}{ Any object the recognizes names or colnames }

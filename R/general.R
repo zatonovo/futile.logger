@@ -11,7 +11,7 @@ anynames <- function(data)
 {
   if (is.null(names(data))) colnames(data) <- value
   else names(data) <- value
-  invisible()
+  invisible(data)
 }
 
 # Gets the length of a vector or the rows of a matrix or data frame.
