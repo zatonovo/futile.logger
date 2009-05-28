@@ -17,8 +17,8 @@
 \tabular{ll}{
 Package: \tab futile\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2009-03-22\cr
+Version: \tab {version}\cr
+Date: \tab {date}\cr
 License: \tab GPL-2\cr
 LazyLoad: \tab yes\cr
 }
