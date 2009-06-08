@@ -126,3 +126,17 @@ peek <- function(x, upper=5, lower=1)
   return(x[lower:upper.row,lower:upper.col])
 }
 
+# Append a value to a vector. This is syntactic sugar
+# v <- c(2,3,4)
+# z(v) <- 6
+# v
+"z<-" <- function(x, value)
+{
+  invisible(append(x, value))
+}
+
+# Prepend to the beginning of a vector
+"a<-" <- function(x, value)
+{
+  invisible(c(value, x))
+}
