@@ -5,6 +5,7 @@ Version: {version}
 Date: {date}
 Author: Brian Lee Yung Rowe
 Maintainer: Brian Lee Yung Rowe <r@nurometic.com>
+Depends: R (>= 2.8.1)
 Suggests: zoo, xts, quantmod
 Description: A collection of utility functions to expedite software development
 License: GPL-2
