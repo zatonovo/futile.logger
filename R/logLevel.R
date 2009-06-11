@@ -7,6 +7,9 @@ scat <- function(format, ..., use.newline=TRUE)
   cat(paste(sprintf(format, ...), newline, sep=''))
 }
 
+log.debug <- function(msg, ..., logger=root)
+
+
 # Returns current log level of package
 logLevel <- function(new.level=NULL)
 {
