@@ -19,7 +19,7 @@ log.message <- function(msg, ..., logger, level, label)
   # here
   if (is.null(config) & logger == 'ROOT')
   {
-    addLogger('ROOT', level=9, fun=logger.stdout)
+    addLogger('ROOT', level=4, fun=logger.stdout)
     config <- getLogger('ROOT')
   }
 
