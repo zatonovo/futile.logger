@@ -46,7 +46,7 @@ options.manager <- function(option.name, defaults=NULL)
 
 # Reset options for a given option set
 reset.options <- function(option.name, ...) UseMethod('reset.options')
-reset.options.function <- function(option.name, ...)
+reset.options.default <- function(option.name, ...)
   reset.options.character(deparse(substitute(option.name)), ...)
 
 reset.options.character <- function(option.name, ...)

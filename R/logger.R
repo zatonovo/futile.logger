@@ -161,3 +161,16 @@ logger.file <- function(msg, config)
 # The logger options manager
 logger.options <- options.manager('logger.options')
 
+
+# OBSOLETE. Only here for backwards compatibility
+logLevel <- function(new.level=NULL) 
+{
+  if (!is.null(new.level)) {
+    options(log.level = new.level)
+  }
+  if (is.null(getOption("log.level"))) {
+    return(0)
+  }
+  return(getOption("log.level"))
+}
+

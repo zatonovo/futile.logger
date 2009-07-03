@@ -14,6 +14,7 @@
 \alias{logger.stdout}
 \alias{logger.file}
 \alias{usePlots}
+\alias{logLevel}
 \title{ Manage the logging subsystem }
 \description{
   Futile provides a logging system that mimics log4j. It can be used immediately
@@ -49,6 +50,8 @@ setLogger(name, level = NULL, fun = NULL, ...)
 
 usePlots(new.val = NULL)
 
+logLevel(new.level = NULL)
+
 logger.message(msg, ..., logger, level, label)
 }
 \arguments{
@@ -63,6 +66,7 @@ logger.message(msg, ..., logger, level, label)
   \item{new.val}{ The value to replace the current value with. If omitted, this
   will display the current value. }
   \item{\dots}{ Additional parameters to either the logger or formatter}
+  \item{new.level}{ Obsolete }
 }
 \value{
   The current value of the setting.
@@ -77,8 +81,8 @@ logger.message(msg, ..., logger, level, label)
   addLogger('b.logger', 'INFO', logger.file, file='temp.log')
 
   object <- 1
-  logger.debug('This is a %s', class(object), logger='a.logger')
-  logger.warn('This is a %s', class(object), logger='a.logger')
+  logger.debug("This is a \%s", class(object), logger='a.logger')
+  logger.warn("This is a \%s", class(object), logger='a.logger')
 
   # Change configuration of ROOT logger
   setLogger('ROOT', level='DEBUG')

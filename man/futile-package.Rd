@@ -35,7 +35,8 @@ LazyLoad: \tab yes\cr
   read. Peek solves this problem.
 
   The logLevel and usePlots provide global control over logging and plotting
-  across an application.
+  across an application. Note that logLevel is now obsolete and has been
+  replaced by the futile logging subsystem.
 }
 \author{
 Brian Lee Yung Rowe <r@nurometic.com>
@@ -43,7 +44,7 @@ Brian Lee Yung Rowe <r@nurometic.com>
 \keyword{ package }
 \keyword{ attribute }
 \keyword{ logic }
-\seealso{ \code{\link{inlineapply}}, \code{\link{anylength}}, \code{\link{anylength}}, \code{\link{peek}}, \code{\link{negate}}, \code{\link{mid}}, \code{\link{logLevel}} }
+\seealso{ \code{\link{inlineapply}}, \code{\link{anylength}}, \code{\link{anylength}}, \code{\link{peek}}, \code{\link{negate}}, \code{\link{mid}}, \code{\link{logger.options}}, \code{\link{options.manager}} }
 \examples{
   inlineapply(c(1,1,2,3,5), 2, sum)
   inlineapply(c(1,2,1,3,4), 2, min)
