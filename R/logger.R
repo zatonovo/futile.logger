@@ -8,7 +8,7 @@ scat <- function(format, ..., use.newline=TRUE)
 }
 
 # This needs to be hidden
-log.message <- function(msg, ..., logger, level, label)
+logger.message <- function(msg, ..., logger, level, label)
 {
   # TODO: Put this constant somewhere else
   string.levels <- c(9,8,6,4,3,1)
@@ -44,39 +44,39 @@ log.message <- function(msg, ..., logger, level, label)
   invisible()
 }
 
-log.debug1 <- function(msg, ..., logger='ROOT')
+logger.debug1 <- function(msg, ..., logger='ROOT')
 {
-  log.message(msg, ..., logger=logger, level=9, label='DEBUG1')
+  logger.message(msg, ..., logger=logger, level=9, label='DEBUG1')
   invisible()
 }
 
-log.debug <- function(msg, ..., logger='ROOT')
+logger.debug <- function(msg, ..., logger='ROOT')
 {
-  log.message(msg, ..., logger=logger, level=8, label='DEBUG')
+  logger.message(msg, ..., logger=logger, level=8, label='DEBUG')
   invisible()
 }
 
-log.info1 <- function(msg, ..., logger='ROOT')
+logger.info1 <- function(msg, ..., logger='ROOT')
 {
-  log.message(msg, ..., logger=logger, level=6, label='INFO1')
+  logger.message(msg, ..., logger=logger, level=6, label='INFO1')
   invisible()
 }
 
-log.info <- function(msg, ..., logger='ROOT')
+logger.info <- function(msg, ..., logger='ROOT')
 {
-  log.message(msg, ..., logger=logger, level=4, label='INFO')
+  logger.message(msg, ..., logger=logger, level=4, label='INFO')
   invisible()
 }
 
-log.warn <- function(msg, ..., logger='ROOT')
+logger.warn <- function(msg, ..., logger='ROOT')
 {
-  log.message(msg, ..., logger=logger, level=3, label='WARN')
+  logger.message(msg, ..., logger=logger, level=3, label='WARN')
   invisible()
 }
 
-log.error <- function(msg, ..., logger='ROOT')
+logger.error <- function(msg, ..., logger='ROOT')
 {
-  log.message(msg, ..., logger=logger, level=1, label='ERROR')
+  logger.message(msg, ..., logger=logger, level=1, label='ERROR')
   invisible()
 }
 
@@ -125,15 +125,6 @@ setLogger <- function(name, level=NULL, fun=NULL, ...)
   invisible()
 }
 
-# Returns current log level of package
-# Deprecated
-logLevel <- function(new.level=NULL)
-{
-  if (! is.null(new.level)) { options('log.level'=new.level) }
-
-  if (is.null(getOption('log.level'))) { return(0) }
-  return(getOption('log.level'))
-}
 
 # Set with options('use.plots'=FALSE)
 # Defaults to TRUE
@@ -149,7 +140,7 @@ usePlots <- function(new.val=NULL)
 # Get and set different loggers
 # The only predefined logger is ROOT, which is set to null by default. The
 # configuration can be loaded from the futile config file, which is located by
-# default in ~/.futile/log.config
+# default in ~/.futile/logger.config
 # The config file can be overwritten in code or by the environment variable
 # FUTILE_HOME
 logger.stdout <- function(msg, config)
@@ -168,5 +159,5 @@ logger.file <- function(msg, config)
 }
 
 # The logger options manager
-logger.options <- options.manager('log.options')
+logger.options <- options.manager('logger.options')
 
