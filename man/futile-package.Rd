@@ -7,7 +7,7 @@
 }
 \description{
   This package is a collection of functions to expedite development in R and
-  provie a few conveniences. The main highlights are the any* functions that
+  provide a few conveniences. The main highlights are the any* functions that
   attempt to consolidate attribute access of lists, vectors, matrices, arrays,
   and other data structures. In addition to these functions, there are functions
   related to logic and time series plus debugging interfaces to ease 
