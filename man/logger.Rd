@@ -68,8 +68,62 @@ logger.message(msg, ..., logger, level, label)
   \item{\dots}{ Additional parameters to either the logger or formatter}
   \item{new.level}{ Obsolete }
 }
+\details{
+  The logging subsystem mimics the well-known log4j logging system in Java. The 
+  basic idea is that you have different loggers that control different logging
+  behavior based on the logger being used. In log4j, the standard way of doing
+  this was by assigning a logger based on the fully qualified class name. Since
+  R is more inclined to functional programming, an explicit logger is passed
+  to the log function instead. Hence, logging operations can be configured to
+  log to stdout, to a file, to a database, etc.
+
+  The other aspect of the log4j paradigm is that an explicit verbosity 
+  threshold, or level, is specified that all loggers honor. Hence, if the 
+  current log level is WARN, then all INFO and DEBUG statements will be skipped.
+  The implication of this method is that logging statements can be defined at
+  development time and logging verbosity can be managed at run-time, which
+  improves code stability in production systems.
+
+  Using the futile logger subsystem also provides standard information regarding
+  the logging operation, including the log level, the time stamp, plus whatever
+  message is passed into the function. Note that the sprintf message format is
+  integrated into the functions, so message strings can be constructed as a
+  format string.
+
+  With this release, two main loggers are provided:
+    . logger.stdout - writes to standard out
+    . logger.file - writes to a file
+
+  In a parallel cluster with multiple R nodes, logging to separate files can
+  improve the readability of the logging process as opposed to redirecting all
+  stdouts to the master. Note that for best mileage, it's best that each node
+  writes to its own log file.
+
+  As this is the initial release of the futile logging subsystem, a number of
+  standard features in log4j are not yet supported. This includes the following
+  features:
+    . Logger hierarchies
+    . Additional loggers (URL, DB, etc.)
+    . Configurability of the log message template
+    . Configuration file support
+
+  Most of the above features will be added to the library based on the adoption
+  of the package by the community.
+
+  Note that due to the single threaded nature of R, excessive logging will 
+  degrade performance significantly more than in Java.
+
+  NOTE: Use of logLevel is discouraged as this is deprecated and will be removed
+  in a subsequent release.
+}
 \value{
-  The current value of the setting.
+  For the logging subsystem, no value will be returned, although a logging 
+  operation will likely be performed.
+
+  The logger.options function will provide the values of any requested options
+  or set them if a named argument is passed into the function.
+
+  For the atomic options, accessing these values will return the value.
 }
 \author{ Brian Lee Yung Rowe }
 \examples{
