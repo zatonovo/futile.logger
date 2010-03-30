@@ -1,7 +1,7 @@
 # This file provides some standard formatters
 # This prints out a string in the following format:
 #   LEVEL [timestamp] message
-simple.formatter <- function(level, msg)
+simpleFormatter <- function(level, msg)
 {
   the.time <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
   sprintf("%s [%s] %s", level,the.time, msg)
@@ -12,7 +12,7 @@ simple.formatter <- function(level, msg)
 # %t - Timestamp
 # %m - Message
 # %f - Calling function
-format.formatter <- function(level, msg, format)
+formatFormatter <- function(level, msg, format)
 {
 }
 

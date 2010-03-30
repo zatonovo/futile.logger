@@ -16,7 +16,7 @@ FINER <- 9
 FINEST <- 10
 
 # Get handlers associated with the given logger
-log.handler <- function(name)
+loggerHandler <- function(name)
 {
   key <- paste("logger", name, sep='.')
   logger <- logger.options(key)
@@ -24,17 +24,17 @@ log.handler <- function(name)
 }
 
 # Append or replace handlers for this logger
-"log.handler<-" <- function(name, append=TRUE, value)
+"loggerHandler<-" <- function(name, append=TRUE, value)
 {
   key <- paste("logger", name, sep='.')
   logger <- logger.options(key)
   if (append) { logger$handler <- c(logger$handler, value) }
   else { logger$handler <- value }
-  update.options(logger.options, key, logger)
+  updateOptions(logger.options, key, logger)
 }
 
 # Get the threshold for the given logger
-log.threshold <- function(name)
+loggerThreshold <- function(name)
 {
   key <- paste("logger", name, sep='.')
   logger <- logger.options(key)
@@ -42,32 +42,30 @@ log.threshold <- function(name)
 }
 
 # Set the threshold for the given logger
-"log.threshold<-" <- function(name, value)
+"loggerThreshold<-" <- function(name, value)
 {
   key <- paste("logger", name, sep='.')
   logger <- logger.options(key)
   logger$threshold <- value
-  update.options(logger.options, key, logger)
+  updateOptions(logger.options, key, logger)
+  invisible()
 }
 
 # Create a logger based on the config passed in from the options.manager
-# config$handler <- c('format.1','format.2')
-# names(config$handler) <- c('handler.1','handler.2')
-.log.function <- function(config)
+.LogFunction <- function(config)
 {
-  logger <- function(level, msg, ...)
+  m <- cbind(config$handler, config$formatter)
+  function(level, msg, ...)
   {
-    # Check level
     if (level > config$threshold) { return() }
-    # Get formatter
-    formatters <- config$handler
-    # Get handler
-    handlers <- names(config$handler)
-    # Call handler
-    # TODO: Finish this
-    apply(handlers, 1, function(h,f) h(level, msg, ...), formatters)
+    apply(m, 1, function(x)
+    {
+      h <- getHandler(x[1])
+      f <- getFormatter(x[2])
+      h(level, msg, ..., formatter=f)
+    })
+    invisible()
   }
-  logger
 }
 
 
@@ -88,6 +86,7 @@ addFormatter.character <- function(name, fun, ...)
   key <- paste("formatter", name, sep='.')
   fn <- function(level, msg) fun(level,msg, ...)
   logger.options(update=list(key,fn))
+  invisible()
 }
 
 # Get a handler registered in the system.
@@ -106,6 +105,7 @@ addHandler.character <- function(name, fun, ...)
   key <- paste("handler", name, sep='.')
   fn <- function(level, msg, formatter) fun(level,msg, ..., formatter=formatter)
   logger.options(update=list(key,fn))
+  invisible()
 }
 
 # Get a logger. If 'name' has not been registered, the inheritance hierarchy
@@ -115,24 +115,29 @@ addHandler.character <- function(name, fun, ...)
 #   my.log(DEBUG, "This is a log message")
 getLogger <- function(name)
 {
+  if (nchar(name) < 1) name <- 'ROOT'
+
   key <- paste("logger", name, sep='.')
   # TODO: Search hierarchy
   os <- logger.options(key)
-  .log.function(os)
+  if (! is.null(os)) return(.LogFunction(os))
+  if (name == 'ROOT') stop("ROOT logger not configured properly")
+
+  parts <- strsplit(name, '.', fixed=TRUE)[[1]]
+  getLogger(paste(parts[1:length(parts)-1], sep='.'))
 }
 
-# Regsiter a logger in the system with the given threshold and handlers
-addLogger <- function(name, threshold, handler)
+# Register a logger in the system with the given threshold and handlers
+addLogger <- function(name, threshold, handler, formatter)
 {
   if (is.null(name)) { name <- 'ROOT' }
 
   key <- paste("logger", name, sep='.')
-  my.logger <- list(name=name, threshold=threshold, handler=handler)
+  my.logger <- list(name=name, threshold=threshold,
+    handler=handler, formatter=formatter)
   logger.options(update=list(key, my.logger))
   invisible()
 }
 
-# The logger options manager
-logger.options <- options.manager('logger.options')
 
 
