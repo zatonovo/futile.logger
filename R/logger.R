@@ -1,29 +1,29 @@
 # Generic boiler plate
-# simple.formatter <- function(level, msg, ...) sprintf("[%s] %s", level,msg)
-# addFormatter(simple.formatter)
-# addHandler(console.handler, formatter=simple.formatter)
-# addLogger(, threshold=DEBUG, handler=simple.formatter)
+# simple.layout <- function(level, msg, ...) sprintf("[%s] %s", level,msg)
+# addLayout(simple.layout)
+# addAppender(console.appender, layout=simple.layout)
+# addLogger(, threshold=DEBUG, appender=simple.layout)
 #
 # To use the logger,
 # my.log <- getLogger()
 # my.log(DEBUG, "This is a log message")
 
-# Get handlers associated with the given logger
-loggerHandler <- function(name)
+# Get appenders associated with the given logger
+loggerAppender <- function(name)
 {
   key <- paste("logger", name, sep='.')
   logger <- logger.options(key)
-  logger$handler
+  logger$appender
 }
 
-# Append or replace handlers for this logger
+# Append or replace appenders for this logger
 # TODO: INCOMPLETE
-#"loggerHandler<-" <- function(name, append=TRUE, value)
+#"loggerAppender<-" <- function(name, append=TRUE, value)
 #{
 #  key <- paste("logger", name, sep='.')
 #  logger <- logger.options(key)
-#  if (append) { logger$handler <- c(logger$handler, value) }
-#  else { logger$handler <- value }
+#  if (append) { logger$appender <- c(logger$appender, value) }
+#  else { logger$appender <- value }
 #  updateOptions(logger.options, key, logger)
 #}
 
@@ -49,57 +49,57 @@ loggerThreshold <- function(name)
 # Create a logger based on the config passed in from the options.manager
 .LogFunction <- function(config)
 {
-  m <- cbind(config$handler, config$formatter)
+  m <- cbind(config$appender, config$layout)
   function(level, msg)
   {
     if (level > config$threshold) { return(invisible()) }
     
     apply(m, 1, function(x) {
-      h <- getHandler(x[1])
-      f <- getFormatter(x[2])
-      h(level, msg, formatter=f)
+      h <- getAppender(x[1])
+      f <- getLayout(x[2])
+      h(level, msg, layout=f)
     })
     invisible()
   }
 }
 
 
-# Get a formatter registered in the system. Formatters are called by handlers
+# Get a layout registered in the system. Layouts are called by appenders
 # to format messages.
-getFormatter <- function(name)
+getLayout <- function(name)
 {
-  key <- paste("formatter", name, sep='.')
+  key <- paste("layout", name, sep='.')
   logger.options(key)
 }
 
-# Add a formatter to the system.
-addFormatter <- function(name, ...) UseMethod('addFormatter')
-addFormatter.default <- function(name, ...)
-  addFormatter.character(deparse(substitute(name)), name, ...)
-addFormatter.character <- function(name, fun, ...)
+# Add a layout to the system.
+addLayout <- function(name, ...) UseMethod('addLayout')
+addLayout.default <- function(name, ...)
+  addLayout.character(deparse(substitute(name)), name, ...)
+addLayout.character <- function(name, fun, ...)
 {
-  key <- paste("formatter", name, sep='.')
+  key <- paste("layout", name, sep='.')
   fn <- function(level, msg) fun(level,msg, ...)
   logger.options(update=list(key,fn))
   invisible()
 }
 
-# Get a handler registered in the system.
-getHandler <- function(name)
+# Get a appender registered in the system.
+getAppender <- function(name)
 {
-  key <- paste("handler", name, sep='.')
+  key <- paste("appender", name, sep='.')
   logger.options(key)
 }
 
-# Add a handler to the system
-addHandler <- function(name, ..., threshold=NULL) UseMethod('addHandler')
-addHandler.default <- function(name, ..., threshold=NULL)
-  addHandler.character(deparse(substitute(name)), name, ..., threshold=threshold)
-addHandler.character <- function(name, fun, ..., threshold=NULL)
+# Add a appender to the system
+addAppender <- function(name, ..., threshold=NULL) UseMethod('addAppender')
+addAppender.default <- function(name, ..., threshold=NULL)
+  addAppender.character(deparse(substitute(name)), name, ..., threshold=threshold)
+addAppender.character <- function(name, fun, ..., threshold=NULL)
 {
-  key <- paste("handler", name, sep='.')
-  fn <- function(level, msg, formatter)
-    fun(level,msg, ..., threshold=threshold, formatter=formatter)
+  key <- paste("appender", name, sep='.')
+  fn <- function(level, msg, layout)
+    fun(level,msg, ..., threshold=threshold, layout=layout)
   logger.options(update=list(key,fn))
   invisible()
 }
@@ -125,14 +125,14 @@ getLogger <- function(name)
   getLogger(parent)
 }
 
-# Register a logger in the system with the given threshold and handlers
-addLogger <- function(name, threshold, handler, formatter)
+# Register a logger in the system with the given threshold and appenders
+addLogger <- function(name, threshold, appender, layout)
 {
   if (is.null(name)) { name <- 'ROOT' }
 
   key <- paste("logger", name, sep='.')
   my.logger <- list(name=name, threshold=threshold,
-    handler=handler, formatter=formatter)
+    appender=appender, layout=layout)
   logger.options(update=list(key, my.logger))
   invisible()
 }

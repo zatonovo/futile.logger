@@ -1,15 +1,15 @@
 # Some default handlers for use in futile.logger. All handlers need to conform
 # to the below signature:
-#  function(level, msg, ..., formatter)
-consoleHandler <- function(level, msg, ..., threshold, formatter)
+#  function(level, msg, ..., layout)
+consoleAppender <- function(level, msg, ..., threshold, layout)
 {
   if (! is.null(threshold) && level > threshold) { return(0) }
-  cat(formatter(level, msg, ...))
+  cat(layout(level, msg, ...))
 }
 
 # Write to a file.
-fileHandler <- function(level, msg, file, ..., threshold, formatter)
+fileAppender <- function(level, msg, file, ..., threshold, layout)
 {
   if (! is.null(threshold) && level > threshold) { return(0) }
-  cat(formatter(level, msg, ...), file=file, append=TRUE)
+  cat(layout(level, msg, ...), file=file, append=TRUE)
 }
