@@ -1,10 +1,11 @@
 # This file provides some standard formatters
 # This prints out a string in the following format:
 #   LEVEL [timestamp] message
-simpleFormatter <- function(level, msg)
+simpleFormatter <- function(level, msg, ...)
 {
   the.time <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
-  sprintf("%s [%s] %s", level,the.time, msg)
+  if (! is.null(substitute(...))) msg <- sprintf(msg, ...)
+  sprintf("%s [%s] %s\n", .LOG_LEVEL[level],the.time, msg)
 }
 
 # This parses and prints a user-defined format string. Available tokens are
@@ -12,7 +13,8 @@ simpleFormatter <- function(level, msg)
 # %t - Timestamp
 # %m - Message
 # %f - Calling function
-formatFormatter <- function(level, msg, format)
+formatFormatter <- function(level, msg, format, ...)
 {
+  if (! is.null(substitute(...))) msg <- sprintf(msg, ...)
 }
 
