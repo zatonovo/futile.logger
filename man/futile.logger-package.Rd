@@ -1,42 +1,55 @@
-\name{futile-package}
-\alias{futile-package}
-\alias{futile}
+\name{futile.logger-package}
+\alias{futile.logger-package}
+\alias{futile.logger}
 \docType{package}
 \title{
-  A lightweight package of function utilities
+  A logging sub-system for futile
 }
 \description{
-  This package is a collection of functions to expedite development in R and
-  provide a few conveniences. The main highlights are the any* functions that
-  attempt to consolidate attribute access of lists, vectors, matrices, arrays,
-  and other data structures. In addition to these functions, there are functions
-  related to logic and time series plus debugging interfaces to ease 
-  development.
+  This package implements a logging system inspired by log4j and tries to maintain conceptual
+  consistency with the package. This also extends to the similarly derivative work log4cpp.
+  'futile.logger' implements the core functionality available in the log4j feature suite,
+  including hierarchical loggers, custom appenders, custom layouts, multiple appenders per
+  logger, and configurable thresholds. The interface tries also to maintain R idioms and thus
+  is not an exact clone.
 }
 \details{
 \tabular{ll}{
-Package: \tab futile\cr
+Package: \tab futile.logger\cr
 Type: \tab Package\cr
 Version: \tab {version}\cr
 Date: \tab {date}\cr
-License: \tab GPL-2\cr
+License: \tab LGPL-3\cr
 LazyLoad: \tab yes\cr
 }
-  The anylength and anynames functions consolidate attribute access across many
-  data structures providing a bit of convenience via polymorphism. The anytypes
-  function provides the classes or types of a data.frame-like object. This is
-  useful when parsing data and it is not always clear how values will be 
-  parsed.
+  The basic concepts connected to 'futile.logger' include loggers, appenders, and layouts.
+  Loggers are the high-level interface for calling logging operations. These loggers are
+  scoped to a particular namespace, which in more traditional object-oriented languages
+  typically mapped to the package namespace. In R, a similar convention can be employed, such
+  that different packages scope their logging calls to enable other code to easily switch
+  on and off the log messages. Loggers have a threshold associated to them, such that only
+  messages at the same level or of greater severity are printed. Multiple appenders can be
+  attached to a given logger, giving flexibility in how to route log messages.
+  
+  Appenders do the actual work of writing log messages to a writeable target, whether that is
+  a console, a file, a URL, database, etc. When creating an appender, the implementation-
+  specific options are passed to the appender at instantiation. Once an appender is added
+  to the 'futile.logger' options space, the appender can be attached to any logger. Appenders
+  can override the threshold defined in the logger, which provides more granular control to
+  the logging process.
 
-  Peek falls into the same lineage as head and tail but supports easy-to-read
-  views for 2-dimensional data structures. The biggest failing of head an tail
-  (to me) is that these functions are only readable when a small number of 
-  columns exist. In matrices with many colulmns, the output is difficult to
-  read. Peek solves this problem.
+  Layouts are responsible for formatting messages. This operation usually consists of adding
+  the log level, a timestamp, plus some pretty-printing to make the log messages easy on the
+  eyes.
 
-  The logLevel and usePlots provide global control over logging and plotting
-  across an application. Note that logLevel is now obsolete and has been
-  replaced by the futile logging subsystem.
+  An important part of loggers is that they are hierarchical in nature based on the namespace
+  given to the logger, such that loggers will inherit properties of parent loggers up to the
+  ROOT if no definition is found. In practice packages can define a logger hierarchy that 
+  will work in user libraries, assuming the ROOT logger is configured properly.
+
+  To use 'futile.logger', at a minimum, one layout, appender, and logger (ROOT) must be 
+  defined. A number of default configurations are provided in the package to get users started
+  quickly, while also acting as examples for users needing more sophisticated logging.
 }
 \author{
 Brian Lee Yung Rowe <r@nurometic.com>
@@ -44,26 +57,14 @@ Brian Lee Yung Rowe <r@nurometic.com>
 \keyword{ package }
 \keyword{ attribute }
 \keyword{ logic }
-\seealso{ \code{\link{inlineapply}}, \code{\link{anylength}}, \code{\link{anylength}}, \code{\link{peek}}, \code{\link{negate}}, \code{\link{mid}}, \code{\link{logger.options}}, \code{\link{options.manager}} }
+\seealso{ \code{\link{addAppender}}, \code{\link{addLayout}}, \code{\link{addLogger}}, \code{\link{getLogger}} }
 \examples{
-  inlineapply(c(1,1,2,3,5), 2, sum)
-  inlineapply(c(1,2,1,3,4), 2, min)
-
-  m <- matrix(c(1,2,3,4,5,6), ncol=2)
-  anylength(m)
-
-  v <- c(1,2,3,4,5)
-  anylength(v)
-
-  m <- matrix(c(1,2,3,4,5,6), ncol=2)
-  anynames(m) <- c('d','e')
-  anynames(m)
-
-  v <- c(a=1,b=2,c=3,d=4,e=5)
-  anynames(v)
-
-  l <- list(a=1,b=2,c=3,d=4,e=5)
-  anynames(l)
-
-  peek(matrix(rnorm(225), ncol=15))
+  configAsConsole()
+  mylogger <- getLogger()
+  mylogger(DEBUG, "This won't print")
+  mylogger(WARN, "This will print")
+  
+  logger.b <- getLogger('b')
+  logger.b(WARN, "This inherits from the ROOT logger")
 }
+

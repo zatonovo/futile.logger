@@ -1,0 +1,10 @@
+FATAL <- 1
+ERROR <- 2
+WARN <- 4
+INFO <- 6
+DEBUG <- 8
+TRACE <- 9
+
+.LOG_LEVEL <- c('FATAL','ERROR',NA,'WARN', NA,'INFO', NA,'DEBUG','TRACE')
+
+
