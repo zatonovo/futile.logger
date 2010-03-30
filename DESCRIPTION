@@ -1,12 +1,11 @@
-Package: futile
+Package: futile.logger
 Type: Package
-Title: Futile function utilities
+Title: Futile logger subsystem
 Version: {version}
 Date: {date}
 Author: Brian Lee Yung Rowe
 Maintainer: Brian Lee Yung Rowe <r@nurometic.com>
-Depends: R (>= 2.8.0)
-Suggests: zoo, xts, quantmod
-Description: A collection of utility functions to expedite software development
-License: GPL-2
+Depends: R (>= 2.8.0), futile.options
+Description: A logging library for R
+License: LGPL-3
 LazyLoad: yes

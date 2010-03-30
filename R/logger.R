@@ -1,176 +1,138 @@
-# Write to stdout using a format string
-scat <- function(format, ..., use.newline=TRUE)
-{
-  if (use.newline) newline = '\n'
-  else newline = ''
+# Generic boiler plate
+# simple.formatter <- function(level, msg, ...) sprintf("[%s] %s", level,msg)
+# addFormatter(simple.formatter)
+# addHandler(console.handler, formatter=simple.formatter)
+# addLogger(, threshold=DEBUG, handler=simple.formatter)
+#
+# To use the logger,
+# my.log <- getLogger()
+# my.log(DEBUG, "This is a log message")
+ERROR <- 1
+WARN <- 3
+INFO <- 5
+DEBUG <- 7
+FINE <- 8
+FINER <- 9
+FINEST <- 10
 
-  cat(paste(sprintf(format, ...), newline, sep=''))
+# Get handlers associated with the given logger
+log.handler <- function(name)
+{
+  key <- paste("logger", name, sep='.')
+  logger <- logger.options(key)
+  logger$handler
 }
 
-# This needs to be hidden
-logger.message <- function(msg, ..., logger, level, label)
+# Append or replace handlers for this logger
+"log.handler<-" <- function(name, append=TRUE, value)
 {
-  # TODO: Put this constant somewhere else
-  string.levels <- c(9,8,6,4,3,1)
-  names(string.levels) <- c('DEBUG1','DEBUG','INFO1','INFO','WARN','ERROR')
+  key <- paste("logger", name, sep='.')
+  logger <- logger.options(key)
+  if (append) { logger$handler <- c(logger$handler, value) }
+  else { logger$handler <- value }
+  update.options(logger.options, key, logger)
+}
 
-  config <- getLogger(logger)
-  # TODO: Need a proper logging initialization rather than putting lazy-init 
-  # here
-  if (is.null(config) & logger == 'ROOT')
+# Get the threshold for the given logger
+log.threshold <- function(name)
+{
+  key <- paste("logger", name, sep='.')
+  logger <- logger.options(key)
+  logger$threshold
+}
+
+# Set the threshold for the given logger
+"log.threshold<-" <- function(name, value)
+{
+  key <- paste("logger", name, sep='.')
+  logger <- logger.options(key)
+  logger$threshold <- value
+  update.options(logger.options, key, logger)
+}
+
+# Create a logger based on the config passed in from the options.manager
+# config$handler <- c('format.1','format.2')
+# names(config$handler) <- c('handler.1','handler.2')
+.log.function <- function(config)
+{
+  logger <- function(level, msg, ...)
   {
-    addLogger('ROOT', level=4, fun=logger.stdout)
-    config <- getLogger('ROOT')
+    # Check level
+    if (level > config$threshold) { return() }
+    # Get formatter
+    formatters <- config$handler
+    # Get handler
+    handlers <- names(config$handler)
+    # Call handler
+    # TODO: Finish this
+    apply(handlers, 1, function(h,f) h(level, msg, ...), formatters)
   }
-
-  if (is.character(config$level))
-    config.level <- string.levels[config$level]
-  else
-    config.level <- config$level
-  if (config.level < level) return()
-
-  err <- "Logger %s needs a function"
-  if (is.null(config$fun))
-  {
-    scat(err,logger)
-    return()
-  }
-
-  if (length(list(...)) > 0) msg <- sprintf(msg, ...)
-  line <- sprintf("%s [%s] %s\n", Sys.time(), label, msg)
-
-  fn <- get(config$fun)
-  fn(line, config)
-  invisible()
+  logger
 }
 
-logger.debug1 <- function(msg, ..., logger='ROOT')
+
+# Get a formatter registered in the system. Formatters are called by handlers
+# to format messages.
+getFormatter <- function(name)
 {
-  logger.message(msg, ..., logger=logger, level=9, label='DEBUG1')
-  invisible()
+  key <- paste("formatter", name, sep='.')
+  logger.options(key)
 }
 
-logger.debug <- function(msg, ..., logger='ROOT')
+# Add a formatter to the system.
+addFormatter <- function(name, ...) UseMethod('addFormatter')
+addFormatter.default <- function(name, ...)
+  addFormatter.character(deparse(substitute(name)), name, ...)
+addFormatter.character <- function(name, fun, ...)
 {
-  logger.message(msg, ..., logger=logger, level=8, label='DEBUG')
-  invisible()
+  key <- paste("formatter", name, sep='.')
+  fn <- function(level, msg) fun(level,msg, ...)
+  logger.options(update=list(key,fn))
 }
 
-logger.info1 <- function(msg, ..., logger='ROOT')
+# Get a handler registered in the system.
+getHandler <- function(name)
 {
-  logger.message(msg, ..., logger=logger, level=6, label='INFO1')
-  invisible()
+  key <- paste("handler", name, sep='.')
+  logger.options(key)
 }
 
-logger.info <- function(msg, ..., logger='ROOT')
+# Add a handler to the system
+addHandler <- function(name, ...) UseMethod('addHandler')
+addHandler.default <- function(name, ...)
+  addHandler.character(deparse(substitute(name)), name, ...)
+addHandler.character <- function(name, fun, ...)
 {
-  logger.message(msg, ..., logger=logger, level=4, label='INFO')
-  invisible()
+  key <- paste("handler", name, sep='.')
+  fn <- function(level, msg, formatter) fun(level,msg, ..., formatter=formatter)
+  logger.options(update=list(key,fn))
 }
 
-logger.warn <- function(msg, ..., logger='ROOT')
-{
-  logger.message(msg, ..., logger=logger, level=3, label='WARN')
-  invisible()
-}
-
-logger.error <- function(msg, ..., logger='ROOT')
-{
-  logger.message(msg, ..., logger=logger, level=1, label='ERROR')
-  invisible()
-}
-
-# Add a new logger to the options config
-# The following values need to be provided:
-#   name - the name of the logger
-#   level - log level for given logger
-#   fun - the implementation for the logger. Either a function or a name of
-#     a function
-#   ... options to pass to logger implementation
-addLogger <- function(name, level, fun, ...)
-{
-  config <- list(...)
-  config$level <- level
-  if ('function' %in% class(fun)) fun <- deparse(substitute(fun))
-  config$fun <- fun
-  exp <- parse(text=paste('logger.options(',name,'=config)', sep=''))
-  eval(exp)
-  invisible()
-}
-
-# Get a specific logger configuration
+# Get a logger. If 'name' has not been registered, the inheritance hierarchy
+# will be followed to find an appropriate logger. The logger is actually a
+# function that can be called using the following syntax:
+#   my.log <- getLogger('my.log')
+#   my.log(DEBUG, "This is a log message")
 getLogger <- function(name)
 {
-  config <- logger.options()
-  config[[name]]
+  key <- paste("logger", name, sep='.')
+  # TODO: Search hierarchy
+  os <- logger.options(key)
+  .log.function(os)
 }
 
-setLogger <- function(name, level=NULL, fun=NULL, ...)
+# Regsiter a logger in the system with the given threshold and handlers
+addLogger <- function(name, threshold, handler)
 {
-  config <- getLogger(name)
-  if (! is.null(level)) config$level <- level
-  if (! is.null(fun))
-  {
-    if ('function' %in% class(fun))
-      config$fun <- deparse(substitute(fun))
-    else
-      config$fun <- fun
-  }
+  if (is.null(name)) { name <- 'ROOT' }
 
-  args <- list(...)
-  for (n in names(args)) config[[n]] <- args[[n]]
-
-  exp <- parse(text=paste('logger.options(',name,'=config)', sep=''))
-  eval(exp)
+  key <- paste("logger", name, sep='.')
+  my.logger <- list(name=name, threshold=threshold, handler=handler)
+  logger.options(update=list(key, my.logger))
   invisible()
-}
-
-
-# Set with options('use.plots'=FALSE)
-# Defaults to TRUE
-usePlots <- function(new.val=NULL)
-{
-  if (! is.null(new.val)) { options('use.plots'=new.val) }
-
-  if (is.null(getOption('use.plots'))) { return(TRUE) }
-  return(getOption('use.plots'))
-}
-
-
-# Get and set different loggers
-# The only predefined logger is ROOT, which is set to null by default. The
-# configuration can be loaded from the futile config file, which is located by
-# default in ~/.futile/logger.config
-# The config file can be overwritten in code or by the environment variable
-# FUTILE_HOME
-logger.stdout <- function(msg, config)
-{
-  cat(msg)
-}
-
-logger.file <- function(msg, config)
-{
-  if (! 'file' %in% names(config))
-  {
-    cat("Required argument 'file' is missing.\n")
-    return()
-  }
-  cat(msg, file=config$file, append=TRUE)
 }
 
 # The logger options manager
 logger.options <- options.manager('logger.options')
 
-
-# OBSOLETE. Only here for backwards compatibility
-logLevel <- function(new.level=NULL) 
-{
-  if (!is.null(new.level)) {
-    options(log.level = new.level)
-  }
-  if (is.null(getOption("log.level"))) {
-    return(0)
-  }
-  return(getOption("log.level"))
-}
 
