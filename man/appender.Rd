@@ -1,13 +1,13 @@
-\name{getLogger}
-\alias{getLogger}
-\alias{addLogger}
+\name{getAppender}
+\alias{getAppender}
+\alias{addAppender}
 \title{ Manage loggers within 'futile.logger' }
 \description{
 }
 \usage{
-getLogger(name)
+getAppender(name)
 
-addLogger(name, threshold, appender, layout)
+addAppender(name, threshold, appender, layout)
 }
 \arguments{
   \item{name}{ }

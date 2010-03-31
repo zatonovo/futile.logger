@@ -109,7 +109,7 @@ addAppender.character <- function(name, fun, ..., threshold=NULL)
 # function that can be called using the following syntax:
 #   my.log <- getLogger('my.log')
 #   my.log(DEBUG, "This is a log message")
-getLogger <- function(name)
+getLogger <- function(name='ROOT')
 {
   if (nchar(name) < 1) name <- 'ROOT'
   #cat(sprintf("Searching for logger %s\n", name))

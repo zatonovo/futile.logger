@@ -59,7 +59,7 @@ Brian Lee Yung Rowe <r@nurometic.com>
 \keyword{ logic }
 \seealso{ \code{\link{addAppender}}, \code{\link{addLayout}}, \code{\link{addLogger}}, \code{\link{getLogger}} }
 \examples{
-  configAsConsole()
+  configLogger('console')
   mylogger <- getLogger()
   mylogger(DEBUG, "This won't print")
   mylogger(WARN, "This will print")

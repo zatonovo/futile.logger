@@ -1,9 +1,19 @@
 # The logger options manager
 logger.options <- OptionsManager('logger.options')
+.LOGGERS <- c('Console','File','Error')
+names(.LOGGERS) <- c('console','file','error')
+
+# Entry point to the pre-defined loggers
+configLogger <- function(type, ..., threshold=INFO, defaultLayout=simpleLayout)
+{
+  fn.name <- sprintf('.configAs%s', paste(.LOGGERS[type], collapse='And'))
+  do.call(fn.name, list(..., threshold=threshold, defaultLayout=defaultLayout))
+  invisible()
+}
 
 # A predefined logging config to write to the console. All examples use the
 # simpleLayout by default.
-configAsConsole <- function(threshold=INFO, defaultLayout=simpleLayout)
+.configAsConsole <- function(threshold, defaultLayout)
 {
   addLayout(defaultLayout)
   addAppender(consoleAppender)
@@ -12,8 +22,9 @@ configAsConsole <- function(threshold=INFO, defaultLayout=simpleLayout)
 
 # A predefined logging config to write to a file. This example shows how names
 # can be set arbitrarily rather than parsed from the function name.
-configAsFile <- function(file, threshold=INFO, defaultLayout=simpleLayout)
+.configAsFile <- function(file, threshold, defaultLayout)
 {
+  if (is.null(file)) stop("Missing parameter 'file'")
   addLayout('default', defaultLayout)
   addAppender('file', fileAppender, file=file)
   addLogger('ROOT',threshold, appender='file', layout='default')
@@ -21,25 +32,53 @@ configAsFile <- function(file, threshold=INFO, defaultLayout=simpleLayout)
 
 # Provides a config to write to both console and file but only to the console
 # if the log level is WARN or ERROR
-configAsConsoleAndFile <- function(file, threshold=INFO, defaultLayout=simpleLayout)
+.configAsConsoleAndFile <- function(file=NULL, threshold, defaultLayout)
 {
+  if (is.null(file)) stop("Missing parameter 'file'")
   addLayout('default', defaultLayout)
   addAppender('console', consoleAppender, threshold=WARN)
   addAppender('file', fileAppender, file=file)
   addLogger('ROOT',threshold, appender=c('console','file'), layout='default')
 }
 
+.configAsFileAndConsole <- function(file=NULL, threshold, defaultLayout)
+{
+  .configAsConsoleAndFile(file, threshold, defaultLayout)
+}
+
 # Provides a config to write to the console and a special log file for error
 # messages routed to an error logger. All others go to a file.
-configAsErrorConsole <- function(log.file, err.file, 
-  threshold=INFO, defaultLayout=simpleLayout)
+.configAsErrorAndFile <- function(log.file=NULL, err.file=NULL,
+  threshold, defaultLayout)
 {
+  if (is.null(log.file)) stop("Missing parameter 'log.file'")
+  if (is.null(err.file)) stop("Missing parameter 'err.file'")
+
   addLayout('default', defaultLayout)
-  addAppender('console', consoleAppender)
+  addAppender('console', consoleAppender, threshold=WARN)
   addAppender('log.file', fileAppender, file=log.file)
   addAppender('err.file', fileAppender, file=err.file)
-  addLogger('ROOT',threshold, appender='log.file', layout='default')
+  addLogger('ROOT',threshold, appender=c('log.file','console'),
+    layout='default')
   addLogger('error',WARN, appender='err.file', layout='default')
+}
+
+.configAsFileAndError <- function(log.file=NULL, err.file=NULL,
+  threshold, defaultLayout)
+{
+  .configAsErrorAndFile(log.file, err.file, threshold, defaultLayout)
+}
+
+# Only output errors to file. Everything goes to console
+.configAsError <- function(err.file=NULL, threshold, defaultLayout)
+{
+  if (is.null(err.file)) stop("Missing parameter 'err.file'")
+
+  addLayout('default', defaultLayout)
+  addAppender('console', consoleAppender)
+  addAppender('err.file', fileAppender, file=err.file, threshold=WARN)
+  addLogger('ROOT',threshold, appender=c('err.file','console'),
+    layout='default')
 }
 
 

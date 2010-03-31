@@ -1,13 +1,13 @@
-\name{getLogger}
-\alias{getLogger}
-\alias{addLogger}
+\name{getLayout}
+\alias{getLayout}
+\alias{addLayout}
 \title{ Manage loggers within 'futile.logger' }
 \description{
 }
 \usage{
-getLogger(name)
+getLayout(name)
 
-addLogger(name, threshold, appender, layout)
+addLayout(name, threshold, appender, layout)
 }
 \arguments{
   \item{name}{ }
