@@ -1,25 +1,40 @@
-\name{getLayout}
-\alias{getLayout}
+\name{addLayout}
 \alias{addLayout}
-\title{ Manage loggers within 'futile.logger' }
+\alias{getLayout}
+\title{ Manage layouts within the 'futile.logger' sub-system }
 \description{
+  Provides functions for managing layouts. Typically only addLayout is used
+  when manually creating a logging configuration.
 }
 \usage{
 getLayout(name)
-
-addLayout(name, threshold, appender, layout)
+\method{addLayout}{default}(name, ...)
+\method{addLayout}{character}(name, fun, ...)
 }
 \arguments{
-  \item{name}{ }
-  \item{threshold}{ }
-  \item{appender}{ }
-  \item{layout}{ }
+  \item{name}{ The name of the layout or the layout itself. If the layout
+    function is passed as the name, the symbol will be used as the name }
+  \item{fun}{ The layout function, which must be passed explicitly if the 
+    name of the layout is different from the layout function's symbol }
+  \item{\dots}{ Further arguments to pass to the layout function when it is
+    activated }
 }
 \details{
+  Layouts are responsible for formatting messages so they are human-readable.
+  Like an appender, a layout must first be registered in the system using
+  'addLayout' prior to referencing it in a logger configuration. Once the layout
+  is registered, it can be referenced in any logger definition.
+
+  The 'getLayout' function is used internally to get the registered layout
+  function. It is kept visible so user-level introspection is available.
 }
 \value{
+  'getLayout' returns a layout function, which is wrapped in a parent
+  function to enforce a consistent calling API.
 }
 \author{ Brian Lee Yung Rowe }
 \examples{
+  addLayout('default', defaultLayout)
+  addLayout(defaultLayout)
 }
 \keyword{ data }

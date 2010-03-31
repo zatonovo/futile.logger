@@ -7,6 +7,8 @@ names(.LOGGERS) <- c('console','file','error')
 configLogger <- function(type, ..., threshold=INFO, defaultLayout=simpleLayout)
 {
   fn.name <- sprintf('.configAs%s', paste(.LOGGERS[type], collapse='And'))
+  if (is.null(fn.name)) stop("Invalid config type specified")
+
   do.call(fn.name, list(..., threshold=threshold, defaultLayout=defaultLayout))
   invisible()
 }
