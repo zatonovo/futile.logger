@@ -23,30 +23,30 @@ configLogger(type, ..., threshold = INFO, defaultLayout = simpleLayout)
   and simpleLayout as the default layout. These can be overridden by passing
   the appropriate argument to 'configLogger'.
 
-'console'
-Writes all log messages to the console. Useful for interactive development
+  'console'
+  Writes all log messages to the console. Useful for interactive development
 
-'file'
-file - The path to the log file
-Writes all log messages to the specified file
+  'file'
+  file - The path to the log file
+  Writes all log messages to the specified file
 
-'error'
-err.file - The path to the error file
-Writes all log messages to the console while messages at WARN or worse
-are also written to an error file
+  'error'
+  err.file - The path to the error file
+  Writes all log messages to the console while messages at WARN or worse
+  are also written to an error file
 
-c('console','file')
-file - The path to the log file
-Writes all log messages to a file with messages at WARN or worse or also
-routed to the console
+  c('console','file')
+  file - The path to the log file
+  Writes all log messages to a file with messages at WARN or worse or also
+  routed to the console
 
-c('error','file')
-log.file - The path to the normal log file
-err.file - The path to the error file
-Writes messages to a general log file and to the console for messages at
-WARN or worse. A secondary error logger will log error messages at WARN or
-worse.
-}
+  c('error','file')
+  log.file - The path to the normal log file
+  err.file - The path to the error file
+  Writes messages to a general log file and to the console for messages at
+  WARN or worse. A secondary error logger will log error messages at WARN or
+  worse.
+
   Once a configuration is called, it is necessary to reset the logger options
   prior to using a different configuration. This is done by calling the
   'futile.options' function reset.options(logger.options).

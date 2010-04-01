@@ -1,6 +1,10 @@
 \name{addLayout}
 \alias{addLayout}
+\alias{addLayout.default}
+\alias{addLayout.character}
 \alias{getLayout}
+\alias{simpleLayout}
+\alias{formatLayout}
 \title{ Manage layouts within the 'futile.logger' sub-system }
 \description{
   Provides functions for managing layouts. Typically only addLayout is used
@@ -27,6 +31,12 @@ getLayout(name)
 
   The 'getLayout' function is used internally to get the registered layout
   function. It is kept visible so user-level introspection is available.
+
+  'simpleLayout' is a pre-defined layout function that prints messages in the
+  following format: LEVEL [timestamp] Message.
+
+  'formatLayout' is a pre-defined layout function that prints tokens based on 
+  a format string. This is currently not implemented.
 }
 \value{
   'getLayout' returns a layout function, which is wrapped in a parent
@@ -34,7 +44,7 @@ getLayout(name)
 }
 \author{ Brian Lee Yung Rowe }
 \examples{
-  addLayout('default', defaultLayout)
-  addLayout(defaultLayout)
+  addLayout('default', simpleLayout)
+  addLayout(simpleLayout)
 }
 \keyword{ data }

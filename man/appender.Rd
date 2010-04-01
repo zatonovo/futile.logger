@@ -1,6 +1,10 @@
 \name{addAppender}
 \alias{addAppender}
+\alias{addAppender.default}
+\alias{addAppender.character}
 \alias{getAppender}
+\alias{consoleAppender}
+\alias{fileAppender}
 \title{ Manage appenders within the 'futile.logger' sub-system }
 \description{
   Provides functions for managing appenders. Typically only addAppender is used
@@ -28,6 +32,12 @@ getAppender(name)
 
   The 'getAppender' function is used internally to get the registered appender 
   function. It is kept visible so user-level introspection is available.
+
+  'consoleAppender' is a function that writes to the console. No additional 
+  arguments are necessary when registering the appender via addAppender.
+
+  'fileAppender is an appender that writes to a file. An additional file
+  argument must be passed to addAppender when registering a fileAppender.
 }
 \value{
   'getAppender' returns an appender function, which is wrapped in a parent

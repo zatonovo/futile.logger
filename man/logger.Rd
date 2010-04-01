@@ -1,6 +1,8 @@
 \name{addLogger}
 \alias{addLogger}
 \alias{getLogger}
+\alias{loggerAppender}
+\alias{loggerThreshold}
 \title{ Manage appenders within the 'futile.logger' sub-system }
 \description{
   Provides functions for managing loggers. The 'getLogger' function is the
@@ -9,6 +11,8 @@
 \usage{
 addLogger(name, threshold, appender, layout)
 getLogger(name = 'ROOT')
+loggerAppender(name)
+loggerThreshold(name)
 }
 \arguments{
   \item{name}{ The name of the logger }
@@ -18,7 +22,13 @@ getLogger(name = 'ROOT')
   \item{layout}{ A layout name or a vector of layout names }
 }
 \details{
-  
+  'addLogger' adds a logger configuration to the logger.options
+
+  'getLogger' constructs a logger function based on the registered configuration
+
+  'loggerAppender' provides introspection on the appenders attached to a logger
+
+  'loggerThreshold' provides the threshold of the logger
 }
 \value{
   'getLogger' returns a _function_ that is called to log messages. The resulting
