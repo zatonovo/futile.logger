@@ -118,7 +118,12 @@ getLogger <- function(name='ROOT')
   # TODO: Search hierarchy
   os <- logger.options(key)
   if (! is.null(os)) return(.LogFunction(os))
-  if (name == 'ROOT') stop("ROOT logger not configured properly")
+  if (name == 'ROOT') 
+  {
+    scat("ROOT logger not configured properly. This logger is disabled")
+    fn <- function(...) { invisible() }
+    return(fn)
+  }
 
   parts <- strsplit(name, '.', fixed=TRUE)[[1]]
   parent <- paste(parts[1:length(parts)-1], collapse='.')
