@@ -20,6 +20,6 @@ scat(format, ..., use.newline = TRUE)
 }
 \author{ Brian Lee Yung Rowe }
 \examples{
-  apply(array(2:5),1, function(x) scat('This has happened %s times', x) )
+  apply(array(2:5),1, function(x) scat('This has happened \%s times', x) )
 }
 \keyword{ data }
