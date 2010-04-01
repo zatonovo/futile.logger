@@ -23,28 +23,27 @@ configLogger(type, ..., threshold = INFO, defaultLayout = simpleLayout)
   and simpleLayout as the default layout. These can be overridden by passing
   the appropriate argument to 'configLogger'.
 
-\tabular{ll}{
-'console'\cr
-\tab Writes all log messages to the console. Useful for interactive development\cr
+'console'
+Writes all log messages to the console. Useful for interactive development
 
-'file'\cr
-\tab file - The path to the log file\cr
-\tab Writes all log messages to the specified file\cr
+'file'
+file - The path to the log file
+Writes all log messages to the specified file
 
-'error'\cr
-\tab err.file - The path to the error file\cr
-\tab Writes all log messages to the console while messages at WARN or worse
-are also written to an error file\cr
+'error'
+err.file - The path to the error file
+Writes all log messages to the console while messages at WARN or worse
+are also written to an error file
 
-c('console','file')\cr
-\tab file - The path to the log file\cr
-\tab Writes all log messages to a file with messages at WARN or worse or also
-routed to the console\cr
+c('console','file')
+file - The path to the log file
+Writes all log messages to a file with messages at WARN or worse or also
+routed to the console
 
-c('error','file')\cr
-\tab log.file - The path to the normal log file\cr
-\tab err.file - The path to the error file\cr
-\tab Writes messages to a general log file and to the console for messages at
+c('error','file')
+log.file - The path to the normal log file
+err.file - The path to the error file
+Writes messages to a general log file and to the console for messages at
 WARN or worse. A secondary error logger will log error messages at WARN or
 worse.
 }

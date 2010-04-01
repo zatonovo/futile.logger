@@ -35,7 +35,7 @@ getAppender(name)
 }
 \author{ Brian Lee Yung Rowe }
 \examples{
-  addAppender('file1', fileAppender, file='file1.log', threshold=DEBUG)
+  addAppender('file1', fileAppender, file='file1.log')
   addAppender('file2', fileAppender, file='file2.log', threshold=WARN)
   addAppender(consoleAppender, threshold=INFO)
 }
