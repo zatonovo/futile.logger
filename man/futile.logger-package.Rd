@@ -57,7 +57,8 @@ Brian Lee Yung Rowe <r@nurometic.com>
 \keyword{ package }
 \keyword{ attribute }
 \keyword{ logic }
-\seealso{ \code{\link{addAppender}}, \code{\link{addLayout}}, \code{\link{addLogger}}, \code{\link{getLogger}} }
+\seealso{ \code{\link{configLogger}}, \code{\link{addAppender}},
+  \code{\link{addLayout}}, \code{\link{addLogger}}, \code{\link{getLogger}} }
 \examples{
   configLogger('console')
   mylogger <- getLogger()
