@@ -1,5 +1,12 @@
 \name{configLogger}
 \alias{configLogger}
+\alias{configAsConsole}
+\alias{configAsFile}
+\alias{configAsConsoleAndFile}
+\alias{configAsFileAndConsole}
+\alias{configAsErrorAndFile}
+\alias{configAsFileAndError}
+\alias{configAsError}
 \title{ Create and manage loggers within 'futile.logger' }
 \description{
   A number of pre-defined loggers are provided within 'futile.logger'. The
