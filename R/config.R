@@ -7,6 +7,7 @@ names(.LOGGERS) <- c('console','file','error')
 # simpleLayout by default.
 configAsConsole <- function(threshold, defaultLayout)
 {
+  if (! is.numeric(threshold)) stop("Invalid threshold specified")
   addLayout(defaultLayout)
   addAppender(consoleAppender)
   addLogger('ROOT',threshold, appender='consoleAppender', layout='defaultLayout')
