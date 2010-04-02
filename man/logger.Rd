@@ -31,7 +31,7 @@ loggerThreshold(name)
   'loggerThreshold' provides the threshold of the logger
 }
 \value{
-  'getLogger' returns a _function_ that is called to log messages. The resulting
+  'getLogger' returns a \_function\_ that is called to log messages. The resulting
   function has two arguments: the log level for the message and the message
   itself. The below example illustrates the simplest usage pattern:
 
@@ -46,7 +46,7 @@ loggerThreshold(name)
 
   Loggers are hierarchical in the sense that any requested logger that is 
   undefined will fall back to its most immediate defined parent logger. The
-  absolute parent is ROOT, which _must_ be defined for the system to work.
+  absolute parent is ROOT, which \_must\_ be defined for the system to work.
 }
 \author{ Brian Lee Yung Rowe }
 \examples{
