@@ -11,8 +11,6 @@ configLogger <- function(..., threshold=INFO, defaultLayout=simpleLayout)
 
 register('configLogger',environment())
 
-#cat("Current environment (B):", environmentName(environment()), '\n')
-
 # The zero-argument default attempts to read a config file in the current
 # directory
 guard(configLogger.default, function(config.file) is.character(config.file))
@@ -73,10 +71,8 @@ configLogger.fileAndConsole <- function(file, file.threshold, threshold, default
   addLogger('ROOT',threshold, appender=c('console','file'), layout='default')
 }
 
-#configAsFileAndConsole <- function(file=NULL, threshold, defaultLayout)
-#{
-#  configAsConsoleAndFile(file, threshold, defaultLayout)
-#}
+########################## DEPRECATED FUNCTIONS ###############################
+
 configAsFileAndConsole <- function(file=NULL, threshold, defaultLayout)
 {
   cat("WARN: This function is deprecated. Use configLogger\n")
@@ -91,19 +87,6 @@ configAsErrorAndFile <- function(log.file=NULL, err.file=NULL,
   cat("WARN: This config is no longer supported. Use configLogger instead\n")
   invisible()
 }
-#guard(config.errorAndFile, 
-#  function(lf,ef,t,d) is.character(lf) && is.character(ef) && is.character(t)
-#)
-#config.errorAndFile <- function(log.file, err.file, threshold, defaultLayout)
-#{
-#  addLayout('default', defaultLayout)
-#  addAppender('console', consoleAppender, threshold=WARN)
-#  addAppender('log.file', fileAppender, file=log.file)
-#  addAppender('err.file', fileAppender, file=err.file)
-#  addLogger('ROOT',threshold, appender=c('log.file','console'),
-#    layout='default')
-#  addLogger('error',WARN, appender='err.file', layout='default')
-#}
 
 configAsFileAndError <- function(log.file=NULL, err.file=NULL,
   threshold, defaultLayout)
@@ -111,9 +94,6 @@ configAsFileAndError <- function(log.file=NULL, err.file=NULL,
   cat("WARN: This config is no longer supported. Use configLogger instead\n")
   invisible()
 }
-#{
-#  configAsErrorAndFile(log.file, err.file, threshold, defaultLayout)
-#}
 
 # Only output errors to file. Everything goes to console
 configAsError <- function(err.file=NULL, threshold, defaultLayout)
@@ -121,26 +101,4 @@ configAsError <- function(err.file=NULL, threshold, defaultLayout)
   cat("WARN: This function is deprecated. Use configLogger\n")
   configLogger(file, WARN, threshold, defaultLayout)
 }
-
-#configAsError <- function(err.file=NULL, threshold, defaultLayout)
-#{
-#  if (is.null(err.file)) stop("Missing parameter 'err.file'")
-#
-#  addLayout('default', defaultLayout)
-#  addAppender('console', consoleAppender)
-#  addAppender('err.file', fileAppender, file=err.file, threshold=WARN)
-#  addLogger('ROOT',threshold, appender=c('err.file','console'),
-#    layout='default')
-#}
-
-
-# Entry point to the pre-defined loggers
-#configLogger <- function(type='console', ..., threshold=INFO, defaultLayout=simpleLayout)
-#{
-#  fn.name <- sprintf('configAs%s', paste(.LOGGERS[type], collapse='And'))
-#  if (is.null(fn.name)) stop("Invalid config type specified")
-#
-#  do.call(fn.name, list(..., threshold=threshold, defaultLayout=defaultLayout))
-#  invisible()
-#}
 

@@ -16,17 +16,6 @@ loggerAppender <- function(name)
   logger$appender
 }
 
-# Append or replace appenders for this logger
-# TODO: INCOMPLETE
-#"loggerAppender<-" <- function(name, append=TRUE, value)
-#{
-#  key <- paste("logger", name, sep='.')
-#  logger <- logger.options(key)
-#  if (append) { logger$appender <- c(logger$appender, value) }
-#  else { logger$appender <- value }
-#  updateOptions(logger.options, key, logger)
-#}
-
 # Get the threshold for the given logger
 loggerThreshold <- function(name)
 {
@@ -35,16 +24,6 @@ loggerThreshold <- function(name)
   logger$threshold
 }
 
-# Set the threshold for the given logger
-# TODO: INCOMPLETE
-#"loggerThreshold<-" <- function(name, value)
-#{
-#  key <- paste("logger", name, sep='.')
-#  logger <- logger.options(key)
-#  logger$threshold <- value
-#  updateOptions(logger.options, key, logger)
-#  invisible()
-#}
 
 # Create a logger based on the config passed in from the options.manager
 .LogFunction <- function(config)
