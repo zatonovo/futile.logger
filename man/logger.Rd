@@ -10,7 +10,7 @@
 }
 \usage{
 addLogger(name, threshold, appender, layout)
-getLogger(name = 'ROOT')
+getLogger(name = 'ROOT', failfast = FALSE)
 loggerAppender(name)
 loggerThreshold(name)
 }
@@ -20,6 +20,7 @@ loggerThreshold(name)
     appenders. Use one of the constants defined (e.g. DEBUG, INFO, WARN, etc) }
   \item{appender}{ An appender name or a vector of appender names }
   \item{layout}{ A layout name or a vector of layout names }
+  \item{failfast}{ Used internally to prevent inheritance of loggers }
 }
 \details{
   'addLogger' adds a logger configuration to the logger.options

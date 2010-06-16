@@ -1,5 +1,11 @@
 \name{configLogger}
 \alias{configLogger}
+\alias{configLogger.default}
+\alias{configLogger.source}
+\alias{configLogger.console}
+\alias{configLogger.file}
+\alias{configLogger.fileAndConsole}
+% The below functions are deprecated
 \alias{configAsConsole}
 \alias{configAsFile}
 \alias{configAsConsoleAndFile}
@@ -15,10 +21,9 @@
   appender threshold overrides.
 }
 \usage{
-configLogger(type, ..., threshold = INFO, defaultLayout = simpleLayout)
+configLogger(..., threshold = INFO, defaultLayout = simpleLayout)
 }
 \arguments{
-  \item{type}{ The type of logger to configure }
   \item{threshold}{ The logger threshold }
   \item{defaultLayout}{ The default layout used in the appenders }
   \item{\dots}{ Additional arguments to specific configurations }
@@ -66,7 +71,7 @@ configLogger(type, ..., threshold = INFO, defaultLayout = simpleLayout)
 \author{ Brian Lee Yung Rowe }
 \examples{
   reset.options(logger.options)
-  configLogger('console')
+  configLogger()
   lg <- getLogger()
   lg(DEBUG, "This won't print")
   lg(WARN, "But this will")

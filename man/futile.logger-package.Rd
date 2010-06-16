@@ -60,7 +60,7 @@ Brian Lee Yung Rowe <r@nurometic.com>
 \seealso{ \code{\link{configLogger}}, \code{\link{addAppender}},
   \code{\link{addLayout}}, \code{\link{addLogger}}, \code{\link{getLogger}} }
 \examples{
-  configLogger('console')
+  configLogger()
   mylogger <- getLogger()
   mylogger(DEBUG, "This won't print")
   mylogger(WARN, "This will print")

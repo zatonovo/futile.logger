@@ -63,6 +63,26 @@ loggerThreshold <- function(name)
   }
 }
 
+# Basically the same as the .LogFunction but obsessively looks up the config
+# for the logger.
+.LookupFunction <- function(name)
+{
+  function(level, msg)
+  {
+    config <- getLogger(name, failfast=TRUE)
+    if (is.null(config)) return(invisible())
+
+    m <- cbind(config$appender, config$layout)
+    if (level > config$threshold) { return(invisible()) }
+    
+    apply(m, 1, function(x) {
+      h <- getAppender(x[1])
+      f <- getLayout(x[2])
+      h(level, msg, layout=f)
+    })
+    invisible()
+  }
+}
 
 # Get a layout registered in the system. Layouts are called by appenders
 # to format messages.
@@ -109,7 +129,7 @@ addAppender.character <- function(name, fun, ..., threshold=NULL)
 # function that can be called using the following syntax:
 #   my.log <- getLogger('my.log')
 #   my.log(DEBUG, "This is a log message")
-getLogger <- function(name='ROOT')
+getLogger <- function(name='ROOT', failfast=FALSE)
 {
   if (nchar(name) < 1) name <- 'ROOT'
   #cat(sprintf("Searching for logger %s\n", name))
@@ -120,9 +140,11 @@ getLogger <- function(name='ROOT')
   if (! is.null(os)) return(.LogFunction(os))
   if (name == 'ROOT') 
   {
-    scat("ROOT logger not configured properly. This logger is disabled")
-    fn <- function(...) { invisible() }
-    return(fn)
+    if (failfast) return(NULL)
+    #scat("ROOT logger not yet configured. This logger is disabled")
+    #fn <- function(...) { invisible() }
+    #return(fn)
+    return(.LookupFunction(name))
   }
 
   parts <- strsplit(name, '.', fixed=TRUE)[[1]]
