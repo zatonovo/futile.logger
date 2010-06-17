@@ -18,7 +18,7 @@ configLogger.default <- function(config.file)
 {
   cat("WARN: Calling configLogger(type) is deprecated")
   configLogger.source(config.file,
-    'configLogger', threshold=INFO, defaultLayout=simpleLayout)
+    'customLogger', threshold=INFO, defaultLayout=simpleLayout)
 }
 
 # The requirement for a function name makes this slightly idiot-proof so as to
@@ -27,9 +27,9 @@ guard(configLogger.source, c(
   function(f,fn, t,dl) is.character(f) && is.character(fn.name),
   function(f,fn, t,dl) length(grep('\\.R$',f)) > 0
 ))
-configLogger.source <- function(file, fn.name, threshold, defaultLayout)
+configLogger.source <- function(config.file, fn.name, threshold, defaultLayout)
 {
-  source(file)
+  source(config.file)
   do.call(fn.name, list(threshold=threshold, defaultLayout=defaultLayout))
 }
 
@@ -57,6 +57,16 @@ configLogger.file <- function(file, threshold, defaultLayout)
   addLogger('ROOT',threshold, appender='file', layout='default')
 }
 
+# Everything goes to console but only errors go to error.file
+guard(configLogger.error, function(f,t,d) is.character(f) && is.numeric(t))
+configLogger.error <- function(error.file, threshold, defaultLayout)
+{
+  addLayout('default', defaultLayout)
+  addAppender('console', consoleAppender)
+  addAppender('error.file', fileAppender, file=error.file, threshold=WARN)
+  addLogger('ROOT',threshold, appender=c('console','error.file'), layout='default')
+}
+
 # Provides a config to write to both console and file but only to the console
 # if the log level is WARN or ERROR
 guard(configLogger.fileAndConsole, c(
@@ -66,9 +76,9 @@ guard(configLogger.fileAndConsole, c(
 configLogger.fileAndConsole <- function(file, file.threshold, threshold, defaultLayout)
 {
   addLayout('default', defaultLayout)
-  addAppender('console', consoleAppender, threshold=WARN)
+  addAppender('console', consoleAppender, threshold)
   addAppender('file', fileAppender, file=file)
-  addLogger('ROOT',threshold, appender=c('console','file'), layout='default')
+  addLogger('ROOT',file.threshold, appender=c('console','file'), layout='default')
 }
 
 ########################## DEPRECATED FUNCTIONS ###############################

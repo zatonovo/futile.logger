@@ -3,6 +3,7 @@
 \alias{configLogger.default}
 \alias{configLogger.source}
 \alias{configLogger.console}
+\alias{configLogger.error}
 \alias{configLogger.file}
 \alias{configLogger.fileAndConsole}
 % The below functions are deprecated
@@ -29,39 +30,35 @@ configLogger(..., threshold = INFO, defaultLayout = simpleLayout)
   \item{\dots}{ Additional arguments to specific configurations }
 }
 \details{
-  This function is the entry point for configuring 'futile.logger' with built-in
-  configurations. The available types and associated arguments are described
-  below. All configurations described below use INFO as the default log level
-  and simpleLayout as the default layout. These can be overridden by passing
-  the appropriate argument to 'configLogger'.
+  As of version 1.1.0, the configuration system leverages futile.paradigm
+  meaning that only one function, configLogger is defined. This makes 
+  configuration simpler and less error prone by exposing a single function
+  that dispatches to different functions depending on the arguments provided.
+  
+  configLogger()
+  ROOT logger defaults to console with INFO threshold
 
-  'console' \cr
-  Writes all log messages to the console. Useful for interactive development
+  configLogger(config.file)
+  Reads configuration R file and calls function 'customLogger' with INFO
+  threshold
 
-  'file' \cr
-   file - The path to the log file \cr
-  Writes all log messages to the specified file
+  configLogger(threshold, defaultLayout)
+  ROOT logger prints to console with threshold threshold and layout 
+  defaultLayout
 
-  'error' \cr
-  err.file - The path to the error file \cr
-  Writes all log messages to the console while messages at WARN or worse
-  are also written to an error file
+  configLogger(file, threshold, defaultLayout)
+  ROOT logger prints to file with threshold threshold and layout defaultLayout
 
-  c('console','file') \cr
-  file - The path to the log file \cr
-  Writes all log messages to a file with messages at WARN or worse or also
-  routed to the console
+  configLogger(error.file, threshold, defaultLayout)
+  ROOT logger prints to error.file with threshold WARN and layout defaultLayout
+  while also printing to console with threshold threshold. This is mostly for
+  illustrative purposes
+  Note: To use this configuration, error.file must be a named argument
 
-  c('error','file') \cr
-  log.file - The path to the normal log file \cr
-  err.file - The path to the error file \cr
-  Writes messages to a general log file and to the console for messages at
-  WARN or worse. A secondary error logger will log error messages at WARN or
-  worse.
+  configLogger(file, file.threshold, threshold, defaultLayout)
+  ROOT logger prints to console with threshold threshold and to file with
+  file.threshold. Both appenders use the defaultLayout
 
-  Once a configuration is called, it is necessary to reset the logger options
-  prior to using a different configuration. This is done by calling the
-  'futile.options' function reset.options(logger.options).
 }
 \value{
   Nothing is returned, although the logging system is configured properly. To
