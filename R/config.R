@@ -13,7 +13,7 @@ register('configLogger',environment())
 
 # The zero-argument default attempts to read a config file in the current
 # directory
-guard(configLogger.default, function(config.file) is.character(config.file))
+guard(configLogger.default, is.character(config.file))
 configLogger.default <- function(config.file)
 {
   cat("WARN: Calling configLogger(type) is deprecated")
@@ -23,10 +23,10 @@ configLogger.default <- function(config.file)
 
 # The requirement for a function name makes this slightly idiot-proof so as to
 # not leave any gaping vulnerabilities.
-guard(configLogger.source, c(
-  function(f,fn, t,dl) is.character(f) && is.character(fn.name),
-  function(f,fn, t,dl) length(grep('\\.R$',f)) > 0
-))
+guard(configLogger.source,
+  is.character(config.file) & length(grep('\\.R$',config.file)) > 0 &
+  is.character(fn.name)
+)
 configLogger.source <- function(config.file, fn.name, threshold, defaultLayout)
 {
   source(config.file)
@@ -36,7 +36,7 @@ configLogger.source <- function(config.file, fn.name, threshold, defaultLayout)
 # A predefined logging config to write to the console. All examples use the
 # simpleLayout by default.
 #configAsConsole <- function(threshold, defaultLayout)
-guard(configLogger.console, function(threshold, defaultLayout) is.numeric(threshold))
+guard(configLogger.console, is.numeric(threshold))
 configLogger.console <- function(threshold, defaultLayout)
 {
   if (! is.numeric(threshold)) stop("Invalid threshold specified")
@@ -48,7 +48,7 @@ configLogger.console <- function(threshold, defaultLayout)
 # A predefined logging config to write to a file. This example shows how names
 # can be set arbitrarily rather than parsed from the function name.
 #configAsFile <- function(file, threshold, defaultLayout)
-guard(configLogger.file, function(f,t,d) is.character(f) && is.numeric(t))
+guard(configLogger.file, is.character(file) & is.numeric(threshold))
 configLogger.file <- function(file, threshold, defaultLayout)
 {
   if (is.null(file)) stop("Missing parameter 'file'")
@@ -58,7 +58,7 @@ configLogger.file <- function(file, threshold, defaultLayout)
 }
 
 # Everything goes to console but only errors go to error.file
-guard(configLogger.error, function(f,t,d) is.character(f) && is.numeric(t))
+guard(configLogger.error, is.character(error.file) & is.numeric(threshold))
 configLogger.error <- function(error.file, threshold, defaultLayout)
 {
   addLayout('default', defaultLayout)
@@ -69,10 +69,10 @@ configLogger.error <- function(error.file, threshold, defaultLayout)
 
 # Provides a config to write to both console and file but only to the console
 # if the log level is WARN or ERROR
-guard(configLogger.fileAndConsole, c(
-  function(f,ft,t,dl) is.character(file) && is.character(file.threshold),
-  function(f,ft,t,dl) is.numeric(t) && is.function(dl)
-))
+guard(configLogger.fileAndConsole, 
+  is.character(file) & is.character(file.threshold) &
+  is.numeric(threshold) & is.function(defaultLayout)
+)
 configLogger.fileAndConsole <- function(file, file.threshold, threshold, defaultLayout)
 {
   addLayout('default', defaultLayout)
