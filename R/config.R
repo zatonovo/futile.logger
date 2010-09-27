@@ -9,7 +9,8 @@ configLogger <- function(..., threshold=INFO, defaultLayout=simpleLayout)
     UseFunction('configLogger', ..., threshold=threshold, defaultLayout=defaultLayout)
 }
 
-register('configLogger',environment())
+# This is obsolete
+#register('configLogger',environment())
 
 # The zero-argument default attempts to read a config file in the current
 # directory
