@@ -15,13 +15,9 @@
   appender threshold overrides.
 }
 \usage{
-config_logger(..., threshold = INFO, defaultLayout = simpleLayout)
-
-configLogger(..., threshold = INFO, defaultLayout = simpleLayout)
+config_logger(...)
 }
 \arguments{
-  \item{threshold}{ The logger threshold }
-  \item{defaultLayout}{ The default layout used in the appenders }
   \item{\dots}{ Additional arguments to specific configurations }
 }
 \details{

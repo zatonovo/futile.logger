@@ -57,10 +57,10 @@ Brian Lee Yung Rowe <r@nurometic.com>
 \keyword{ package }
 \keyword{ attribute }
 \keyword{ logic }
-\seealso{ \code{\link{configLogger}}, \code{\link{addAppender}},
+\seealso{ \code{\link{config_logger}}, \code{\link{addAppender}},
   \code{\link{addLayout}}, \code{\link{addLogger}}, \code{\link{getLogger}} }
 \examples{
-  configLogger()
+  config_logger()
   mylogger <- getLogger()
   mylogger(DEBUG, "This won't print")
   mylogger(WARN, "This will print")
