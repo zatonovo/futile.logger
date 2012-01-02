@@ -1,13 +1,13 @@
 # The logger options manager
 logger.options <- OptionsManager('logger.options')
 
-config_logger %as% function(..., threshold=INFO, defaultLayout=simpleLayout)
-{
-  if (length(list(...)) < 1)
-    UseFunction('config_logger', threshold=threshold, defaultLayout=defaultLayout)
-  else
-    UseFunction('config_logger', ..., threshold=threshold, defaultLayout=defaultLayout)
-}
+#config_logger %as% function(..., threshold=INFO, defaultLayout=simpleLayout)
+#{
+#  if (length(list(...)) < 1)
+#    UseFunction('config_logger', threshold=threshold, defaultLayout=defaultLayout)
+#  else
+#    UseFunction('config_logger', ..., threshold=threshold, defaultLayout=defaultLayout)
+#}
 
 
 # The zero-argument default attempts to read a config file in the current
@@ -16,6 +16,25 @@ config_logger %when% TRUE
 config_logger %as% function()
 {
   config_logger(INFO, simpleLayout)
+}
+
+# A predefined logging config to write to the console. All examples use the
+# simpleLayout by default.
+config_logger %when% (is.numeric(threshold))
+config_logger %as% function(threshold)
+{
+  config_logger(threshold, simpleLayout)
+}
+
+# A predefined logging config to write to the console. All examples use the
+# simpleLayout by default.
+config_logger %when% (is.numeric(threshold))
+config_logger %as% function(threshold, defaultLayout)
+{
+  if (! is.numeric(threshold)) stop("Invalid threshold specified")
+  addLayout(defaultLayout)
+  addAppender(consoleAppender)
+  addLogger('ROOT',threshold, appender='consoleAppender',layout='defaultLayout')
 }
 
 config_logger %when% (is.character(config.file))
@@ -34,17 +53,6 @@ config_logger %as% function(config.file, fn.name, threshold, defaultLayout)
 {
   source(config.file)
   do.call(fn.name, list(threshold=threshold, defaultLayout=defaultLayout))
-}
-
-# A predefined logging config to write to the console. All examples use the
-# simpleLayout by default.
-config_logger %when% (is.numeric(threshold))
-config_logger %as% function(threshold, defaultLayout)
-{
-  if (! is.numeric(threshold)) stop("Invalid threshold specified")
-  addLayout(defaultLayout)
-  addAppender(consoleAppender)
-  addLogger('ROOT',threshold, appender='consoleAppender',layout='defaultLayout')
 }
 
 # A predefined logging config to write to a file. This example shows how names
