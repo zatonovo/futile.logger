@@ -31,7 +31,6 @@ config_logger %as% function(threshold)
 config_logger %when% (is.numeric(threshold))
 config_logger %as% function(threshold, defaultLayout)
 {
-  if (! is.numeric(threshold)) stop("Invalid threshold specified")
   addLayout(defaultLayout)
   addAppender(consoleAppender)
   addLogger('ROOT',threshold, appender='consoleAppender',layout='defaultLayout')
