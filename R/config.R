@@ -12,44 +12,43 @@ logger.options <- OptionsManager('logger.options')
 
 # The zero-argument default attempts to read a config file in the current
 # directory
-config_logger %when% TRUE
-config_logger %as% function()
+config_logger() %as%
 {
   config_logger(INFO, simpleLayout)
 }
 
 # A predefined logging config to write to the console. All examples use the
 # simpleLayout by default.
-config_logger %when% (is.numeric(threshold))
-config_logger %as% function(threshold)
-{
+config_logger(threshold) %when% {
+  is.numeric(threshold)
+} %as% {
   config_logger(threshold, simpleLayout)
 }
 
 # A predefined logging config to write to the console. All examples use the
 # simpleLayout by default.
-config_logger %when% (is.numeric(threshold))
-config_logger %as% function(threshold, defaultLayout)
-{
+config_logger(threshold, defaultLayout) %when% {
+  is.numeric(threshold)
+} %as% {
   addLayout(defaultLayout)
   addAppender(consoleAppender)
   addLogger('ROOT',threshold, appender='consoleAppender',layout='defaultLayout')
 }
 
-config_logger %when% (is.character(config.file))
-config_logger %as% function(config.file)
-{
+config_logger(config.file) %when% {
+  is.character(config.file)
+} %as% {
   config_logger(config.file,
     'customLogger', threshold=INFO, defaultLayout=simpleLayout)
 }
 
 # The requirement for a function name makes this slightly idiot-proof so as to
 # not leave any gaping vulnerabilities.
-config_logger %when% is.character(config.file)
-config_logger %also% (length(grep('\\.R$',config.file)) > 0)
-config_logger %also% is.character(fn.name)
-config_logger %as% function(config.file, fn.name, threshold, defaultLayout)
-{
+config_logger(config.file, fn.name, threshold, defaultLayout) %when% {
+  is.character(config.file)
+  length(grep('\\.R$',config.file)) > 0
+  is.character(fn.name)
+} %as% {
   source(config.file)
   do.call(fn.name, list(threshold=threshold, defaultLayout=defaultLayout))
 }
@@ -57,9 +56,9 @@ config_logger %as% function(config.file, fn.name, threshold, defaultLayout)
 # A predefined logging config to write to a file. This example shows how names
 # can be set arbitrarily rather than parsed from the function name.
 #configAsFile <- function(file, threshold, defaultLayout)
-config_logger %when% (is.character(file) & is.numeric(threshold))
-config_logger %as% function(file, threshold, defaultLayout)
-{
+config_logger(file, threshold, defaultLayout) %when% {
+  is.character(file) & is.numeric(threshold)
+} %as% {
   if (is.null(file)) stop("Missing parameter 'file'")
   addLayout('default', defaultLayout)
   addAppender('file', fileAppender, file=file)
@@ -67,9 +66,9 @@ config_logger %as% function(file, threshold, defaultLayout)
 }
 
 # Everything goes to console but only errors go to error.file
-config_logger %when% (is.character(error.file) & is.numeric(threshold))
-config_logger %as% function(error.file, threshold, defaultLayout)
-{
+config_logger(error.file, threshold, defaultLayout) %when% {
+  is.character(error.file) & is.numeric(threshold)
+} %as% {
   addLayout('default', defaultLayout)
   addAppender('console', consoleAppender)
   addAppender('error.file', fileAppender, file=error.file, threshold=WARN)
@@ -78,12 +77,12 @@ config_logger %as% function(error.file, threshold, defaultLayout)
 
 # Provides a config to write to both console and file but only to the console
 # if the log level is WARN or ERROR
-config_logger %when% is.character(file)
-config_logger %also% is.character(file.threshold)
-config_logger %also% is.numeric(threshold)
-config_logger %also% is.function(defaultLayout)
-config_logger %as% function(file, file.threshold, threshold, defaultLayout)
-{
+config_logger(file, file.threshold, threshold, defaultLayout) %when% {
+  is.character(file)
+  is.character(file.threshold)
+  is.numeric(threshold)
+  is.function(defaultLayout)
+} %as% {
   addLayout('default', defaultLayout)
   addAppender('console', consoleAppender, threshold)
   addAppender('file', fileAppender, file=file)

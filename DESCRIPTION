@@ -4,8 +4,8 @@ Title: Futile logger subsystem
 Version: {version}
 Date: {date}
 Author: Brian Lee Yung Rowe
-Maintainer: Brian Lee Yung Rowe <r@nurometic.com>
-Depends: R (>= 2.8.0), futile.paradigm (>= 2.0.0), futile.options
+Maintainer: Brian Lee Yung Rowe <r@zatonovo.com>
+Depends: R (>= 2.8.0), lambda.r, futile.options
 Description: A logging library for R
 License: LGPL-3
 LazyLoad: yes
