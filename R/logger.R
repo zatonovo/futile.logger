@@ -9,20 +9,59 @@
 # my.log(DEBUG, "This is a log message")
 
 # Get appenders associated with the given logger
-loggerAppender <- function(name)
+log.appender(name='ROOT') %as%
 {
   key <- paste("logger", name, sep='.')
   logger <- logger.options(key)
   logger$appender
 }
 
+# Set the appender for the given logger
+log.appender(fn, name='ROOT') %as%
+{
+  key <- paste("logger", name, sep='.')
+  logger <- logger.options(key)
+  logger$appender <- fn
+  logger.options(update=list(key, logger))
+  invisible()
+}
+
 # Get the threshold for the given logger
-loggerThreshold <- function(name)
+log.threshold(name='ROOT') %as%
 {
   key <- paste("logger", name, sep='.')
   logger <- logger.options(key)
   logger$threshold
 }
+
+# Set the threshold
+log.threshold(threshold, name='ROOT') %as%
+{
+  key <- paste("logger", name, sep='.')
+  logger <- logger.options(key)
+  logger$threshold <- threshold
+  logger.options(update=list(key, logger))
+  invisible()
+}
+
+# Get the layout for the given logger
+log.layout(name='ROOT') %as%
+{
+  key <- paste("logger", name, sep='.')
+  logger <- logger.options(key)
+  logger$layout
+}
+
+# Set the layout
+log.layout(fn, name='ROOT') %as%
+{
+  key <- paste("logger", name, sep='.')
+  logger <- logger.options(key)
+  logger$layout <- fn
+  logger.options(update=list(key, logger))
+  invisible()
+}
+
 
 
 # Create a logger based on the config passed in from the options.manager
