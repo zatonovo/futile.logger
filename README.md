@@ -20,9 +20,21 @@ Out of the box, the default ROOT logger logs to the console with threshold
 set to INFO.
 
 ```R
-logger.debug("A vector %s and an array %s", 1:4, array(1:4))
+log.info("Hello, %s", "world")
 
-log.info("", 1, a, logger="futile.matrix")
+# This won't print by default
+log.debug("Goodbye, %s", "world")
+
+# Change the log level to debug and try again
+log.threshold(DEBUG)
+log.debug("Goodbye, %s", "world")
+
+# Keep an alternate logger at WARN
+log.threshold(WARN, name='quiet')
+
+# This won't print since it's using the logger named 'quiet'!
+log.debug("Goodbye, %s", "world", name='quiet')
+
 ```
 
 Loggers
@@ -33,7 +45,7 @@ referenced (for example when changing the threshold) inheriting the settings
 of the root logger. To explicitly create a logger call log.logger().
 
 ```R
-log.logger("tawny", WARN, appender=appender.file)
+log.logger("tawny", WARN, appender=appender.file('tawny.log'))
 ```
 
 To remove a logger, use the log.remove() function. If no such logger exists,
@@ -46,9 +58,12 @@ log.remove("tawny")
 Thresholds
 ----------
 The logger threshold determines what will be logged for a given logger. Use
-this function to change this threshold.
+this function to retrieve and also change this threshold.
 
-log.threshold(DEBUG, name="my.package")
+```R
+# Get the logging threshold for the ROOT logger
+log.threshold()
+```
 
 The default logger is ROOT. To change the threshold of a different logger, 
 specify the logger argument with a string that represents the logger. Note
@@ -60,8 +75,8 @@ necessary.
 ```R
 # Set root logger to DEBUG level to see all log messages
 log.threshold(DEBUG)
-# Suppress log messages below WARN for package futile.matrix
-log.threshold(WARN, name="my.package")
+# Suppress log messages below WARN for logger 'quiet'
+log.threshold(WARN, name="quiet")
 ```
 
 Appenders
@@ -77,17 +92,21 @@ To change the appenders assigned to a logger, use the log.appender()
 function.
 
 ```R
-log.appender(fn, name="my.package")
+# Change the 'quiet' logger to write to a file
+log.appender(appender.file('quiet.log'), 'quiet')
+log.warn("Goodbye, %s", "world", name='quiet')
 ```
 
-You can create your own appender by defining a function that takes a single
-argument (the text to log). It is up to you to define the behavior. For
-example, an appender that logs to a URL might look like this:
+You can create your own appender by defining a function that accepts a single
+character argument. It is up to you to define the behavior. For example,
+an appender that logs to a URL might look like the following.
 
 ```R
 url_appender.gen <- function(url) {
   conn <- url(url)
-  function(x) 
+  function(line) {
+    file.write()
+  }
 }
 ```
 

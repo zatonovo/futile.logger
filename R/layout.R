@@ -14,8 +14,10 @@ layout.simple <- function(level, msg, ...)
 # %m - Message
 # %f - Calling function
 # TODO: INCOMPLETE
-layout.format <- function(level, msg, format, ...)
+layout.format <- function(format)
 {
-  if (! is.null(substitute(...))) msg <- sprintf(msg, ...)
+  function(level, msg, ...) {
+    if (! is.null(substitute(...))) msg <- sprintf(msg, ...)
+  }
 }
 
