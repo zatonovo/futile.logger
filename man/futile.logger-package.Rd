@@ -1,17 +1,17 @@
 \name{futile.logger-package}
 \alias{futile.logger-package}
 \alias{futile.logger}
+\alias{get_namespace}
 \docType{package}
 \title{
-  A logging sub-system for futile
+  An easy to use logging package for R.
 }
 \description{
-  This package implements a logging system inspired by log4j and tries to maintain conceptual
-  consistency with the package. This also extends to the similarly derivative work log4cpp.
-  'futile.logger' implements the core functionality available in the log4j feature suite,
-  including hierarchical loggers, custom appenders, custom layouts, multiple appenders per
-  logger, and configurable thresholds. The interface tries also to maintain R idioms and thus
-  is not an exact clone.
+  This package implements a logging system inspired by log4j. The basic idea
+  of layouts, appenders, and loggers is faithful to log4j, while the 
+  implementation and idiom is all R. This means that support for hierarchical
+  loggers, custom appenders, custom layouts is coupled with a simple and
+  intuitive functional syntax.
 }
 \details{
 \tabular{ll}{
@@ -22,50 +22,94 @@ Date: \tab {date}\cr
 License: \tab LGPL-3\cr
 LazyLoad: \tab yes\cr
 }
-  The basic concepts connected to 'futile.logger' include loggers, appenders, and layouts.
-  Loggers are the high-level interface for calling logging operations. These loggers are
-  scoped to a particular namespace, which in more traditional object-oriented languages
-  typically mapped to the package namespace. In R, a similar convention can be employed, such
-  that different packages scope their logging calls to enable other code to easily switch
-  on and off the log messages. Loggers have a threshold associated to them, such that only
-  messages at the same level or of greater severity are printed. Multiple appenders can be
-  attached to a given logger, giving flexibility in how to route log messages.
-  
-  Appenders do the actual work of writing log messages to a writeable target, whether that is
-  a console, a file, a URL, database, etc. When creating an appender, the implementation-
-  specific options are passed to the appender at instantiation. Once an appender is added
-  to the 'futile.logger' options space, the appender can be attached to any logger. Appenders
-  can override the threshold defined in the logger, which provides more granular control to
-  the logging process.
 
-  Layouts are responsible for formatting messages. This operation usually consists of adding
-  the log level, a timestamp, plus some pretty-printing to make the log messages easy on the
-  eyes.
+The latest version of futile.logger introduces zero-configuration semantics
+out of the box. This means that you can use the default configuration as is.
+It is also easy to interactively change the configuration of the ROOT logger,
+as well as create new loggers. Since loggers form a hierarchy based on their
+name, the ROOT logger is the starting point of the hierarchy and always
+exists. By default the ROOT logger is defined with a simple layout,
+printing to the console, with an INFO threshold. This means that writing to any
+logger with a threshold of INFO or higher will write to the console.
 
-  An important part of loggers is that they are hierarchical in nature based on the namespace
-  given to the logger, such that loggers will inherit properties of parent loggers up to the
-  ROOT if no definition is found. In practice packages can define a logger hierarchy that 
-  will work in user libraries, assuming the ROOT logger is configured properly.
+All of the logging functions take a format string so it is easy to add 
+arbitrary values to log messages.
 
-  To use 'futile.logger', at a minimum, one layout, appender, and logger (ROOT) must be 
-  defined. A number of default configurations are provided in the package to get users started
-  quickly, while also acting as examples for users needing more sophisticated logging.
+  > flog.info("This song is just \%s words \%s", 7, "long")
+
+Thresholds range from most verbose to least verbose: TRACE, DEBUG, INFO, WARN,
+ERROR, FATAL. You can easily change the threshold of the ROOT logger by
+calling
+  > flog.threshold(TRACE)
+which changes will print all log messages from every package. To suppress most
+logging by default but turn on all debugging for a logger 'my.logger', you
+would execute
+  > flog.threshold(ERROR)
+  > flog.threshold(TRACE, name='my.logger')
+
+Any arbitrary logger can be defined simply by specifying it in any 
+futile.logger write operation (futile.threshold, futile.appender, 
+futile.layout). If the logger hasn't been defined, then it 
+will be defined dynamically. Any unspecified options will be copied from the
+parent logger.
+
+When writing log messages, 
+futile.logger will search the hierarchy based on the logger name. In our
+example, if 'my.logger' hasn't been defined then futile.logger will look for
+a logger named 'my' and finally the ROOT logger.
+
+Functions calling futile.logger from a package are automatically assigned a
+logger that has the name of the package. Suppose we have log messages in 
+a package called 'my.package'. Then any
+function that calls futile.logger from within the package will automatically
+be assigned a default logger of 'my.package' instead of ROOT. This means that
+it is easy to change the log setting of any package that uses futile.logger
+for logging by just updating the logger for the given package. For instance
+suppose you want to output log message for my.package to a file instead.
+
+  flog.appender(appender.file('my.package.log'), name='my.package')
+
+Now all log statements in the package my.package will be written to a file
+instead of the console. All other log messages will continue to be written
+to the console.
+
+Appenders do the actual work of writing log messages to a writeable target,
+whether that is a console, a file, a URL, database, etc. When creating an
+appender, the implementation-specific options are passed to the appender at 
+instantiation. The package defines two appender generator functions:
+
+. appender.file - Write to a file
+. appender.console - Write to the console
+
+Each of these functions returns the actual appender function, so be sure to
+actually call the function!
+
+Layouts are responsible for formatting messages. This operation usually
+consists of adding the log level, a timestamp, plus some pretty-printing to 
+make the log messages easy on the eyes. The package supplies two layouts:
+
+. layout.simple - Writes messages with a default format
+. layout.format - Define your own format
+
 }
 \author{
-Brian Lee Yung Rowe <r@nurometic.com>
+Brian Lee Yung Rowe <r@zatonovo.com>
 }
 \keyword{ package }
 \keyword{ attribute }
 \keyword{ logic }
-\seealso{ \code{\link{config_logger}}, \code{\link{addAppender}},
-  \code{\link{addLayout}}, \code{\link{addLogger}}, \code{\link{getLogger}} }
+\seealso{ \code{\link{flog.logger}}, \code{\link{flog.threshold}},
+  \code{\link{flog.layout}}, \code{\link{flog.appender}} }
 \examples{
-  config_logger()
-  mylogger <- getLogger()
-  mylogger(DEBUG, "This won't print")
-  mylogger(WARN, "This will print")
+  flog.debug("This \%s print", "won't")
+  flog.warn("This \%s print", "will")
   
-  logger.b <- getLogger('b')
-  logger.b(WARN, "This inherits from the ROOT logger")
+  flog.info("This inherits from the ROOT logger", name='logger.a')
+  flog.threshold(DEBUG, name='logger.a')
+  flog.debug("logger.a has now been set to DEBUG", name='logger.a')
+  flog.debug("But the ROOT logger is still at INFO (so this won't print)")
+
+  flog.appender(appender.file("other.log"), name='logger.b')
+  flog.info("This writes to a \%s", "file", name='logger.b')
 }
 

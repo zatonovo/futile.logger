@@ -1,57 +1,82 @@
-\name{addLogger}
-\alias{addLogger}
-\alias{getLogger}
-\alias{loggerAppender}
-\alias{loggerThreshold}
+\name{flog.logger}
+\alias{flog.logger}
+\alias{flog.remove}
+\alias{flog.threshold}
+\alias{flog.trace}
+\alias{flog.debug}
+\alias{flog.info}
+\alias{flog.warn}
+\alias{flog.error}
+\alias{flog.fatal}
 \title{ Manage appenders within the 'futile.logger' sub-system }
 \description{
-  Provides functions for managing loggers. The 'getLogger' function is the
-  primary entry point into the package once the configuration is complete.
+  Provides functions for writing log messages and managing loggers. Typically
+  only the flog.[trace|debug|info|warn|error|fatal] functions need to be used
+  in conjunction with flog.threshold to interactively change the log level.
 }
 \usage{
-addLogger(name, threshold, appender, layout)
-getLogger(name = 'ROOT', failfast = FALSE)
-loggerAppender(name)
-loggerThreshold(name)
+flog.logger(...)
+flog.remove(...)
+flog.threshold(...)
+flog.trace(msg, ..., name=get_namespace())
+flog.debug(msg, ..., name=get_namespace())
+flog.info(msg, ..., name=get_namespace())
+flog.warn(msg, ..., name=get_namespace())
+flog.error(msg, ..., name=get_namespace())
+flog.fatal(msg, ..., name=get_namespace())
 }
 \arguments{
-  \item{name}{ The name of the logger }
-  \item{threshold}{ The logger threshold, which can be partially overridden by
-    appenders. Use one of the constants defined (e.g. DEBUG, INFO, WARN, etc) }
-  \item{appender}{ An appender name or a vector of appender names }
-  \item{layout}{ A layout name or a vector of layout names }
-  \item{failfast}{ Used internally to prevent inheritance of loggers }
+  \item{msg}{The message to log}
+  \item{name}{The logger name to use}
+  \item{\dots}{Optional arguments to populate the format string.}
 }
 \details{
-  'addLogger' adds a logger configuration to the logger.options
+These functions represent the high level interface to futile.logger.
 
-  'getLogger' constructs a logger function based on the registered configuration
+The primary use case for futile.logger is to write out log messages. There
+are log writers associated with all the predefined log levels: TRACE, DEBUG,
+INFO, WARN, ERROR, FATAL. Log messages will only be written if the log level
+is equal to or more urgent than the current threshold. By default the ROOT
+logger is set to INFO.
 
-  'loggerAppender' provides introspection on the appenders attached to a logger
+  > flog.debug("This won't print")
+  > flog.info("But this %s", 'will')
+  > flog.warn("As will %s", 'this')
 
-  'loggerThreshold' provides the threshold of the logger
+Typically, the built in log level constants are used in the call, which
+conform to the log4j levels (from least severe to most severe): TRACE, DEBUG,
+INFO, WARN, ERROR, FATAL. It is not a strict requirement to use these
+constants (any numeric value will work), though most users should find this
+level of granularity sufficient.
+
+Loggers are hierarchical in the sense that any requested logger that is 
+undefined will fall back to its most immediate defined parent logger. The
+absolute parent is ROOT, which is guaranteed to be defined for the system 
+and cannot be deleted. This means that you can specify a new logger directly.
+
+  > flog.info("This will fall back to 'my', then 'ROOT'", name='my.logger')
+
+You can also change the threshold or any other setting associated with a
+logger. This will create an explicit logger where any unspecified options
+are copied from the parent logger.
+
+  > flog.appender(appender.file("foo.log"), name='my')
+  > flog.threshold(ERROR, name='my.logger')
+  > flog.info("This won't print", name='my.logger')
+  > flog.error("This %s print to a file", 'will', name='my.logger')
+
+If you define a logger that you later want to remove, use flog.remove.
 }
 \value{
-  'getLogger' returns a \_function\_ that is called to log messages. The resulting
-  function has two arguments: the log level for the message and the message
-  itself. The below example illustrates the simplest usage pattern:
-
-     > lg <- getLogger()
-     > lg(DEBUG, "A debug message")
-
-  Typically, the built in log level constants are used in the call, which
-  conform to the log4j levels (from least severe to most severe): TRACE, DEBUG,
-  INFO, WARN, ERROR, FATAL. It is not a strict requirement to use these
-  constants (any numeric value will work), though most users should find this
-  level of granularity sufficient.
-
-  Loggers are hierarchical in the sense that any requested logger that is 
-  undefined will fall back to its most immediate defined parent logger. The
-  absolute parent is ROOT, which \_must\_ be defined for the system to work.
+Most of these functions exist for their side effects, so there are few useful
+return values.
 }
 \author{ Brian Lee Yung Rowe }
 \examples{
-  lg <- getLogger("some.package")
-  lg(DEBUG, "A debug message")
+  flog.threshold(DEBUG)
+  flog.debug("This debug message will print")
+
+  flog.threshold(WARN)
+  flog.debug("This one won't")
 }
 \keyword{ data }

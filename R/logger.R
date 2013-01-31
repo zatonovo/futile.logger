@@ -1,29 +1,58 @@
-.log.level <- function(msg, ..., level, name)
+.log_level <- function(msg, ..., level, name)
 {
-  logger <- log.logger(name)
+  logger <- flog.logger(name)
   if (level > logger$threshold) { return(invisible()) }
 
-  appender <- log.appender(name)
-  layout <- log.layout(name)
+  appender <- flog.appender(name)
+  layout <- flog.layout(name)
   appender(layout(level, msg, ...))
   invisible()
 }
 
-log.trace <- function(msg, ..., name='ROOT')
-  .log.level(msg, ..., level=TRACE,name=name)
-log.debug <- function(msg, ..., name='ROOT')
-  .log.level(msg, ..., level=DEBUG,name=name)
-log.info <- function(msg, ..., name='ROOT')
-  .log.level(msg, ..., level=INFO,name=name)
-log.warn <- function(msg, ..., name='ROOT')
-  .log.level(msg, ..., level=WARN,name=name)
-log.error <- function(msg, ..., name='ROOT')
-  .log.level(msg, ..., level=ERROR,name=name)
-log.fatal <- function(msg, ..., name='ROOT')
-  .log.level(msg, ..., level=FATAL,name=name)
+# Get the namespace that a function resides in. If no namespace exists, then
+# return NULL.
+# <environment: namespace:lambda.r>
+get_namespace() %as% 
+{
+  s <- capture.output(str(environment(sys.function(1)), give.attr=FALSE))
+  if (length(grep('namespace', s)) < 1) return('ROOT')
 
-# Get a logger
-log.logger(name='ROOT') %as%
+  ns <- sub('.*namespace:([^>]+)>.*','\\1', s)
+  ifelse(is.null(ns), 'ROOT', ns)
+}
+
+
+flog.trace <- function(msg, ..., name=get_namespace()) {
+  .log_level(msg, ..., level=TRACE,name=name)
+}
+
+flog.debug <- function(msg, ..., name=get_namespace()) {
+  .log_level(msg, ..., level=TRACE,name=name)
+}
+
+flog.info <- function(msg, ..., name=get_namespace()) {
+  .log_level(msg, ..., level=INFO,name=name)
+}
+
+flog.warn <- function(msg, ..., name=get_namespace()) {
+  .log_level(msg, ..., level=WARN,name=name)
+}
+
+flog.error <- function(msg, ..., name=get_namespace()) {
+  .log_level(msg, ..., level=ERROR,name=name)
+}
+
+flog.fatal <- function(msg, ..., name=get_namespace()) {
+  .log_level(msg, ..., level=FATAL,name=name)
+}
+
+# Get a logger. By default, use the package namespace or use the 'ROOT' logger.
+flog.logger() %as%
+{
+  flog.logger(get_namespace())
+}
+
+flog.logger(name) %as%
 {
   if (nchar(name) < 1) name <- 'ROOT'
   #cat(sprintf("Searching for logger %s\n", name))
@@ -43,12 +72,12 @@ log.logger(name='ROOT') %as%
 
   parts <- strsplit(name, '.', fixed=TRUE)[[1]]
   parent <- paste(parts[1:length(parts)-1], collapse='.')
-  log.logger(parent)
+  flog.logger(parent)
 }
 
-log.logger(name, threshold=NULL, appender=NULL, layout=NULL) %as%
+flog.logger(name, threshold=NULL, appender=NULL, layout=NULL) %as%
 {
-  logger <- log.logger(name)
+  logger <- flog.logger(name)
   if (!is.null(threshold)) logger$threshold <- threshold
   if (!is.null(appender)) logger$appender <- appender
   if (!is.null(layout)) logger$layout <- layout
@@ -59,61 +88,57 @@ log.logger(name, threshold=NULL, appender=NULL, layout=NULL) %as%
 }
 
 
-log.remove('ROOT') %as% { invisible() }
-log.remove(name) %as% 
+flog.remove('ROOT') %as% { invisible() }
+flog.remove(name) %as% 
 {
+  key <- paste("logger", name, sep='.')
   logger.options(update=list(key, NULL))
   invisible()
 }
-seal(log.logger)
-seal(log.remove)
 
 # Get the threshold for the given logger
-log.threshold(name) %::% character : numeric
-log.threshold(name='ROOT') %as%
+flog.threshold(name) %::% character : numeric
+flog.threshold(name='ROOT') %as%
 {
-  logger <- log.logger(name)
+  logger <- flog.logger(name)
   logger$threshold
 }
 
 # Set the threshold
-log.threshold(threshold, name='ROOT') %as%
+flog.threshold(threshold, name='ROOT') %as%
 {
-  log.logger(name, threshold=threshold)
+  flog.logger(name, threshold=threshold)
   invisible()
 }
 
 # Get appenders associated with the given logger
-#log.appender(name) %::% character : Function
-log.appender(name='ROOT') %as%
+flog.appender(name) %::% character : Function
+flog.appender(name='ROOT') %as%
 {
-  logger <- log.logger(name)
+  logger <- flog.logger(name)
   logger$appender
 }
 
 # Set the appender for the given logger
-log.appender(fn, name='ROOT') %as%
+flog.appender(fn, name='ROOT') %as%
 {
-  log.logger(name, appender=fn)
+  flog.logger(name, appender=fn)
   invisible()
 }
 
 # Get the layout for the given logger
-#log.layout(name) %::% character : Function
-log.layout(name='ROOT') %as%
+flog.layout(name) %::% character : Function
+flog.layout(name='ROOT') %as%
 {
-  logger <- log.logger(name)
+  logger <- flog.logger(name)
   logger$layout
 }
 
 # Set the layout
-log.layout(fn, name='ROOT') %as%
+flog.layout(fn, name='ROOT') %as%
 {
-  log.logger(name, layout=fn)
+  flog.logger(name, layout=fn)
   invisible()
 }
 
-seal(log.threshold)
-seal(log.appender)
-seal(log.layout)
 
