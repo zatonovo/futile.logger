@@ -20,20 +20,20 @@ Out of the box, the default ROOT logger logs to the console with threshold
 set to INFO.
 
 ```R
-log.info("Hello, %s", "world")
+flog.info("Hello, %s", "world")
 
 # This won't print by default
-log.debug("Goodbye, %s", "world")
+flog.debug("Goodbye, %s", "world")
 
 # Change the log level to debug and try again
-log.threshold(DEBUG)
-log.debug("Goodbye, %s", "world")
+flog.threshold(DEBUG)
+flog.debug("Goodbye, %s", "world")
 
 # Keep an alternate logger at WARN
-log.threshold(WARN, name='quiet')
+flog.threshold(WARN, name='quiet')
 
 # This won't print since it's using the logger named 'quiet'!
-log.debug("Goodbye, %s", "world", name='quiet')
+flog.debug("Goodbye, %s", "world", name='quiet')
 
 ```
 
@@ -45,14 +45,14 @@ referenced (for example when changing the threshold) inheriting the settings
 of the root logger. To explicitly create a logger call log.logger().
 
 ```R
-log.logger("tawny", WARN, appender=appender.file('tawny.log'))
+flog.logger("tawny", WARN, appender=appender.file('tawny.log'))
 ```
 
 To remove a logger, use the log.remove() function. If no such logger exists,
 the command is safely ignored.
 
 ```R
-log.remove("tawny")
+flog.remove("tawny")
 ```
 
 Thresholds
@@ -62,7 +62,7 @@ this function to retrieve and also change this threshold.
 
 ```R
 # Get the logging threshold for the ROOT logger
-log.threshold()
+flog.threshold()
 ```
 
 The default logger is ROOT. To change the threshold of a different logger, 
@@ -74,9 +74,9 @@ necessary.
 
 ```R
 # Set root logger to DEBUG level to see all log messages
-log.threshold(DEBUG)
+flog.threshold(DEBUG)
 # Suppress log messages below WARN for logger 'quiet'
-log.threshold(WARN, name="quiet")
+flog.threshold(WARN, name="quiet")
 ```
 
 Appenders
@@ -93,8 +93,8 @@ function.
 
 ```R
 # Change the 'quiet' logger to write to a file
-log.appender(appender.file('quiet.log'), 'quiet')
-log.warn("Goodbye, %s", "world", name='quiet')
+flog.appender(appender.file('quiet.log'), 'quiet')
+flog.warn("Goodbye, %s", "world", name='quiet')
 ```
 
 You can create your own appender by defining a function that accepts a single
@@ -110,7 +110,7 @@ url_appender.gen <- function(url) {
 }
 ```
 
-log.format("futile.matrix", fn)
+flog.format("futile.matrix", fn)
 
 Layouts
 -------
