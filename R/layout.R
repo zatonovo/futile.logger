@@ -5,7 +5,7 @@ layout.simple <- function(level, msg, ...)
 {
   the.time <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
   if (! is.null(substitute(...))) msg <- sprintf(msg, ...)
-  sprintf("%s [%s] %s\n", .LOG_LEVEL[level],the.time, msg)
+  sprintf("%s [%s] %s\n", names(level),the.time, msg)
 }
 
 # This parses and prints a user-defined format string. Available tokens are

@@ -1,10 +1,14 @@
-FATAL <- 1
-ERROR <- 2
-WARN <- 4
-INFO <- 6
-DEBUG <- 8
-TRACE <- 9
-
-.LOG_LEVEL <- c('FATAL','ERROR',NA,'WARN', NA,'INFO', NA,'DEBUG','TRACE')
+FATAL <- 1L
+names(FATAL) <- "FATAL"
+ERROR <- 2L
+names(ERROR) <- "ERROR"
+WARN <- 4L
+names(WARN) <- "WARN"
+INFO <- 6L
+names(INFO) <- "INFO"
+DEBUG <- 8L
+names(DEBUG) <- "DEBUG"
+TRACE <- 9L
+names(TRACE) <- "TRACE"
 
 
