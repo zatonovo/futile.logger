@@ -11,6 +11,4 @@ names(DEBUG) <- "DEBUG"
 TRACE <- 9L
 names(TRACE) <- "TRACE"
 
-.LOG_LEVEL <- c('FATAL','ERROR',NA,'WARN', NA,'INFO', NA,'DEBUG','TRACE')
-
 
