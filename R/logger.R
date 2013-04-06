@@ -1,11 +1,16 @@
-.log_level <- function(msg, ..., level, name)
+.log_level <- function(msg, ..., level, name, capture)
 {
   logger <- flog.logger(name)
   if (level > logger$threshold) { return(invisible()) }
 
   appender <- flog.appender(name)
   layout <- flog.layout(name)
-  appender(layout(level, msg, ...))
+  if (capture) {
+    values <- capture.output(print(...))
+    appender(c(layout(level, msg), values))
+  } else {
+    appender(layout(level, msg, ...))
+  }
   invisible()
 }
 
@@ -22,28 +27,28 @@ get_namespace() %as%
 }
 
 
-flog.trace <- function(msg, ..., name=get_namespace()) {
-  .log_level(msg, ..., level=TRACE,name=name)
+flog.trace <- function(msg, ..., name=get_namespace(), capture=FALSE) {
+  .log_level(msg, ..., level=TRACE,name=name, capture=capture)
 }
 
-flog.debug <- function(msg, ..., name=get_namespace()) {
-  .log_level(msg, ..., level=TRACE,name=name)
+flog.debug <- function(msg, ..., name=get_namespace(), capture=FALSE) {
+  .log_level(msg, ..., level=DEBUG,name=name, capture=capture)
 }
 
-flog.info <- function(msg, ..., name=get_namespace()) {
-  .log_level(msg, ..., level=INFO,name=name)
+flog.info <- function(msg, ..., name=get_namespace(), capture=FALSE) {
+  .log_level(msg, ..., level=INFO,name=name, capture=capture)
 }
 
-flog.warn <- function(msg, ..., name=get_namespace()) {
-  .log_level(msg, ..., level=WARN,name=name)
+flog.warn <- function(msg, ..., name=get_namespace(), capture=FALSE) {
+  .log_level(msg, ..., level=WARN,name=name, capture=capture)
 }
 
-flog.error <- function(msg, ..., name=get_namespace()) {
-  .log_level(msg, ..., level=ERROR,name=name)
+flog.error <- function(msg, ..., name=get_namespace(), capture=FALSE) {
+  .log_level(msg, ..., level=ERROR,name=name, capture=capture)
 }
 
-flog.fatal <- function(msg, ..., name=get_namespace()) {
-  .log_level(msg, ..., level=FATAL,name=name)
+flog.fatal <- function(msg, ..., name=get_namespace(), capture=FALSE) {
+  .log_level(msg, ..., level=FATAL,name=name, capture=capture)
 }
 
 # Get a logger. By default, use the package namespace or use the 'ROOT' logger.

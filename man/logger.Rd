@@ -18,16 +18,17 @@
 flog.logger(...)
 flog.remove(...)
 flog.threshold(...)
-flog.trace(msg, ..., name=get_namespace())
-flog.debug(msg, ..., name=get_namespace())
-flog.info(msg, ..., name=get_namespace())
-flog.warn(msg, ..., name=get_namespace())
-flog.error(msg, ..., name=get_namespace())
-flog.fatal(msg, ..., name=get_namespace())
+flog.trace(msg, ..., name=get_namespace(), capture=FALSE)
+flog.debug(msg, ..., name=get_namespace(), capture=FALSE)
+flog.info(msg, ..., name=get_namespace(), capture=FALSE)
+flog.warn(msg, ..., name=get_namespace(), capture=FALSE)
+flog.error(msg, ..., name=get_namespace(), capture=FALSE)
+flog.fatal(msg, ..., name=get_namespace(), capture=FALSE)
 }
 \arguments{
   \item{msg}{The message to log}
   \item{name}{The logger name to use}
+  \item{capture}{Capture print output of variables instead of interpolate}
   \item{\dots}{Optional arguments to populate the format string.}
 }
 \details{
@@ -66,6 +67,15 @@ are copied from the parent logger.
   > flog.error("This %s print to a file", 'will', name='my.logger')
 
 If you define a logger that you later want to remove, use flog.remove.
+
+The option 'capture' allows you to print out more complicated data 
+structures without a lot of ceremony. This variant doesn't accept
+format strings and instead appends the value to the next line of output.
+Consider
+  > m <- matrix(rnorm(12), nrow=3)
+  > flog.info("Matrix:",m, capture=TRUE)
+which preserves the formatting, whereas using capture=FALSE will have a
+cluttered output due to recycling.
 }
 \value{
 Most of these functions exist for their side effects, so there are few useful
@@ -78,5 +88,8 @@ return values.
 
   flog.threshold(WARN)
   flog.debug("This one won't")
+
+  m <- matrix(rnorm(12), nrow=3)
+  flog.info("Matrix:",m, capture=TRUE)
 }
 \keyword{ data }
