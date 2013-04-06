@@ -1,12 +1,12 @@
 .log_level <- function(msg, ..., level, name)
 {
   logger <- flog.logger(name)
-  if (level > logger$threshold) { return(invisible()) }
-
   appender <- flog.appender(name)
   layout <- flog.layout(name)
-  appender(layout(level, msg, ...))
-  invisible()
+  output = layout(level, msg, ...)
+
+  if (level <= logger$threshold) { appender(output) }
+  invisible(output)
 }
 
 # Get the namespace that a function resides in. If no namespace exists, then
