@@ -2,11 +2,11 @@
 # to the below signature: function(line)
 appender.console <- function()
 {
-  function(line) cat(line, sep='\n')
+  function(line) cat(line, sep='')
 }
 
 # Write to a file.
 appender.file <- function(file)
 {
-  function(line) cat(line, file=file, append=TRUE, sep='\n')
+  function(line) cat(line, file=file, append=TRUE, sep='')
 }

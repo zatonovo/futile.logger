@@ -2,12 +2,14 @@
 \alias{flog.logger}
 \alias{flog.remove}
 \alias{flog.threshold}
+\alias{flog.carp}
 \alias{flog.trace}
 \alias{flog.debug}
 \alias{flog.info}
 \alias{flog.warn}
 \alias{flog.error}
 \alias{flog.fatal}
+\alias{ftry}
 \title{ Manage appenders within the 'futile.logger' sub-system }
 \description{
   Provides functions for writing log messages and managing loggers. Typically
@@ -24,12 +26,16 @@ flog.info(msg, ..., name=get_namespace(), capture=FALSE)
 flog.warn(msg, ..., name=get_namespace(), capture=FALSE)
 flog.error(msg, ..., name=get_namespace(), capture=FALSE)
 flog.fatal(msg, ..., name=get_namespace(), capture=FALSE)
+flog.carp(...)
+ftry(expr, finally)
 }
 \arguments{
   \item{msg}{The message to log}
   \item{name}{The logger name to use}
   \item{capture}{Capture print output of variables instead of interpolate}
-  \item{\dots}{Optional arguments to populate the format string.}
+  \item{\dots}{Optional arguments to populate the format string}
+  \item{expr}{An expression to evaluate}
+  \item{finally}{An optional expression to evaluate at the end}
 }
 \details{
 These functions represent the high level interface to futile.logger.
@@ -91,5 +97,7 @@ return values.
 
   m <- matrix(rnorm(12), nrow=3)
   flog.info("Matrix:",m, capture=TRUE)
+
+  ftry(log(-1))
 }
 \keyword{ data }
