@@ -112,11 +112,11 @@ flog.remove(name) %as%
 }
 
 # Get the threshold for the given logger
-flog.threshold(name) %::% character : numeric
+flog.threshold(name) %::% character : character
 flog.threshold(name='ROOT') %as%
 {
   logger <- flog.logger(name)
-  logger$threshold
+  names(logger$threshold)
 }
 
 # Set the threshold
