@@ -93,3 +93,24 @@ test.fatal <- function() {
   checkTrue(length(grep('log message', raw)) > 0)
 }
 
+test.ftry <- function() {
+  raw <- capture.output(ftry(log(-1)))
+  checkTrue(length(grep('WARN', raw)) > 0)
+  checkTrue(length(grep('simpleWarning', raw)) > 0)
+}
+
+test.carp <- function() {
+  checkTrue(! flog.carp())
+  flog.carp(TRUE)
+  flog.threshold(WARN)
+  raw <- flog.debug("foo")
+  checkTrue(length(grep('DEBUG', raw)) > 0)
+}
+
+test.layout.1 <- function() {
+  flog.threshold(INFO)
+  flog.layout(layout.format('xxx[~l]xxx'))
+  raw <- capture.output(flog.info("log message"))
+  checkTrue(length(grep('xxx[INFO]xxx', raw)) > 0)
+  checkTrue(length(grep('log message', raw)) == 0)
+}

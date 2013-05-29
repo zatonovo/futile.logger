@@ -54,8 +54,14 @@ test_that("Hierarchy inheritance", {
 })
 
 
-context("package loggers")
-
+# Can't test this since test_that calls suppressMessages
+#context("package loggers")
+#test_that("ftry captures warnings", {
+  #raw <- capture.output(ftry(log(-1)))
+  #cat("raw =",raw,'\n')
+  #expect_that(length(grep('WARN', raw)) > 0, is_true())
+  #expect_that(length(grep('simpleWarning', raw)) > 0, is_true())
+#})
 
 context("format string")
 test_that("Embedded format string", {
@@ -64,5 +70,23 @@ test_that("Embedded format string", {
   #cat("\n[test.default] Raw:",raw,"\n")
   expect_that(length(grep('INFO', raw)) > 0, is_true())
   expect_that(length(grep('log message', raw)) > 0, is_true())
+})
+
+test_that("Custom layout dereferences level field", {
+  flog.threshold(INFO)
+  flog.layout(layout.format('xxx[~l]xxx'))
+  raw <- capture.output(flog.info("log message"))
+  flog.layout(layout.simple)
+  expect_that('xxx[INFO]xxx' == raw, is_true())
+  expect_that(length(grep('log message', raw)) == 0, is_true())
+})
+
+context("carp")
+test_that("carp returns output", {
+  expect_that(flog.carp(), is_false())
+  flog.carp(TRUE)
+  flog.threshold(WARN)
+  raw <- flog.debug("foo")
+  expect_that(length(grep('DEBUG', raw)) > 0, is_true())
 })
 

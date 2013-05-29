@@ -1,25 +1,28 @@
 .log_level <- function(msg, ..., level, name, capture)
 {
   logger <- flog.logger(name)
-  if (level > logger$threshold) { return(invisible()) }
+  if (level > logger$threshold && (is.null(logger$carp) || !logger$carp)) {
+    return(invisible())
+  }
 
   appender <- flog.appender(name)
   layout <- flog.layout(name)
   if (capture) {
     values <- capture.output(print(...))
-    appender(c(layout(level, msg), values))
+    message <- c(layout(level, msg), values)
   } else {
-    appender(layout(level, msg, ...))
+    message <- layout(level, msg, ...)
   }
-  invisible()
+  if (level <= logger$threshold) appender(message)
+  invisible(message)
 }
 
 # Get the namespace that a function resides in. If no namespace exists, then
 # return NULL.
 # <environment: namespace:lambda.r>
-get_namespace() %as% 
+get_namespace(where=1) %as% 
 {
-  s <- capture.output(str(environment(sys.function(1)), give.attr=FALSE))
+  s <- capture.output(str(environment(sys.function(where)), give.attr=FALSE))
   if (length(grep('namespace', s)) < 1) return('ROOT')
 
   ns <- sub('.*namespace:([^>]+)>.*','\\1', s)
@@ -51,6 +54,12 @@ flog.fatal <- function(msg, ..., name=get_namespace(), capture=FALSE) {
   .log_level(msg, ..., level=FATAL,name=name, capture=capture)
 }
 
+ftry <- function(expr, finally=NULL) {
+  w.handler <- function(e) flog.warn("%s", e)
+  e.handler <- function(e) flog.error("%s", e)
+  tryCatch(expr, warning=w.handler, error=e.handler, finally)
+}
+
 # Get a logger. By default, use the package namespace or use the 'ROOT' logger.
 flog.logger() %as%
 {
@@ -80,12 +89,13 @@ flog.logger(name) %as%
   flog.logger(parent)
 }
 
-flog.logger(name, threshold=NULL, appender=NULL, layout=NULL) %as%
+flog.logger(name, threshold=NULL, appender=NULL, layout=NULL, carp=NULL) %as%
 {
   logger <- flog.logger(name)
   if (!is.null(threshold)) logger$threshold <- threshold
   if (!is.null(appender)) logger$appender <- appender
   if (!is.null(layout)) logger$layout <- layout
+  if (!is.null(carp)) logger$carp <- carp
   
   key <- paste("logger", name, sep='.')
   logger.options(update=list(key, logger))
@@ -145,5 +155,22 @@ flog.layout(fn, name='ROOT') %as%
   flog.logger(name, layout=fn)
   invisible()
 }
+
+# Indicate whether the logger will always output a message
+flog.carp(name) %::% character : logical
+flog.carp(name='ROOT') %as%
+{
+  logger <- flog.logger(name)
+  if (is.null(logger$carp)) FALSE
+  else logger$carp
+}
+
+# Set whether to carp
+flog.carp(carp, name='ROOT') %as%
+{
+  flog.logger(name, carp=carp)
+  invisible()
+}
+
 
 
