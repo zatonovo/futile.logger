@@ -54,9 +54,9 @@ flog.fatal <- function(msg, ..., name=get_namespace(), capture=FALSE) {
   .log_level(msg, ..., level=FATAL,name=name, capture=capture)
 }
 
-ftry <- function(expr, finally=NULL) {
+ftry <- function(expr, error=stop, finally=NULL) {
   w.handler <- function(e) flog.warn("%s", e)
-  e.handler <- function(e) flog.error("%s", e)
+  e.handler <- function(e) { flog.error("%s", e); error(e) }
   tryCatch(expr, warning=w.handler, error=e.handler, finally)
 }
 

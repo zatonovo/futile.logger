@@ -8,6 +8,7 @@ layout.simple <- function(level, msg, ...)
   sprintf("%s [%s] %s\n", names(level),the.time, msg)
 }
 
+
 # This parses and prints a user-defined format string. Available tokens are
 # ~l - Log level
 # ~t - Timestamp
