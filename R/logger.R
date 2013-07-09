@@ -126,21 +126,6 @@ flog.threshold(threshold, name='ROOT') %as%
   invisible()
 }
 
-# Get the layout for the given logger
-flog.layout(name) %::% character : Function
-flog.layout(name='ROOT') %as%
-{
-  logger <- flog.logger(name)
-  logger$layout
-}
-
-# Set the layout
-flog.layout(fn, name='ROOT') %as%
-{
-  flog.logger(name, layout=fn)
-  invisible()
-}
-
 # Indicate whether the logger will always output a message
 flog.carp(name) %::% character : logical
 flog.carp(name='ROOT') %as%
