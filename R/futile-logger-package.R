@@ -28,7 +28,8 @@
 #' which represents the log message. You need to pass a function reference to
 #' flog.appender.
 #' 
-#' @aliases flog.appender appender.console appender.file
+#' @name flog.appender
+#' @aliases appender.console appender.file
 #' @param \dots Used internally by lambda.r
 #' @return When getting the appender, 'flog.appender' returns the appender
 #' function.  When setting an appender, 'flog.appender' has no return value.
@@ -169,7 +170,8 @@ NULL
 #' message. It is mostly included to provide an example of writing your own
 #' layout function.
 #' 
-#' @aliases flog.layout layout.simple layout.format
+#' @name flog.layout
+#' @aliases layout.simple layout.format
 #' @param \dots Used internally by lambda.r
 #' @return 'flog.layout' returns a layout function, which is wrapped in a
 #' parent function to enforce a consistent calling API.
@@ -234,7 +236,8 @@ NULL
 #' preserves the formatting, whereas using capture=FALSE will have a cluttered
 #' output due to recycling.
 #' 
-#' @aliases flog.logger flog.remove flog.threshold flog.carp flog.trace
+#' @name flog.logger
+#' @aliases flog.remove flog.threshold flog.carp flog.trace
 #' flog.debug flog.info flog.warn flog.error flog.fatal ftry
 #' @param msg The message to log
 #' @param name The logger name to use
