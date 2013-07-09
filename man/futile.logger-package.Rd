@@ -14,8 +14,8 @@
 }
 \details{
   \tabular{ll}{ Package: \tab futile.logger\cr Type: \tab
-  Package\cr Version: \tab version\cr Date: \tab date\cr
-  License: \tab LGPL-3\cr LazyLoad: \tab yes\cr }
+  Package\cr Version: \tab {version}\cr Date: \tab
+  {date}\cr License: \tab LGPL-3\cr LazyLoad: \tab yes\cr }
 
   The latest version of futile.logger introduces
   zero-configuration semantics out of the box. This means
