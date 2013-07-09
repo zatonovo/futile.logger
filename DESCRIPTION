@@ -5,8 +5,20 @@ Version: {version}
 Date: {date}
 Author: Brian Lee Yung Rowe
 Maintainer: Brian Lee Yung Rowe <r@zatonovo.com>
-Depends: lambda.r (>= 1.1.0), futile.options
-Suggests: RUnit, testthat
+Depends:
+    lambda.r (>= 1.1.0),
+    futile.options
+Suggests:
+    RUnit,
+    testthat
 Description: A logging library for R
 License: LGPL-3
 LazyLoad: yes
+Collate:
+    'appender.R'
+    'aptions.R'
+    'constants.R'
+    'futile-logger-package.R'
+    'layout.R'
+    'logger.R'
+    'scat.R'
