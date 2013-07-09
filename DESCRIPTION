@@ -16,9 +16,9 @@ License: LGPL-3
 LazyLoad: yes
 Collate:
     'appender.R'
-    'aptions.R'
     'constants.R'
     'layout.R'
     'logger.R'
     'scat.R'
     'futile.logger-package.R'
+    'options.R'
