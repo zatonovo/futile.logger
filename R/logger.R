@@ -126,21 +126,6 @@ flog.threshold(threshold, name='ROOT') %as%
   invisible()
 }
 
-# Get appenders associated with the given logger
-flog.appender(name) %::% character : Function
-flog.appender(name='ROOT') %as%
-{
-  logger <- flog.logger(name)
-  logger$appender
-}
-
-# Set the appender for the given logger
-flog.appender(fn, name='ROOT') %as%
-{
-  flog.logger(name, appender=fn)
-  invisible()
-}
-
 # Get the layout for the given logger
 flog.layout(name) %::% character : Function
 flog.layout(name='ROOT') %as%
