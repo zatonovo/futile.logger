@@ -58,8 +58,8 @@ NULL
 #' \tabular{ll}{
 #' Package: \tab futile.logger\cr
 #' Type: \tab Package\cr
-#' Version: \tab {version}\cr
-#' Date: \tab {date}\cr
+#' Version: \tab 1.3.3\cr
+#' Date: \tab 2013-07-09\cr
 #' License: \tab LGPL-3\cr
 #' LazyLoad: \tab yes\cr
 #' }
