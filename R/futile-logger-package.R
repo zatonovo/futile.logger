@@ -55,9 +55,14 @@ NULL
 #' loggers, custom appenders, custom layouts is coupled with a simple and
 #' intuitive functional syntax.
 #' 
-#' \tabular{ll}{ Package: \tab futile.logger\cr Type: \tab Package\cr Version:
-#' \tab version\cr Date: \tab date\cr License: \tab LGPL-3\cr LazyLoad: \tab
-#' yes\cr }
+#' \tabular{ll}{
+#' Package: \tab futile.logger\cr
+#' Type: \tab Package\cr
+#' Version: \tab {version}\cr
+#' Date: \tab {date}\cr
+#' License: \tab LGPL-3\cr
+#' LazyLoad: \tab yes\cr
+#' }
 #' 
 #' The latest version of futile.logger introduces zero-configuration semantics
 #' out of the box. This means that you can use the default configuration as is.
