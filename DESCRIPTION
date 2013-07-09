@@ -18,7 +18,7 @@ Collate:
     'appender.R'
     'aptions.R'
     'constants.R'
-    'futile-logger-package.R'
     'layout.R'
     'logger.R'
     'scat.R'
+    'futile.logger-package.R'
