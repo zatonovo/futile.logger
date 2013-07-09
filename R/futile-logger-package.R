@@ -129,6 +129,7 @@ NULL
 #' @name futile.logger-package
 #' @aliases futile.logger-package futile.logger get_namespace
 #' @docType package
+#' @exportPattern "^[^\\.]"
 #' @author Brian Lee Yung Rowe <r@@zatonovo.com>
 #' @seealso \code{\link{flog.logger}}, \code{\link{flog.threshold}},
 #' \code{\link{flog.layout}}, \code{\link{flog.appender}}
