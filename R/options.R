@@ -9,7 +9,12 @@
 #' 
 #' Constants provided by 'futile.logger'.
 #' 
-#' @aliases logger.options FATAL ERROR WARN INFO DEBUG TRACE
+#' @name logger.options
+#' @aliases FATAL ERROR WARN INFO DEBUG TRACE
+#' @usage logger.options(..., simplify = FALSE, update = list())
+#' @param ... TODO
+#' @param simplify TODO
+#' @param update TODO
 #' @author Brian Lee Yung Rowe
 #' @seealso \code{futile.options}
 #' @keywords data
