@@ -119,15 +119,14 @@ prints log messages using the following format:
   LEVEL [datetime] Message
 
 The layouts included in the package are:
-+ layout.simple
-+ layout.format
++ layout.simple - Use a default format
++ layout.format - Provide a customizable format string
++ layout.tracearg - Dump a variable with its name
 
 
 What's New
 ==========
-+ New API that is cleaner and easier to use
++ Function to wrap a try/catch with logging (ftry)
++ Capture output for print statements (for more complex objects)
++ New layout.tracearg
 
-Future
-======
-+ Default logger is print to screen
-+ Make it easier to switch log levels
