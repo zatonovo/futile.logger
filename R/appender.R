@@ -1,5 +1,3 @@
-
-
 #' Manage appenders within the 'futile.logger' sub-system
 #' 
 #' Provides functions for managing appenders. Typically only addAppender is
@@ -9,10 +7,14 @@
 #' an appender in a logger, you must register it to a given logger. Use the
 #' 'flog.appender' function to both access and set appenders.
 #' 
-#' flog.appender(name) \%::\% character : Function flog.appender(name='ROOT')
+#' flog.appender(name) \%::\% character : Function 
 #' 
-#' flog.appender(name) \%::\% Function : character : Null flog.appender(fn,
-#' name='ROOT')
+#' flog.appender(name='ROOT')
+#' 
+#' 
+#' flog.appender(fn, name) \%::\% Function : character : Null
+#' 
+#' flog.appender(fn, name='ROOT')
 #' 
 #' 'appender.console' is a function that writes to the console. No additional
 #' arguments are necessary when registering the appender via flog.appender.
@@ -37,9 +39,9 @@
 #' @keywords data
 #' @examples
 #' 
-#'   # Set an appender to the logger named 'my.package'. Any log operations from
-#'   # this package will now use this appender.
-#'   flog.appender(appender.file('my.package.out'), 'my.package')
+#' # Set an appender to the logger named 'my.package'. Any log operations from
+#' # this package will now use this appender.
+#' flog.appender(appender.file('my.package.out'), 'my.package')
 #' 
 NULL
 

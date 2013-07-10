@@ -49,8 +49,11 @@
   log level is equal to or more urgent than the current
   threshold. By default the ROOT logger is set to INFO.
 
-  > flog.debug("This won't print") > flog.info("But this
-  %s", 'will') > flog.warn("As will %s", 'this')
+  > flog.debug("This won't print")
+
+  > flog.info("But this \%s", 'will')
+
+  > flog.warn("As will \%s", 'this')
 
   Typically, the built in log level constants are used in
   the call, which conform to the log4j levels (from least
@@ -74,10 +77,14 @@
   logger where any unspecified options are copied from the
   parent logger.
 
-  > flog.appender(appender.file("foo.log"), name='my') >
-  flog.threshold(ERROR, name='my.logger') > flog.info("This
-  won't print", name='my.logger') > flog.error("This %s
-  print to a file", 'will', name='my.logger')
+  > flog.appender(appender.file("foo.log"), name='my')
+
+  > flog.threshold(ERROR, name='my.logger')
+
+  > flog.info("This won't print", name='my.logger')
+
+  > flog.error("This %s print to a file", 'will',
+  name='my.logger')
 
   If you define a logger that you later want to remove, use
   flog.remove.
@@ -85,23 +92,27 @@
   The option 'capture' allows you to print out more
   complicated data structures without a lot of ceremony.
   This variant doesn't accept format strings and instead
-  appends the value to the next line of output. Consider >
-  m <- matrix(rnorm(12), nrow=3) > flog.info("Matrix:",m,
-  capture=TRUE) which preserves the formatting, whereas
-  using capture=FALSE will have a cluttered output due to
+  appends the value to the next line of output. Consider
+
+  > m <- matrix(rnorm(12), nrow=3)
+
+  > flog.info("Matrix:",m, capture=TRUE)
+
+  which preserves the formatting, whereas using
+  capture=FALSE will have a cluttered output due to
   recycling.
 }
 \examples{
 flog.threshold(DEBUG)
-  flog.debug("This debug message will print")
+flog.debug("This debug message will print")
 
-  flog.threshold(WARN)
-  flog.debug("This one won't")
+flog.threshold(WARN)
+flog.debug("This one won't")
 
-  m <- matrix(rnorm(12), nrow=3)
-  flog.info("Matrix:",m, capture=TRUE)
+m <- matrix(rnorm(12), nrow=3)
+flog.info("Matrix:",m, capture=TRUE)
 
-  ftry(log(-1))
+ftry(log(-1))
 }
 \author{
   Brian Lee Yung Rowe

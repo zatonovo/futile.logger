@@ -10,8 +10,9 @@
 #' 
 #' flog.layout(name) \%::\% character : Function flog.layout(name='ROOT')
 #' 
-#' flog.layout(fn, name) \%::\% Function : character : Null flog.layout(fn,
-#' name='ROOT')
+#' flog.layout(fn, name) \%::\% Function : character : Null
+#'
+#' flog.layout(fn, name='ROOT')
 #' 
 #' 'layout.simple' is a pre-defined layout function that prints messages in the
 #' following format: LEVEL [timestamp] Message. This is the default layout for
@@ -30,8 +31,8 @@
 #' @keywords data
 #' @examples
 #' 
-#'   # Set the layout for 'my.package'
-#'   flog.layout(layout.simple, name='my.package')
+#' # Set the layout for 'my.package'
+#' flog.layout(layout.simple, name='my.package')
 #' 
 NULL
 
