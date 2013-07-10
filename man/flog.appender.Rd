@@ -23,9 +23,12 @@
   function to both access and set appenders.
 
   flog.appender(name) \%::\% character : Function
+
   flog.appender(name='ROOT')
 
-  flog.appender(name) \%::\% Function : character : Null
+  flog.appender(fn, name) \%::\% Function : character :
+  Null
+
   flog.appender(fn, name='ROOT')
 
   'appender.console' is a function that writes to the
@@ -46,8 +49,8 @@
 }
 \examples{
 # Set an appender to the logger named 'my.package'. Any log operations from
-  # this package will now use this appender.
-  flog.appender(appender.file('my.package.out'), 'my.package')
+# this package will now use this appender.
+flog.appender(appender.file('my.package.out'), 'my.package')
 }
 \author{
   Brian Lee Yung Rowe

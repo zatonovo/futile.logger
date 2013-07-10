@@ -3,7 +3,7 @@
 \alias{futile.logger}
 \alias{futile.logger-package}
 \alias{get_namespace}
-\title{An easy to use logging package for R.}
+\title{An easy to use logging package for R}
 \description{
   This package implements a logging system inspired by
   log4j. The basic idea of layouts, appenders, and loggers
@@ -15,7 +15,7 @@
 \details{
   \tabular{ll}{ Package: \tab futile.logger\cr Type: \tab
   Package\cr Version: \tab 1.3.3\cr Date: \tab
-  2013-07-09\cr License: \tab LGPL-3\cr LazyLoad: \tab
+  2013-07-10\cr License: \tab LGPL-3\cr LazyLoad: \tab
   yes\cr }
 
   The latest version of futile.logger introduces
@@ -33,7 +33,8 @@
   All of the logging functions take a format string so it
   is easy to add arbitrary values to log messages.
 
-  > flog.info("This song is just \%s words \%s", 7, "long")
+  \code{flog.info("This song is just \%s words \%s", 7,
+  "long")}
 
   Thresholds range from most verbose to least verbose:
   TRACE, DEBUG, INFO, WARN, ERROR, FATAL. You can easily
@@ -41,8 +42,11 @@
   flog.threshold(TRACE) which changes will print all log
   messages from every package. To suppress most logging by
   default but turn on all debugging for a logger
-  'my.logger', you would execute > flog.threshold(ERROR) >
-  flog.threshold(TRACE, name='my.logger')
+  'my.logger', you would execute
+
+  \code{flog.threshold(ERROR)}
+
+  \code{flog.threshold(TRACE, name='my.logger')}
 
   Any arbitrary logger can be defined simply by specifying
   it in any futile.logger write operation
@@ -82,8 +86,8 @@
   appender at instantiation. The package defines two
   appender generator functions:
 
-  . appender.file - Write to a file . appender.console -
-  Write to the console
+  \itemize{ \item appender.file - Write to a file \item
+  appender.console - Write to the console }
 
   Each of these functions returns the actual appender
   function, so be sure to actually call the function!
@@ -94,20 +98,21 @@
   messages easy on the eyes. The package supplies two
   layouts:
 
-  . layout.simple - Writes messages with a default format .
-  layout.format - Define your own format
+  . layout.simple - Writes messages with a default format
+
+  . layout.format - Define your own format
 }
 \examples{
 flog.debug("This \%s print", "won't")
-  flog.warn("This \%s print", "will")
+flog.warn("This \%s print", "will")
 
-  flog.info("This inherits from the ROOT logger", name='logger.a')
-  flog.threshold(DEBUG, name='logger.a')
-  flog.debug("logger.a has now been set to DEBUG", name='logger.a')
-  flog.debug("But the ROOT logger is still at INFO (so this won't print)")
+flog.info("This inherits from the ROOT logger", name='logger.a')
+flog.threshold(DEBUG, name='logger.a')
+flog.debug("logger.a has now been set to DEBUG", name='logger.a')
+flog.debug("But the ROOT logger is still at INFO (so this won't print)")
 
-  flog.appender(appender.file("other.log"), name='logger.b')
-  flog.info("This writes to a \%s", "file", name='logger.b')
+flog.appender(appender.file("other.log"), name='logger.b')
+flog.info("This writes to a \%s", "file", name='logger.b')
 }
 \author{
   Brian Lee Yung Rowe <r@zatonovo.com>

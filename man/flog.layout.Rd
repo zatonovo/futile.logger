@@ -27,6 +27,7 @@
   flog.layout(name='ROOT')
 
   flog.layout(fn, name) \%::\% Function : character : Null
+
   flog.layout(fn, name='ROOT')
 
   'layout.simple' is a pre-defined layout function that
@@ -40,7 +41,7 @@
 }
 \examples{
 # Set the layout for 'my.package'
-  flog.layout(layout.simple, name='my.package')
+flog.layout(layout.simple, name='my.package')
 }
 \author{
   Brian Lee Yung Rowe
