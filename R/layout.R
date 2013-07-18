@@ -23,7 +23,7 @@
 #' layout function.
 #' 
 #' @name flog.layout
-#' @aliases layout.simple layout.format
+#' @aliases layout.simple layout.format layout.tracearg
 #' @param \dots Used internally by lambda.r
 #' @return 'flog.layout' returns a layout function, which is wrapped in a
 #' parent function to enforce a consistent calling API.
@@ -92,3 +92,26 @@ layout.format <- function(format, datetime.fmt="%Y-%m-%d %H:%M:%S")
   }
 }
 
+layout.tracearg <- function(level, msg, ...)
+{
+  the.time <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
+  if (is.character(msg)) {
+    if (! is.null(substitute(...))) msg <- sprintf(msg, ...)
+  } else {
+    external.call <- sys.call(-2)
+    external.fn <- eval(external.call[[1]])
+    matched.call <- match.call(external.fn, external.call)
+    matched.call <- matched.call[-1]
+    matched.call.names <- names(matched.call)
+
+    ## We are interested only in the msg and ... parameters,
+    ## i.e. in msg and all parameters not explicitly declared
+    ## with the function
+    is.output.param <- matched.call.names == "msg" |
+      !(matched.call.names %in% c(setdiff(names(formals(external.fn)), "...")))
+
+    label <- lapply(matched.call[is.output.param], deparse)
+    msg <- sprintf("%s: %s", label, c(msg, list(...)))
+  }
+  sprintf("%s [%s] %s\n", names(level),the.time, msg)
+}
