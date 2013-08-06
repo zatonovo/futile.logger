@@ -2,6 +2,7 @@
 \alias{flog.layout}
 \alias{layout.format}
 \alias{layout.simple}
+\alias{layout.tracearg}
 \title{Manage layouts within the 'futile.logger' sub-system}
 \arguments{
   \item{\dots}{Used internally by lambda.r}

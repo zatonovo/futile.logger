@@ -96,7 +96,7 @@ NULL
   layout <- flog.layout(name)
   if (capture) {
     values <- capture.output(print(...))
-    message <- c(layout(level, msg), values)
+    message <- c(layout(level, msg), values, "\n")
   } else {
     message <- layout(level, msg, ...)
   }

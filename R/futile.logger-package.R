@@ -9,7 +9,7 @@
 #' \tabular{ll}{
 #' Package: \tab futile.logger\cr
 #' Type: \tab Package\cr
-#' Version: \tab 1.3.3\cr
+#' Version: \tab 1.3.4\cr
 #' Date: \tab 2013-07-10\cr
 #' License: \tab LGPL-3\cr
 #' LazyLoad: \tab yes\cr
