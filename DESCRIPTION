@@ -2,14 +2,13 @@ Package: futile.logger
 Type: Package
 Title: A logging library for R
 Version: 1.3.4
-Date: 2013-07-10
+Date: 2013-08-07
 Author: Brian Lee Yung Rowe
 Maintainer: Brian Lee Yung Rowe <r@zatonovo.com>
 Depends:
     lambda.r (>= 1.1.0),
     futile.options
 Suggests:
-    RUnit,
     testthat
 Description: Provides a simple yet powerful logging utility. Based loosely on
     log4j, futile.logger takes advantage of R idioms to make logging a

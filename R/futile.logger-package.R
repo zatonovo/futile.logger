@@ -10,7 +10,7 @@
 #' Package: \tab futile.logger\cr
 #' Type: \tab Package\cr
 #' Version: \tab 1.3.4\cr
-#' Date: \tab 2013-07-10\cr
+#' Date: \tab 2013-08-07\cr
 #' License: \tab LGPL-3\cr
 #' LazyLoad: \tab yes\cr
 #' }
@@ -35,8 +35,7 @@
 #' from every package. To suppress most logging by default but turn on all
 #' debugging for a logger 'my.logger', you would execute 
 #'
-#' > flog.threshold(ERROR)
-#'
+#' > flog.threshold(ERROR)\cr
 #' > flog.threshold(TRACE, name='my.logger')
 #'
 #' Any arbitrary logger can be defined simply by specifying it in any
@@ -68,9 +67,9 @@
 #' appender, the implementation-specific options are passed to the appender at
 #' instantiation. The package defines two appender generator functions:
 #' 
-#' \itemize{
-#'   \item appender.file - Write to a file 
-#'   \item appender.console - Write to the console
+#' \describe{
+#'   \item{appender.file}{Write to a file}
+#'   \item{appender.console}{Write to the console}
 #' }
 #' 
 #' Each of these functions returns the actual appender function, so be sure to
@@ -80,9 +79,10 @@
 #' consists of adding the log level, a timestamp, plus some pretty-printing to
 #' make the log messages easy on the eyes. The package supplies two layouts:
 #' 
-#' \itemize{
-#'   \item layout.simple - Writes messages with a default format
-#'   \item layout.format - Define your own format
+#' \describe{
+#'   \item{layout.simple}{Writes messages with a default format}
+#'   \item{layout.format}{Define your own format}
+#'   \item{layout.tracearg}{Print a variable name along with its value}
 #' }
 #' 
 #' @name futile.logger-package
@@ -103,7 +103,9 @@
 #' flog.debug("logger.a has now been set to DEBUG", name='logger.a')
 #' flog.debug("But the ROOT logger is still at INFO (so this won't print)")
 #' 
+#' \dontrun{
 #' flog.appender(appender.file("other.log"), name='logger.b')
 #' flog.info("This writes to a %s", "file", name='logger.b')
+#' }
 #' 
 NULL

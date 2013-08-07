@@ -1,49 +1,61 @@
-#' Manage appenders within the 'futile.logger' sub-system
+#' Manage appenders for loggers
 #' 
-#' Provides functions for managing appenders. Typically only addAppender is
-#' used when manually creating a logging configuration.
+#' Provides functions for adding and removing appenders.
 #' 
-#' Appenders do the actual work of writing log messages to some target. To use
-#' an appender in a logger, you must register it to a given logger. Use the
-#' 'flog.appender' function to both access and set appenders.
-#' 
-#' flog.appender(name) \%::\% character : Function 
-#' 
+#' @section Usage:
+#' # Get the appender for the given logger\cr
+#' flog.appender(name) \%::\% character : Function\cr
 #' flog.appender(name='ROOT')
-#' 
-#' 
-#' flog.appender(fn, name) \%::\% Function : character : Null
-#' 
+#'
+#' # Set the appender for the given logger\cr
 #' flog.appender(fn, name='ROOT')
+#'
+#' # Print log messages to the console\cr
+#' appender.console()
 #' 
-#' 'appender.console' is a function that writes to the console. No additional
-#' arguments are necessary when registering the appender via flog.appender.
+#' # Write log messages to a file\cr
+#' appender.file(file)
 #' 
-#' flog.appender(appender.console(), name='my.logger')
 #' 
-#' 'appender.file' writes to a file, so you must pass an additional file
-#' argument to the function.
+#' @section Details:
+#' Appenders do the actual work of writing log messages to some target.
+#' To use an appender in a logger, you must register it to a given logger.
+#' Use \code{flog.appender} to both access and set appenders.
 #' 
-#' flog.appender(appender.file('output.log'), name='my.logger')
+#' The ROOT logger by default uses \code{appender.console}.
+#' 
+#' \code{appender.console} is a function that writes to the console.
+#' No additional arguments are necessary when registering the appender 
+#' via flog.appender.
+#' 
+#' 
+#' \code{appender.file} writes to a file, so you must pass an additional file
+#' argument to the function. To change the file name, just call
+#' \code{flog.appender(appender.file(file))} again with a new file name.
 #' 
 #' To use your own appender create a function that takes a single argument,
 #' which represents the log message. You need to pass a function reference to
-#' flog.appender.
+#' \code{flog.appender}.
 #' 
+#' @section Value:
+#' When getting the appender, \code{flog.appender} returns the appender
+#' function.  When setting an appender, \code{flog.appender} has no 
+#' return value.
+#'
 #' @name flog.appender
 #' @aliases appender.console appender.file
 #' @param \dots Used internally by lambda.r
-#' @return When getting the appender, 'flog.appender' returns the appender
-#' function.  When setting an appender, 'flog.appender' has no return value.
 #' @author Brian Lee Yung Rowe
+#' @seealso \code{\link{flog.logger}} \code{\link{flog.layout}}
 #' @keywords data
 #' @examples
-#' 
+#' \dontrun{
+#' flog.appender(appender.console(), name='my.logger')
+#'
 #' # Set an appender to the logger named 'my.package'. Any log operations from
 #' # this package will now use this appender.
 #' flog.appender(appender.file('my.package.out'), 'my.package')
-#' 
-NULL
+#' }
 
 # Get appenders associated with the given logger
 flog.appender(name) %::% character : Function

@@ -1,16 +1,12 @@
 \name{flog.logger}
-\alias{flog.carp}
 \alias{flog.debug}
 \alias{flog.error}
 \alias{flog.fatal}
 \alias{flog.info}
 \alias{flog.logger}
-\alias{flog.remove}
-\alias{flog.threshold}
 \alias{flog.trace}
 \alias{flog.warn}
-\alias{ftry}
-\title{Manage appenders within the 'futile.logger' sub-system}
+\title{Manage loggers}
 \arguments{
   \item{msg}{The message to log}
 
@@ -27,10 +23,6 @@
   \item{finally}{An optional expression to evaluate at the
   end}
 }
-\value{
-  Most of these functions exist for their side effects, so
-  there are few useful return values.
-}
 \description{
   Provides functions for writing log messages and managing
   loggers. Typically only the
@@ -38,7 +30,48 @@
   to be used in conjunction with flog.threshold to
   interactively change the log level.
 }
-\details{
+\section{Usage}{
+  # Conditionally print a log statement at TRACE log
+  level\cr flog.trace(msg, ..., name=get_namespace(),
+  capture=FALSE)
+
+  # Conditionally print a log statement at DEBUG log
+  level\cr flog.debug(msg, ..., name=get_namespace(),
+  capture=FALSE)
+
+  # Conditionally print a log statement at INFO log
+  level\cr flog.info(msg, ..., name=get_namespace(),
+  capture=FALSE)
+
+  # Conditionally print a log statement at WARN log
+  level\cr flog.warn(msg, ..., name=get_namespace(),
+  capture=FALSE)
+
+  # Conditionally print a log statement at ERROR log
+  level\cr flog.error(msg, ..., name=get_namespace(),
+  capture=FALSE)
+
+  # Print a log statement at FATAL log level\cr
+  flog.fatal(msg, ..., name=get_namespace(), capture=FALSE)
+
+  # Execute an expression and capture any warnings or
+  errors ftry(expr, error=stop, finally=NULL)
+}
+
+\section{Additional Usage}{
+  These functions generally do not need to be called by an
+  end user.
+
+  # Get the ROOT logger\cr flog.logger()
+
+  # Get the logger with the specified name\cr
+  flog.logger(name)
+
+  # Set options for the given logger\cr flog.logger(name,
+  threshold=NULL, appender=NULL, layout=NULL, carp=NULL)
+}
+
+\section{Details}{
   These functions represent the high level interface to
   futile.logger.
 
@@ -49,11 +82,8 @@
   log level is equal to or more urgent than the current
   threshold. By default the ROOT logger is set to INFO.
 
-  > flog.debug("This won't print")
-
-  > flog.info("But this \%s", 'will')
-
-  > flog.warn("As will \%s", 'this')
+  > flog.debug("This won't print") \cr > flog.info("But
+  this \%s", 'will') \cr > flog.warn("As will \%s", 'this')
 
   Typically, the built in log level constants are used in
   the call, which conform to the log4j levels (from least
@@ -77,14 +107,11 @@
   logger where any unspecified options are copied from the
   parent logger.
 
-  > flog.appender(appender.file("foo.log"), name='my')
-
-  > flog.threshold(ERROR, name='my.logger')
-
-  > flog.info("This won't print", name='my.logger')
-
-  > flog.error("This %s print to a file", 'will',
-  name='my.logger')
+  > flog.appender(appender.file("foo.log"), name='my') \cr
+  > flog.threshold(ERROR, name='my.logger') \cr >
+  flog.info("This won't print", name='my.logger') \cr >
+  flog.error("This %s print to a file", 'will',
+  name='my.logger') \cr
 
   If you define a logger that you later want to remove, use
   flog.remove.
@@ -94,9 +121,8 @@
   This variant doesn't accept format strings and instead
   appends the value to the next line of output. Consider
 
-  > m <- matrix(rnorm(12), nrow=3)
-
-  > flog.info("Matrix:",m, capture=TRUE)
+  > m <- matrix(rnorm(12), nrow=3) \cr >
+  flog.info("Matrix:",m, capture=TRUE)
 
   which preserves the formatting, whereas using
   capture=FALSE will have a cluttered output due to
@@ -116,6 +142,11 @@ ftry(log(-1))
 }
 \author{
   Brian Lee Yung Rowe
+}
+\seealso{
+  \code{\link{flog.threshold}} \code{\link{flog.remove}}
+  \code{\link{flog.carp}} \code{\link{flog.appender}}
+  \code{\link{flog.layout}}
 }
 \keyword{data}
 

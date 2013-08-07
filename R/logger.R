@@ -1,9 +1,44 @@
-#' Manage appenders within the 'futile.logger' sub-system
+#' Manage loggers
 #' 
 #' Provides functions for writing log messages and managing loggers. Typically
 #' only the flog.[trace|debug|info|warn|error|fatal] functions need to be used
 #' in conjunction with flog.threshold to interactively change the log level.
 #' 
+#' @section Usage:
+#' # Conditionally print a log statement at TRACE log level\cr
+#' flog.trace(msg, ..., name=get_namespace(), capture=FALSE)
+#'
+#' # Conditionally print a log statement at DEBUG log level\cr
+#' flog.debug(msg, ..., name=get_namespace(), capture=FALSE)
+#'
+#' # Conditionally print a log statement at INFO log level\cr
+#' flog.info(msg, ..., name=get_namespace(), capture=FALSE)
+#'
+#' # Conditionally print a log statement at WARN log level\cr
+#' flog.warn(msg, ..., name=get_namespace(), capture=FALSE)
+#'
+#' # Conditionally print a log statement at ERROR log level\cr
+#' flog.error(msg, ..., name=get_namespace(), capture=FALSE)
+#'
+#' # Print a log statement at FATAL log level\cr
+#' flog.fatal(msg, ..., name=get_namespace(), capture=FALSE)
+#'
+#' # Execute an expression and capture any warnings or errors
+#' ftry(expr, error=stop, finally=NULL)
+#'
+#' @section Additional Usage:
+#' These functions generally do not need to be called by an end user.
+#'
+#' # Get the ROOT logger\cr
+#' flog.logger()
+#' 
+#' # Get the logger with the specified name\cr
+#' flog.logger(name)
+#'
+#' # Set options for the given logger\cr
+#' flog.logger(name, threshold=NULL, appender=NULL, layout=NULL, carp=NULL)
+#' 
+#' @section Details:
 #' These functions represent the high level interface to futile.logger.
 #' 
 #' The primary use case for futile.logger is to write out log messages. There
@@ -12,10 +47,8 @@
 #' is equal to or more urgent than the current threshold. By default the ROOT
 #' logger is set to INFO.
 #' 
-#' > flog.debug("This won't print") 
-#' 
-#' > flog.info("But this \%s", 'will') 
-#' 
+#' > flog.debug("This won't print") \cr
+#' > flog.info("But this \%s", 'will') \cr
 #' > flog.warn("As will \%s", 'this')
 #' 
 #' Typically, the built in log level constants are used in the call, which
@@ -36,13 +69,10 @@
 #' logger. This will create an explicit logger where any unspecified options
 #' are copied from the parent logger.
 #' 
-#' > flog.appender(appender.file("foo.log"), name='my')
-#' 
-#' > flog.threshold(ERROR, name='my.logger')
-#' 
-#' > flog.info("This won't print", name='my.logger') 
-#' 
-#' > flog.error("This %s print to a file", 'will', name='my.logger')
+#' > flog.appender(appender.file("foo.log"), name='my') \cr
+#' > flog.threshold(ERROR, name='my.logger') \cr
+#' > flog.info("This won't print", name='my.logger') \cr
+#' > flog.error("This %s print to a file", 'will', name='my.logger') \cr
 #' 
 #' If you define a logger that you later want to remove, use flog.remove.
 #' 
@@ -50,25 +80,23 @@
 #' structures without a lot of ceremony. This variant doesn't accept format
 #' strings and instead appends the value to the next line of output. Consider 
 #'
-#' > m <- matrix(rnorm(12), nrow=3)
-#'
+#' > m <- matrix(rnorm(12), nrow=3) \cr
 #' > flog.info("Matrix:",m, capture=TRUE)
 #'
 #' which preserves the formatting, whereas using capture=FALSE will have 
 #' a cluttered output due to recycling.
 #' 
 #' @name flog.logger
-#' @aliases flog.remove flog.threshold flog.carp flog.trace
-#' flog.debug flog.info flog.warn flog.error flog.fatal ftry
+#' @aliases flog.trace flog.debug flog.info flog.warn flog.error flog.fatal
 #' @param msg The message to log
 #' @param name The logger name to use
 #' @param capture Capture print output of variables instead of interpolate
 #' @param \dots Optional arguments to populate the format string
 #' @param expr An expression to evaluate
 #' @param finally An optional expression to evaluate at the end
-#' @return Most of these functions exist for their side effects, so there are
-#' few useful return values.
 #' @author Brian Lee Yung Rowe
+#' @seealso \code{\link{flog.threshold}} \code{\link{flog.remove}}
+#' \code{\link{flog.carp}} \code{\link{flog.appender}} \code{\link{flog.layout}}
 #' @keywords data
 #' @examples
 #' 
@@ -141,13 +169,27 @@ flog.fatal <- function(msg, ..., name=get_namespace(), capture=FALSE) {
   .log_level(msg, ..., level=FATAL,name=name, capture=capture)
 }
 
+#' Wrap a try block in futile.logger
+#'
+#' This function integrates futile.logger with the error and warning system
+#' so problems can be caught both in the standard R warning system, while
+#' also being emitted via futile.logger.
+#'
+#' @name ftry
+#' @param expr The expression to evaluate in a try block
+#' @param error An error handler
+#' @param finally Pass-through to tryCatch finally
+#' @author Brian Lee Yung Rowe
+#' @keywords data
+#' @examples
+#' ftry(log(-1))
 ftry <- function(expr, error=stop, finally=NULL) {
   w.handler <- function(e) flog.warn("%s", e)
   e.handler <- function(e) { flog.error("%s", e); error(e) }
   tryCatch(expr, warning=w.handler, error=e.handler, finally)
 }
 
-# Get a logger. By default, use the package namespace or use the 'ROOT' logger.
+# By default, use the package namespace or use the 'ROOT' logger.
 flog.logger() %as%
 {
   flog.logger(get_namespace())
@@ -190,6 +232,25 @@ flog.logger(name, threshold=NULL, appender=NULL, layout=NULL, carp=NULL) %as%
 }
 
 
+#' Remove a logger
+#' 
+#' In the event that you no longer wish to have a logger registered,
+#' use this function to remove it. Then any references to this
+#' logger will inherit the next available logger in the hierarchy.
+#'
+#' @section Usage:
+#' # Remove a logger\cr
+#' flog.remove(name)
+#' 
+#' @name flog.remove
+#' @param name The logger name to use
+#' @author Brian Lee Yung Rowe
+#' @keywords data
+#' @examples
+#' flog.threshold(ERROR, name='my.logger')
+#' flog.info("Won't print", name='my.logger')
+#' flog.remove('my.logger')
+#' flog.info("Will print", name='my.logger')
 flog.remove('ROOT') %as% { invisible() }
 flog.remove(name) %as% 
 {
@@ -198,7 +259,33 @@ flog.remove(name) %as%
   invisible()
 }
 
-# Get the threshold for the given logger
+#' Get and set the threshold for a logger
+#'
+#' The threshold affects the visibility of a given logger. When a log
+#' statement is called, e.g. \code{flog.debug('foo')}, futile.logger
+#' compares the threshold of the logger with the level implied in the
+#' log command (in this case DEBUG). If the log level is at or higher
+#' in priority than the logger threshold, a message will print.
+#' Otherwise the command will silently return.
+#'
+#' @section Usage:
+#' # Get the threshold for the given logger\cr
+#' flog.threshold(name) \%::\% character : character \cr
+#' flog.threshold(name=ROOT)
+#'
+#' # Set the threshold for the given logger\cr
+#' flog.threshold(threshold, name=ROOT)
+#' 
+#' @name flog.threshold
+#' @param threshold integer The new threshold for the given logger
+#' @param name character The name of the logger
+#' @author Brian Lee Yung Rowe
+#' @keywords data
+#' @examples
+#' flog.threshold(ERROR)
+#' flog.info("Won't print")
+#' flog.threshold(INFO)
+#' flog.info("Will print")
 flog.threshold(name) %::% character : character
 flog.threshold(name='ROOT') %as%
 {
@@ -213,7 +300,33 @@ flog.threshold(threshold, name='ROOT') %as%
   invisible()
 }
 
-# Indicate whether the logger will always output a message
+#' Always return the log message
+#'
+#' Indicate whether the logger will always return the log message
+#' despite the threshold.
+#' 
+#' This is a special option to allow the return value of the flog.*
+#' logging functions to return the generated log message. This
+#' is separate from the appender, which is still bound to the 
+#' value of the logger threshold.
+#'
+#' @section Usage:
+#' # Indicate whether the given logger should carp\cr
+#' flog.carp(name=ROOT)
+#'
+#' # Set whether the given logger should carp\cr
+#' flog.carp(carp, name=ROOT)
+#'
+#' @name flog.carp
+#' @param carp logical Whether to carp output or not
+#' @param name character The name of the logger
+#' @author Brian Lee Yung Rowe
+#' @keywords data
+#' @examples
+#' flog.carp(TRUE)
+#' x <- flog.info("Returns this message")
+#' flog.carp(FALSE)
+#' y <- flog.info("Returns nothing but still prints")
 flog.carp(name) %::% character : logical
 flog.carp(name='ROOT') %as%
 {

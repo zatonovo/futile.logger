@@ -1,11 +1,8 @@
-# Write to stdout using a format string
-
-
 #' Print formatted messages
 #' 
-#' A replacement for cat that has built-in sprintf formatting
+#' A replacement for \code{cat} that has built-in sprintf formatting
 #' 
-#' Like cat but you can use format strings.
+#' Like \code{cat} but you can use format strings.
 #' 
 #' @param format A format string passed to sprintf
 #' @param use.newline Whether to append a new line at the end
