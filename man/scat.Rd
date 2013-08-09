@@ -17,11 +17,11 @@
   A formatted string printed to the console
 }
 \description{
-  A replacement for cat that has built-in sprintf
+  A replacement for \code{cat} that has built-in sprintf
   formatting
 }
 \details{
-  Like cat but you can use format strings.
+  Like \code{cat} but you can use format strings.
 }
 \examples{
 apply(array(2:5),1, function(x) scat('This has happened \%s times', x) )

@@ -15,7 +15,7 @@
 \details{
   \tabular{ll}{ Package: \tab futile.logger\cr Type: \tab
   Package\cr Version: \tab 1.3.4\cr Date: \tab
-  2013-08-07\cr License: \tab LGPL-3\cr LazyLoad: \tab
+  2013-08-09\cr License: \tab LGPL-3\cr LazyLoad: \tab
   yes\cr }
 
   The latest version of futile.logger introduces
@@ -43,9 +43,8 @@
   default but turn on all debugging for a logger
   'my.logger', you would execute
 
-  > flog.threshold(ERROR)
-
-  > flog.threshold(TRACE, name='my.logger')
+  > flog.threshold(ERROR)\cr > flog.threshold(TRACE,
+  name='my.logger')
 
   Any arbitrary logger can be defined simply by specifying
   it in any futile.logger write operation
@@ -85,8 +84,8 @@
   appender at instantiation. The package defines two
   appender generator functions:
 
-  \itemize{ \item appender.file - Write to a file \item
-  appender.console - Write to the console }
+  \describe{ \item{appender.file}{Write to a file}
+  \item{appender.console}{Write to the console} }
 
   Each of these functions returns the actual appender
   function, so be sure to actually call the function!
@@ -97,10 +96,10 @@
   messages easy on the eyes. The package supplies two
   layouts:
 
-  \itemize{ \item layout.simple - Writes messages with a
-  default format \item layout.format - Define your own
-  format \item layout.tracearg - Print a variable name
-  along with its value }
+  \describe{ \item{layout.simple}{Writes messages with a
+  default format} \item{layout.format}{Define your own
+  format} \item{layout.tracearg}{Print a variable name
+  along with its value} }
 }
 \examples{
 flog.debug("This \%s print", "won't")
@@ -111,8 +110,10 @@ flog.threshold(DEBUG, name='logger.a')
 flog.debug("logger.a has now been set to DEBUG", name='logger.a')
 flog.debug("But the ROOT logger is still at INFO (so this won't print)")
 
+\dontrun{
 flog.appender(appender.file("other.log"), name='logger.b')
 flog.info("This writes to a \%s", "file", name='logger.b')
+}
 }
 \author{
   Brian Lee Yung Rowe <r@zatonovo.com>

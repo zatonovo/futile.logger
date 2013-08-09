@@ -111,6 +111,19 @@
 #' 
 #' ftry(log(-1))
 #' 
+#' \dontrun{
+#' s <- c('FCX','AAPL','JPM','AMZN')
+#' p <- TawnyPortfolio(s)
+#'
+#' flog.threshold(TRACE,'tawny')
+#' ws <- optimizePortfolio(p, RandomMatrixDenoiser())
+#' z <- getIndexComposition()
+#'
+#' flog.threshold(WARN,'tawny')
+#' ws <- optimizePortfolio(p, RandomMatrixDenoiser())
+#' z <- getIndexComposition()
+#'
+#' }
 NULL
 
 .log_level <- function(msg, ..., level, name, capture)
@@ -135,9 +148,12 @@ NULL
 # Get the namespace that a function resides in. If no namespace exists, then
 # return NULL.
 # <environment: namespace:lambda.r>
-get_namespace(where=1) %as% 
+get_namespace <- function(where=1)
 {
-  s <- capture.output(str(environment(sys.function(where)), give.attr=FALSE))
+  s <- capture.output(str(topenv(environment(sys.function(where))), give.attr=FALSE))
+  if (length(grep('lambda.r',s)) > 0)
+    s <- attr(sys.function(-5), 'topenv')
+
   if (length(grep('namespace', s)) < 1) return('ROOT')
 
   ns <- sub('.*namespace:([^>]+)>.*','\\1', s)
@@ -306,7 +322,9 @@ flog.threshold(threshold, name='ROOT') %as%
 #' despite the threshold.
 #' 
 #' This is a special option to allow the return value of the flog.*
-#' logging functions to return the generated log message. This
+#' logging functions to return the generated log message even if
+#' the log level does not exceed the threshold. Note that this 
+#' minorly impacts performance when enabled. This functionality
 #' is separate from the appender, which is still bound to the 
 #' value of the logger threshold.
 #'
@@ -324,9 +342,9 @@ flog.threshold(threshold, name='ROOT') %as%
 #' @keywords data
 #' @examples
 #' flog.carp(TRUE)
-#' x <- flog.info("Returns this message")
+#' x <- flog.debug("Returns this message but won't print")
 #' flog.carp(FALSE)
-#' y <- flog.info("Returns nothing but still prints")
+#' y <- flog.debug("Returns nothing and prints nothing")
 flog.carp(name) %::% character : logical
 flog.carp(name='ROOT') %as%
 {
