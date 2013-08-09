@@ -13,8 +13,11 @@
 \details{
   This is a special option to allow the return value of the
   flog.* logging functions to return the generated log
-  message. This is separate from the appender, which is
-  still bound to the value of the logger threshold.
+  message even if the log level does not exceed the
+  threshold. Note that this minorly impacts performance
+  when enabled. This functionality is separate from the
+  appender, which is still bound to the value of the logger
+  threshold.
 }
 \section{Usage}{
   # Indicate whether the given logger should carp\cr
@@ -25,9 +28,9 @@
 }
 \examples{
 flog.carp(TRUE)
-x <- flog.info("Returns this message")
+x <- flog.debug("Returns this message but won't print")
 flog.carp(FALSE)
-y <- flog.info("Returns nothing but still prints")
+y <- flog.debug("Returns nothing and prints nothing")
 }
 \author{
   Brian Lee Yung Rowe

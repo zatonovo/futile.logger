@@ -139,6 +139,20 @@ m <- matrix(rnorm(12), nrow=3)
 flog.info("Matrix:",m, capture=TRUE)
 
 ftry(log(-1))
+
+\dontrun{
+s <- c('FCX','AAPL','JPM','AMZN')
+p <- TawnyPortfolio(s)
+
+flog.threshold(TRACE,'tawny')
+ws <- optimizePortfolio(p, RandomMatrixDenoiser())
+z <- getIndexComposition()
+
+flog.threshold(WARN,'tawny')
+ws <- optimizePortfolio(p, RandomMatrixDenoiser())
+z <- getIndexComposition()
+
+}
 }
 \author{
   Brian Lee Yung Rowe
