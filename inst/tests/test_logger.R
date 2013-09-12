@@ -6,6 +6,13 @@ test_that("Default settings", {
   expect_that(length(grep('log message', raw)) > 0, is_true())
 })
 
+test_that("Capture works as expected", {
+  raw <- capture.output(flog.info("log message", head(cars), capture = TRUE))
+  expect_that(length(raw) == 9, is_true())
+  expect_that(grepl('^INFO',raw[1]), is_true())
+  expect_that(grepl('dist$',raw[3]), is_true())
+  })
+
 test_that("Change root threshold", {
   flog.threshold(ERROR)
   raw <- capture.output(flog.info("log message"))
