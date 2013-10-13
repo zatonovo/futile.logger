@@ -9,8 +9,8 @@
 #' \tabular{ll}{
 #' Package: \tab futile.logger\cr
 #' Type: \tab Package\cr
-#' Version: \tab 1.3.4\cr
-#' Date: \tab 2013-08-09\cr
+#' Version: \tab 1.3.6\cr
+#' Date: \tab 2013-10-13\cr
 #' License: \tab LGPL-3\cr
 #' LazyLoad: \tab yes\cr
 #' }
@@ -86,9 +86,10 @@
 #' }
 #' 
 #' @name futile.logger-package
-#' @aliases futile.logger-package futile.logger get_namespace
+#' @aliases futile.logger-package futile.logger flog.namespace
 #' @docType package
 #' @exportPattern "^[^\\.]"
+#' @import lambda.r futile.options
 #' @author Brian Lee Yung Rowe <r@@zatonovo.com>
 #' @seealso \code{\link{flog.logger}}, \code{\link{flog.threshold}},
 #' \code{\link{flog.layout}}, \code{\link{flog.appender}}

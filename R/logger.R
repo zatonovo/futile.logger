@@ -6,22 +6,22 @@
 #' 
 #' @section Usage:
 #' # Conditionally print a log statement at TRACE log level\cr
-#' flog.trace(msg, ..., name=get_namespace(), capture=FALSE)
+#' flog.trace(msg, ..., name=flog.namespace(), capture=FALSE)
 #'
 #' # Conditionally print a log statement at DEBUG log level\cr
-#' flog.debug(msg, ..., name=get_namespace(), capture=FALSE)
+#' flog.debug(msg, ..., name=flog.namespace(), capture=FALSE)
 #'
 #' # Conditionally print a log statement at INFO log level\cr
-#' flog.info(msg, ..., name=get_namespace(), capture=FALSE)
+#' flog.info(msg, ..., name=flog.namespace(), capture=FALSE)
 #'
 #' # Conditionally print a log statement at WARN log level\cr
-#' flog.warn(msg, ..., name=get_namespace(), capture=FALSE)
+#' flog.warn(msg, ..., name=flog.namespace(), capture=FALSE)
 #'
 #' # Conditionally print a log statement at ERROR log level\cr
-#' flog.error(msg, ..., name=get_namespace(), capture=FALSE)
+#' flog.error(msg, ..., name=flog.namespace(), capture=FALSE)
 #'
 #' # Print a log statement at FATAL log level\cr
-#' flog.fatal(msg, ..., name=get_namespace(), capture=FALSE)
+#' flog.fatal(msg, ..., name=flog.namespace(), capture=FALSE)
 #'
 #' # Execute an expression and capture any warnings or errors
 #' ftry(expr, error=stop, finally=NULL)
@@ -136,8 +136,8 @@ NULL
   appender <- flog.appender(name)
   layout <- flog.layout(name)
   if (capture) {
-    values <- capture.output(print(...))
-    message <- c(layout(level, msg), values, "\n")
+    values <- paste(capture.output(print(...)), collapse='\n')
+    message <- c(layout(level, msg), "\n", values, "\n")
   } else {
     message <- layout(level, msg, ...)
   }
@@ -148,7 +148,7 @@ NULL
 # Get the namespace that a function resides in. If no namespace exists, then
 # return NULL.
 # <environment: namespace:lambda.r>
-get_namespace <- function(where=1)
+flog.namespace <- function(where=1)
 {
   s <- capture.output(str(topenv(environment(sys.function(where))), give.attr=FALSE))
   if (length(grep('lambda.r',s)) > 0)
@@ -161,27 +161,27 @@ get_namespace <- function(where=1)
 }
 
 
-flog.trace <- function(msg, ..., name=get_namespace(), capture=FALSE) {
+flog.trace <- function(msg, ..., name=flog.namespace(), capture=FALSE) {
   .log_level(msg, ..., level=TRACE,name=name, capture=capture)
 }
 
-flog.debug <- function(msg, ..., name=get_namespace(), capture=FALSE) {
+flog.debug <- function(msg, ..., name=flog.namespace(), capture=FALSE) {
   .log_level(msg, ..., level=DEBUG,name=name, capture=capture)
 }
 
-flog.info <- function(msg, ..., name=get_namespace(), capture=FALSE) {
+flog.info <- function(msg, ..., name=flog.namespace(), capture=FALSE) {
   .log_level(msg, ..., level=INFO,name=name, capture=capture)
 }
 
-flog.warn <- function(msg, ..., name=get_namespace(), capture=FALSE) {
+flog.warn <- function(msg, ..., name=flog.namespace(), capture=FALSE) {
   .log_level(msg, ..., level=WARN,name=name, capture=capture)
 }
 
-flog.error <- function(msg, ..., name=get_namespace(), capture=FALSE) {
+flog.error <- function(msg, ..., name=flog.namespace(), capture=FALSE) {
   .log_level(msg, ..., level=ERROR,name=name, capture=capture)
 }
 
-flog.fatal <- function(msg, ..., name=get_namespace(), capture=FALSE) {
+flog.fatal <- function(msg, ..., name=flog.namespace(), capture=FALSE) {
   .log_level(msg, ..., level=FATAL,name=name, capture=capture)
 }
 
@@ -208,7 +208,7 @@ ftry <- function(expr, error=stop, finally=NULL) {
 # By default, use the package namespace or use the 'ROOT' logger.
 flog.logger() %as%
 {
-  flog.logger(get_namespace())
+  flog.logger(flog.namespace())
 }
 
 flog.logger(name) %as%

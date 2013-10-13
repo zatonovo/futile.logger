@@ -32,27 +32,28 @@
 }
 \section{Usage}{
   # Conditionally print a log statement at TRACE log
-  level\cr flog.trace(msg, ..., name=get_namespace(),
+  level\cr flog.trace(msg, ..., name=flog.namespace(),
   capture=FALSE)
 
   # Conditionally print a log statement at DEBUG log
-  level\cr flog.debug(msg, ..., name=get_namespace(),
+  level\cr flog.debug(msg, ..., name=flog.namespace(),
   capture=FALSE)
 
   # Conditionally print a log statement at INFO log
-  level\cr flog.info(msg, ..., name=get_namespace(),
+  level\cr flog.info(msg, ..., name=flog.namespace(),
   capture=FALSE)
 
   # Conditionally print a log statement at WARN log
-  level\cr flog.warn(msg, ..., name=get_namespace(),
+  level\cr flog.warn(msg, ..., name=flog.namespace(),
   capture=FALSE)
 
   # Conditionally print a log statement at ERROR log
-  level\cr flog.error(msg, ..., name=get_namespace(),
+  level\cr flog.error(msg, ..., name=flog.namespace(),
   capture=FALSE)
 
   # Print a log statement at FATAL log level\cr
-  flog.fatal(msg, ..., name=get_namespace(), capture=FALSE)
+  flog.fatal(msg, ..., name=flog.namespace(),
+  capture=FALSE)
 
   # Execute an expression and capture any warnings or
   errors ftry(expr, error=stop, finally=NULL)

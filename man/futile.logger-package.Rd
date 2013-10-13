@@ -1,8 +1,8 @@
 \docType{package}
 \name{futile.logger-package}
+\alias{flog.namespace}
 \alias{futile.logger}
 \alias{futile.logger-package}
-\alias{get_namespace}
 \title{An easy to use logging package for R}
 \description{
   This package implements a logging system inspired by
@@ -14,8 +14,8 @@
 }
 \details{
   \tabular{ll}{ Package: \tab futile.logger\cr Type: \tab
-  Package\cr Version: \tab 1.3.4\cr Date: \tab
-  2013-08-09\cr License: \tab LGPL-3\cr LazyLoad: \tab
+  Package\cr Version: \tab 1.3.6\cr Date: \tab
+  2013-10-13\cr License: \tab LGPL-3\cr LazyLoad: \tab
   yes\cr }
 
   The latest version of futile.logger introduces

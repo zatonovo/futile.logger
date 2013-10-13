@@ -1,17 +1,11 @@
 context("root logger")
 test_that("Default settings", {
+  flog.threshold(INFO)
   raw <- capture.output(flog.info("log message"))
   #cat("\n[test.default] Raw:",raw,"\n")
   expect_that(length(grep('INFO', raw)) > 0, is_true())
   expect_that(length(grep('log message', raw)) > 0, is_true())
 })
-
-test_that("Capture works as expected", {
-  raw <- capture.output(flog.info("log message", head(cars), capture = TRUE))
-  expect_that(length(raw) == 9, is_true())
-  expect_that(grepl('^INFO',raw[1]), is_true())
-  expect_that(grepl('dist$',raw[3]), is_true())
-  })
 
 test_that("Change root threshold", {
   flog.threshold(ERROR)
@@ -19,6 +13,17 @@ test_that("Change root threshold", {
   #cat("\n[test.change_threshold] Raw:",raw,"\n")
   expect_that(length(raw) == 0, is_true())
 })
+
+
+context("capture output")
+test_that("Capture works as expected", {
+  flog.threshold(INFO)
+  raw <- capture.output(flog.info("log message", head(cars), capture = TRUE))
+  expect_that(length(raw) == 9, is_true())
+  expect_that(grepl('^INFO',raw[1]), is_true())
+  expect_that(nchar(raw[2]) == 0, is_true())
+  expect_that(grepl('dist$',raw[3]), is_true())
+  })
 
 context("new logger")
 test_that("Create new logger", {
