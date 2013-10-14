@@ -22,9 +22,8 @@ install:
   - R --version
   - R --vanilla -e '.libPaths(); sessionInfo()'
   - R --vanilla -e 'options(repos = c("http://rforge.net", "http://cran.rstudio.org"))'
-      -e 'install.packages(c("devtools","testthat"))'
+      -e 'install.packages(c("devtools","testthat","futile.options"))'
       -e 'library(devtools)'
-      -e 'install_github("futile.options","muxspace")'
       -e 'install_github("lambda.r","zatonovo")'
       -e 'install()'
   - git clone https://github.com/muxspace/crant.git ~/crant
