@@ -75,24 +75,6 @@ test_that("Hierarchy inheritance", {
   #expect_that(length(grep('simpleWarning', raw)) > 0, is_true())
 #})
 
-context("format string")
-test_that("Embedded format string", {
-  flog.threshold(INFO)
-  raw <- capture.output(flog.info("This is a %s message", "log"))
-  #cat("\n[test.default] Raw:",raw,"\n")
-  expect_that(length(grep('INFO', raw)) > 0, is_true())
-  expect_that(length(grep('log message', raw)) > 0, is_true())
-})
-
-test_that("Custom layout dereferences level field", {
-  flog.threshold(INFO)
-  flog.layout(layout.format('xxx[~l]xxx'))
-  raw <- capture.output(flog.info("log message"))
-  flog.layout(layout.simple)
-  expect_that('xxx[INFO]xxx' == raw, is_true())
-  expect_that(length(grep('log message', raw)) == 0, is_true())
-})
-
 context("carp")
 test_that("carp returns output", {
   expect_that(flog.carp(), is_false())

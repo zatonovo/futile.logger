@@ -87,7 +87,8 @@ flog.layout(fn, name='ROOT') %as%
 layout.simple <- function(level, msg, ...)
 {
   the.time <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
-  if (! is.null(substitute(...))) msg <- sprintf(msg, ...)
+  parsed <- lapply(list(...), function(x) ifelse(is.null(x), 'NULL', x))
+  msg <- do.call(sprintf, c(msg, parsed))
   sprintf("%s [%s] %s\n", names(level),the.time, msg)
 }
 
@@ -108,9 +109,10 @@ layout.format <- function(format, datetime.fmt="%Y-%m-%d %H:%M:%S")
     if (! is.null(substitute(...))) msg <- sprintf(msg, ...)
     the.level <- names(level)
     the.time <- format(Sys.time(), datetime.fmt)
-    the.namespace <- flog.namespace()
+    the.namespace <- ifelse(flog.namespace() == 'futile.logger','ROOT',flog.namespace())
     #print(sys.calls())
-    the.function <- tryCatch(sys.call(where)[[1]], error=function(e) "(shell)")
+    the.function <- tryCatch(deparse(sys.call(where)[[1]]), error=function(e) "(shell)")
+    the.function <- ifelse(length(grep('flog\\.',the.function)) == 0, the.function, '(shell)')
     #pattern <- c('~l','~t','~n','~f','~m')
     #replace <- c(the.level, the.time, the.namespace, the.function, msg)
     message <- gsub('~l',the.level, format, fixed=TRUE)
