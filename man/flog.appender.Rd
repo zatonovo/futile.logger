@@ -1,6 +1,7 @@
 \name{flog.appender}
 \alias{appender.console}
 \alias{appender.file}
+\alias{appender.tee}
 \alias{flog.appender}
 \title{Manage appenders for loggers}
 \arguments{
@@ -40,6 +41,9 @@
   \code{flog.appender(appender.file(file))} again with a
   new file name.
 
+  \code{appender.tee} writes to both the console and a file. 
+  This appender fucntion emulates the Unix-like tee command.
+  
   To use your own appender create a function that takes a
   single argument, which represents the log message. You
   need to pass a function reference to
