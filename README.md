@@ -87,6 +87,7 @@ following appenders:
 
 + appender.console
 + appender.file
++ appender.tee
 
 To change the appenders assigned to a logger, use the log.appender()
 function.

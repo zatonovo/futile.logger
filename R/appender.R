@@ -84,3 +84,11 @@ appender.file <- function(file)
 {
   function(line) cat(line, file=file, append=TRUE, sep='')
 }
+
+# Write to a file and to console 
+appender.tee <- function(file){ 
+  function(line) {
+    cat(line, sep='') 
+    cat(line, file=file, append=TRUE, sep='')
+  }
+}
