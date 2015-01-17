@@ -86,7 +86,7 @@
 
   \describe{ \item{appender.file}{Write to a file}
   \item{appender.console}{Write to the console}
-  \item(appender.tee}{Write to both a file and the console} }
+  \item{appender.tee}{Write to both a file and the console} }
 
   Each of these functions returns the actual appender
   function, so be sure to actually call the function!
