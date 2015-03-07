@@ -13,6 +13,9 @@
 #' 
 #' # Decorate log messages with a standard format\cr
 #' layout.simple(level, msg, ...)
+#' 
+#' # Generate log messages as JSON\cr
+#' layout.json(level, msg, ...)
 #'
 #' # Decorate log messages using a custom format\cr
 #' layout.format(format, datetime.fmt="%Y-%m-%d %H:%M:%S")
@@ -43,11 +46,20 @@
 #' \item{~m}{The message}
 #' }
 #'
+#' \code{layout.json} converts the message and any additional objects provided
+#' to a JSON structure. E.g.:
+#' 
+#' flog.info("Hello, world", cat='asdf')
+#'  
+#' yields something like
+#' 
+#' \{"level":"INFO","timestamp":"2015-03-06 19:16:02 EST","message":"Hello, world","func":"(shell)","cat":["asdf"]\}
+#' 
 #' \code{layout.tracearg} is a special layout that takes a variable
 #' and prints its name and contents.
 #' 
 #' @name flog.layout
-#' @aliases layout.simple layout.format layout.tracearg
+#' @aliases layout.simple layout.format layout.tracearg layout.json
 #' @param \dots Used internally by lambda.r
 #' @author Brian Lee Yung Rowe
 #' @seealso \code{\link{flog.logger}} \code{\link{flog.appender}}
@@ -92,6 +104,25 @@ layout.simple <- function(level, msg, ...)
   sprintf("%s [%s] %s\n", names(level),the.time, msg)
 }
 
+# Generates a list object, then converts it to JSON and outputs it
+layout.json <- function(level, msg, ...) {
+    if (!requireNamespace("jsonlite", quietly = TRUE)) {
+        stop("jsonlite needed for this function to work. Please install it.",
+             call. = FALSE)
+    }
+    
+    the.function <- tryCatch(deparse(sys.call(where)[[1]]), error=function(e) "(shell)")
+    the.function <- ifelse(length(grep('flog\\.',the.function)) == 0, the.function, '(shell)')
+    
+    output_list <- list(
+        level=unbox(names(level)),
+        timestamp=unbox(format(Sys.time(), "%Y-%m-%d %H:%M:%S %xZ")),
+        message=unbox(msg),
+        func=unbox(the.function),
+        additional=...
+    )
+    toJSON(output_list, simplifyVector=TRUE)
+}
 
 # This parses and prints a user-defined format string. Available tokens are
 # ~l - Log level

@@ -77,10 +77,11 @@
 #' 
 #' Layouts are responsible for formatting messages. This operation usually
 #' consists of adding the log level, a timestamp, plus some pretty-printing to
-#' make the log messages easy on the eyes. The package supplies two layouts:
+#' make the log messages easy on the eyes. The package supplies several layouts:
 #' 
 #' \describe{
 #'   \item{layout.simple}{Writes messages with a default format}
+#'   \item{layout.json}{Generates messages in a JSON format}
 #'   \item{layout.format}{Define your own format}
 #'   \item{layout.tracearg}{Print a variable name along with its value}
 #' }
