@@ -111,6 +111,7 @@ layout.json <- function(level, msg, ...) {
              call. = FALSE)
     }
     
+    where <- 1 # to avoid R CMD CHECK issue
     the.function <- tryCatch(deparse(sys.call(where)[[1]]), error=function(e) "(shell)")
     the.function <- ifelse(length(grep('flog\\.',the.function)) == 0, the.function, '(shell)')
     
