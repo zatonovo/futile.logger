@@ -116,7 +116,7 @@ layout.json <- function(level, msg, ...) {
     
     output_list <- list(
         level=unbox(names(level)),
-        timestamp=unbox(format(Sys.time(), "%Y-%m-%d %H:%M:%S %xZ")),
+        timestamp=unbox(format(Sys.time(), "%Y-%m-%d %H:%M:%S %z")),
         message=unbox(msg),
         func=unbox(the.function),
         additional=...
