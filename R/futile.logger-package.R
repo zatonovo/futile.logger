@@ -90,7 +90,7 @@
 #' @aliases futile.logger-package futile.logger flog.namespace
 #' @docType package
 #' @exportPattern "^[^\\.]"
-#' @import lambda.r futile.options
+#' @import lambda.r futile.options jsonlite
 #' @author Brian Lee Yung Rowe <r@@zatonovo.com>
 #' @seealso \code{\link{flog.logger}}, \code{\link{flog.threshold}},
 #' \code{\link{flog.layout}}, \code{\link{flog.appender}}
