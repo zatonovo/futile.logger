@@ -302,6 +302,27 @@ flog.remove(name) %as%
 #' flog.info("Won't print")
 #' flog.threshold(INFO)
 #' flog.info("Will print")
+# Set the threshold
+flog.threshold('TRACE', name='ROOT') %as% flog.threshold(TRACE, name)
+flog.threshold('trace', name='ROOT') %as% flog.threshold(TRACE, name)
+flog.threshold('DEBUG', name='ROOT') %as% flog.threshold(DEBUG, name)
+flog.threshold('debug', name='ROOT') %as% flog.threshold(DEBUG, name)
+flog.threshold('INFO', name='ROOT') %as% flog.threshold(INFO, name)
+flog.threshold('info', name='ROOT') %as% flog.threshold(INFO, name)
+flog.threshold('WARN', name='ROOT') %as% flog.threshold(WARN, name)
+flog.threshold('warn', name='ROOT') %as% flog.threshold(WARN, name)
+flog.threshold('ERROR', name='ROOT') %as% flog.threshold(ERROR, name)
+flog.threshold('error', name='ROOT') %as% flog.threshold(ERROR, name)
+flog.threshold('FATAL', name='ROOT') %as% flog.threshold(FATAL, name)
+flog.threshold('fatal', name='ROOT') %as% flog.threshold(FATAL, name)
+
+flog.threshold(threshold, name='ROOT') %as%
+{
+  flog.logger(name, threshold=threshold)
+  invisible()
+}
+
+# Get the threshold
 flog.threshold(name) %::% character : character
 flog.threshold(name='ROOT') %as%
 {
@@ -309,12 +330,6 @@ flog.threshold(name='ROOT') %as%
   names(logger$threshold)
 }
 
-# Set the threshold
-flog.threshold(threshold, name='ROOT') %as%
-{
-  flog.logger(name, threshold=threshold)
-  invisible()
-}
 
 #' Always return the log message
 #'
