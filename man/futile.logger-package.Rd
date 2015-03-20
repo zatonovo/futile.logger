@@ -14,8 +14,8 @@
 }
 \details{
   \tabular{ll}{ Package: \tab futile.logger\cr Type: \tab
-  Package\cr Version: \tab 1.3.9\cr Date: \tab
-  2013-10-13\cr License: \tab LGPL-3\cr LazyLoad: \tab
+  Package\cr Version: \tab 1.4\cr Date: \tab
+  2014-10-13\cr License: \tab LGPL-3\cr LazyLoad: \tab
   yes\cr }
 
   The latest version of futile.logger introduces
@@ -85,8 +85,7 @@
   appender generator functions:
 
   \describe{ \item{appender.file}{Write to a file}
-  \item{appender.console}{Write to the console}
-  \item{appender.tee}{Write to both a file and the console} }
+  \item{appender.console}{Write to the console} }
 
   Each of these functions returns the actual appender
   function, so be sure to actually call the function!
@@ -94,11 +93,12 @@
   Layouts are responsible for formatting messages. This
   operation usually consists of adding the log level, a
   timestamp, plus some pretty-printing to make the log
-  messages easy on the eyes. The package supplies two
+  messages easy on the eyes. The package supplies several
   layouts:
 
   \describe{ \item{layout.simple}{Writes messages with a
-  default format} \item{layout.format}{Define your own
+  default format} \item{layout.json}{Generates messages in
+  a JSON format} \item{layout.format}{Define your own
   format} \item{layout.tracearg}{Print a variable name
   along with its value} }
 }

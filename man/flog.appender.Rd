@@ -21,6 +21,9 @@
   # Print log messages to the console\cr appender.console()
 
   # Write log messages to a file\cr appender.file(file)
+
+  # Write log messages to console and a file\cr
+  appender.tee(file)
 }
 
 \section{Details}{
@@ -41,13 +44,12 @@
   \code{flog.appender(appender.file(file))} again with a
   new file name.
 
-  \code{appender.tee} writes to both the console and a file. 
-  This appender fucntion emulates the Unix-like tee command.
-  
   To use your own appender create a function that takes a
   single argument, which represents the log message. You
   need to pass a function reference to
   \code{flog.appender}.
+
+  \code{appender.tee} writes to both the console and file.
 }
 
 \section{Value}{

@@ -1,6 +1,7 @@
 \name{flog.layout}
 \alias{flog.layout}
 \alias{layout.format}
+\alias{layout.json}
 \alias{layout.simple}
 \alias{layout.tracearg}
 \title{Manage layouts within the 'futile.logger' sub-system}
@@ -22,6 +23,9 @@
 
   # Decorate log messages with a standard format\cr
   layout.simple(level, msg, ...)
+
+  # Generate log messages as JSON\cr layout.json(level,
+  msg, ...)
 
   # Decorate log messages using a custom format\cr
   layout.format(format, datetime.fmt="%Y-%m-%d %H:%M:%S")
@@ -49,6 +53,17 @@
   are available. \describe{ \item{~l}{Log level}
   \item{~t}{Timestamp} \item{~n}{Namespace} \item{~f}{The
   calling function} \item{~m}{The message} }
+
+  \code{layout.json} converts the message and any
+  additional objects provided to a JSON structure. E.g.:
+
+  flog.info("Hello, world", cat='asdf')
+
+  yields something like
+
+  \{"level":"INFO","timestamp":"2015-03-06 19:16:02
+  EST","message":"Hello,
+  world","func":"(shell)","cat":["asdf"]\}
 
   \code{layout.tracearg} is a special layout that takes a
   variable and prints its name and contents.

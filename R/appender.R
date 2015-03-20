@@ -16,6 +16,9 @@
 #' # Write log messages to a file\cr
 #' appender.file(file)
 #' 
+#' # Write log messages to console and a file\cr
+#' appender.tee(file)
+#' 
 #' 
 #' @section Details:
 #' Appenders do the actual work of writing log messages to some target.
@@ -37,13 +40,15 @@
 #' which represents the log message. You need to pass a function reference to
 #' \code{flog.appender}.
 #' 
+#' \code{appender.tee} writes to both the console and file.
+#'
 #' @section Value:
 #' When getting the appender, \code{flog.appender} returns the appender
 #' function.  When setting an appender, \code{flog.appender} has no 
 #' return value.
 #'
 #' @name flog.appender
-#' @aliases appender.console appender.file
+#' @aliases appender.console appender.file appender.tee
 #' @param \dots Used internally by lambda.r
 #' @author Brian Lee Yung Rowe
 #' @seealso \code{\link{flog.logger}} \code{\link{flog.layout}}
