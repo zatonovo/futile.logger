@@ -106,21 +106,23 @@ layout.simple <- function(level, msg, ...)
 
 # Generates a list object, then converts it to JSON and outputs it
 layout.json <- function(level, msg, ...) {
-  if (!require("jsonlite", quietly=TRUE))
+  if (!requireNamespace("jsonlite", quietly=TRUE))
     stop("layout.json requires jsonlite. Please install it.", call.=FALSE)
   
   where <- 1 # to avoid R CMD CHECK issue
-  the.function <- tryCatch(deparse(sys.call(where)[[1]]), error=function(e) "(shell)")
-  the.function <- ifelse(length(grep('flog\\.',the.function)) == 0, the.function, '(shell)')
+  the.function <- tryCatch(deparse(sys.call(where)[[1]]),
+    error=function(e) "(shell)")
+  the.function <- ifelse(
+    length(grep('flog\\.',the.function)) == 0, the.function, '(shell)')
   
   output_list <- list(
-    level=unbox(names(level)),
-    timestamp=unbox(format(Sys.time(), "%Y-%m-%d %H:%M:%S %z")),
-    message=unbox(msg),
-    func=unbox(the.function),
+    level=jsonlite::unbox(names(level)),
+    timestamp=jsonlite::unbox(format(Sys.time(), "%Y-%m-%d %H:%M:%S %z")),
+    message=jsonlite::unbox(msg),
+    func=jsonlite::unbox(the.function),
     additional=...
   )
-  toJSON(output_list, simplifyVector=TRUE)
+  jsonlite::toJSON(output_list, simplifyVector=TRUE)
 }
 
 # This parses and prints a user-defined format string. Available tokens are
