@@ -106,7 +106,7 @@ layout.simple <- function(level, msg, ...)
 
 # Generates a list object, then converts it to JSON and outputs it
 layout.json <- function(level, msg, ...) {
-  if (!requireNamespace("jsonlite", quietly=TRUE))
+  if (!require("jsonlite", quietly=TRUE))
     stop("layout.json requires jsonlite. Please install it.", call.=FALSE)
   
   where <- 1 # to avoid R CMD CHECK issue

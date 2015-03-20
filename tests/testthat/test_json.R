@@ -1,4 +1,4 @@
-if (requireNamespace("jsonlite", quietly=TRUE)) {
+if (require("jsonlite", quietly=TRUE)) {
 context("JSON: typical usage")
 
 test_that("simple string", {
