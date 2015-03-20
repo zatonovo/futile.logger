@@ -1,3 +1,4 @@
+if (requireNamespace("jsonlite", quietly=TRUE)) {
 context("JSON: typical usage")
 
 test_that("simple string", {
@@ -36,3 +37,5 @@ test_that("NULL additional objects", {
 
 # knockdown
 flog.layout(layout.simple)
+
+}
