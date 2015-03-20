@@ -1,6 +1,7 @@
 \name{flog.appender}
 \alias{appender.console}
 \alias{appender.file}
+\alias{appender.tee}
 \alias{flog.appender}
 \title{Manage appenders for loggers}
 \arguments{
@@ -20,6 +21,9 @@
   # Print log messages to the console\cr appender.console()
 
   # Write log messages to a file\cr appender.file(file)
+
+  # Write log messages to console and a file\cr
+  appender.tee(file)
 }
 
 \section{Details}{
@@ -44,6 +48,8 @@
   single argument, which represents the log message. You
   need to pass a function reference to
   \code{flog.appender}.
+
+  \code{appender.tee} writes to both the console and file.
 }
 
 \section{Value}{
