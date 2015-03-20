@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/zatonovo/futile.logger.png)](https://travis-ci.org/zatonovo/futile.logger)
+
 Overview
 ========
 Futile.logger is a logging utility for R. Originally built based on log4j, 
