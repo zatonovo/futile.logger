@@ -1,4 +1,4 @@
-#' An easy to use logging package for R
+#' A Logging Utility for R
 #' 
 #' This package implements a logging system inspired by log4j. The basic idea
 #' of layouts, appenders, and loggers is faithful to log4j, while the

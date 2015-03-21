@@ -1,6 +1,6 @@
 Package: futile.logger
 Type: Package
-Title: A logging library for R
+Title: A Logging Utility for R
 Version: 1.4
 Date: 2015-03-20
 Author: Brian Lee Yung Rowe
