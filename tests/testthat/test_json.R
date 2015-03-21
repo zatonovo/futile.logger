@@ -12,7 +12,8 @@ test_that("simple string", {
 })
 
 test_that("additional objects", {
-  raw <- capture.output(flog.info("log message", pet="hamster", weight=12, stuff=c("a", "b")))
+  raw <- capture.output(
+    flog.info("log message", pet="hamster", weight=12, stuff=c("a", "b")))
   aslist <- jsonlite::fromJSON(raw)
   expect_equal(aslist$level, "INFO")
   expect_equal(aslist$message, "log message")
