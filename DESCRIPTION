@@ -1,8 +1,8 @@
 Package: futile.logger
 Type: Package
 Title: A Logging Utility for R
-Version: 1.4
-Date: 2015-03-20
+Version: 1.4.1
+Date: 2015-04-18
 Author: Brian Lee Yung Rowe
 Maintainer: Brian Lee Yung Rowe <r@zatonovo.com>
 Depends:
