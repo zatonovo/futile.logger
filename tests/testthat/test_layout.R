@@ -21,18 +21,18 @@ test_that("Custom layout dereferences level field", {
 context("null values")
 test_that("Raw null value is printed", {
   raw <- capture.output(flog.info('xxx[%s]xxx', NULL))
-  expect_that(length(grep('xxx[NULL]xxx', raw)) == 0, is_true())
+  expect_that(length(grep('xxx[NULL]xxx', raw, fixed=TRUE)) == 1, is_true())
 })
 
 test_that("Single null value is printed", {
   opt <- list()
   raw <- capture.output(flog.info('xxx[%s]xxx', opt$noexist))
-  expect_that(length(grep('xxx[NULL]xxx', raw)) == 0, is_true())
+  expect_that(length(grep('xxx[NULL]xxx', raw, fixed=TRUE)) == 1, is_true())
 })
 
 test_that("Null is printed amongst variables", {
   opt <- list()
   raw <- capture.output(flog.info('aaa[%s]aaa xxx[%s]xxx', 3, opt$noexist))
-  expect_that(length(grep('aaa[3]aaa', raw)) == 0, is_true())
-  expect_that(length(grep('xxx[NULL]xxx', raw)) == 0, is_true())
+  expect_that(length(grep('aaa[3]aaa', raw, fixed=TRUE)) == 1, is_true())
+  expect_that(length(grep('xxx[NULL]xxx', raw, fixed=TRUE)) == 1, is_true())
 })

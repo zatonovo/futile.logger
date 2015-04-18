@@ -8,7 +8,9 @@ test_that("simple string", {
   aslist <- jsonlite::fromJSON(raw)
   expect_equal(aslist$level, "INFO")
   expect_equal(aslist$message, "log message")
-  expect_true(Sys.time() - strptime(aslist$timestamp, "%Y-%m-%d %H:%M:%S %z") < 1) # < 1m has passed
+
+  ts <- strptime(aslist$timestamp, "%Y-%m-%d %H:%M:%S %z")
+  expect_true('POSIXt' %in% class(ts))
 })
 
 test_that("additional objects", {
