@@ -44,7 +44,12 @@ test_that("no extra arguments are passed", {
 })
 test_that("some extra arguments are passed", {
   expect_true(grepl('foobar$', capture.output(flog.info('foobar', pi))))
-  expect_true(grepl('foobar foo$', capture.output(flog.info('foobar %s', 'foo'))))
+  expect_true(grepl(
+    'foobar foo$',
+    capture.output(flog.info('foobar %s', 'foo'))))
   expect_true(grepl('100$', capture.output(flog.info('10%d', 0))))
-  expect_true(grepl('foo and bar equals to foobar', capture.output(flog.info('%s and %s equals to %s', 'foo', 'bar', 'foobar'))))
+  expect_true(
+    grepl('foo and bar equals to foobar',
+          capture.output(
+            flog.info('%s and %s equals to %s', 'foo', 'bar', 'foobar'))))
 })
