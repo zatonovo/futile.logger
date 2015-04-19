@@ -99,8 +99,10 @@ flog.layout(fn, name='ROOT') %as%
 layout.simple <- function(level, msg, ...)
 {
   the.time <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
-  parsed <- lapply(list(...), function(x) ifelse(is.null(x), 'NULL', x))
-  msg <- do.call(sprintf, c(msg, parsed))
+  if (length(list(...)) > 0) {
+    parsed <- lapply(list(...), function(x) ifelse(is.null(x), 'NULL', x))
+    msg <- do.call(sprintf, c(msg, parsed))
+  }
   sprintf("%s [%s] %s\n", names(level),the.time, msg)
 }
 
