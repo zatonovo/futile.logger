@@ -18,6 +18,8 @@ Description: Provides a simple yet powerful logging utility. Based loosely on
     convenient and easy to use replacement for cat and print statements.
 License: LGPL-3
 LazyLoad: yes
+NeedsCompilation: no
+ByteCompile: yes
 Collate:
     'options.R'
     'appender.R'
