@@ -2,7 +2,7 @@
 
 Overview
 ========
-Futile.logger is a logging utility for R. Originally built based on log4j, 
+futile.logger is a logging utility for R. Originally built based on log4j, 
 the latest version introduces a new API that is more consistent with R idioms.
 In practice this means an interface that works equally well in the shell for
 interactive use and also in scripts for system use.
@@ -18,7 +18,7 @@ data.frames) in a smart way.
 
 Usage
 =====
-Out of the box, the default ROOT logger logs to the console with threshold
+Out of the box, the default `ROOT` logger logs to the console with threshold
 set to INFO.
 
 ```R
@@ -44,13 +44,13 @@ Loggers
 A logger is simply a namespace bound to a threshold, an appender, and a
 formatter. Loggers are configured automatically whenever they are 
 referenced (for example when changing the threshold) inheriting the settings
-of the root logger. To explicitly create a logger call log.logger().
+of the root logger. To explicitly create a logger call `log.logger()`.
 
 ```R
 flog.logger("tawny", WARN, appender=appender.file('tawny.log'))
 ```
 
-To remove a logger, use the log.remove() function. If no such logger exists,
+To remove a logger, use `log.remove()`. If no such logger exists,
 the command is safely ignored.
 
 ```R
@@ -87,13 +87,11 @@ An appender defines where output is directed. Typically only one appender is
 used per logger, but multiple can be assigned. The package provides the 
 following appenders:
 
-+ appender.console
-+ appender.file
-+ appender.tee
++ `appender.console`
++ `appender.file`
++ `appender.tee`
 
-To change the appenders assigned to a logger, use the log.appender()
-function.
-
+To change the appenders assigned to a logger, use `flog.appender()`:
 ```R
 # Change the 'quiet' logger to write to a file
 flog.appender(appender.file('quiet.log'), 'quiet')
