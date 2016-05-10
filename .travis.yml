@@ -20,10 +20,9 @@ install:
       lmodern texlive-fonts-recommended texlive-fonts-extra
   - "[ ! -d ~/R ] && mkdir ~/R"
   - git clone https://github.com/muxspace/crant.git ~/crant
-  - ~/crant/rpackage devtools testthat futile.options
+  - ~/crant/rpackage testthat futile.options
   - ~/crant/rpackage https://github.com/zatonovo/futile.logger.git
   - R --vanilla -e '.libPaths(); sessionInfo()'
-  - R --vanilla -e 'library(devtools)' -e 'install()'
 
 # run tests
 script:
