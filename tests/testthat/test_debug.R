@@ -16,5 +16,5 @@ test_that("higher levels are logged", {
 
 test_that("lower levels are not logged", {
     flog.threshold(DEBUG)
-    expect_output(flog.trace("testlog"), "")
+    expect_silent(flog.trace("testlog"))
 })

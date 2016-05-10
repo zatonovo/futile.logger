@@ -1,4 +1,5 @@
 .RData
+*.swp
 
 # History files
 .Rhistory
