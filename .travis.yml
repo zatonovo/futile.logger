@@ -3,8 +3,7 @@ language: python
 
 # environment variables
 env:
-  - R_LIBS_USER=~/R
-  - PATH=$PATH:~/crant
+  - R_LIBS_USER=~/R PATH=$PATH:~/crant
 
 # install dependencies
 install:
