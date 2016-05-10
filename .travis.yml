@@ -21,7 +21,7 @@ install:
   - "[ ! -d ~/R ] && mkdir ~/R"
   - git clone https://github.com/muxspace/crant.git ~/crant
   - ~/crant/rpackage jsonlite testthat futile.options
-  - ~/crant/rpackage https://github.com/zatonovo/futile.logger.git
+  - ~/crant/rpackage https://github.com/zatonovo/lambda.r.git
   - R --vanilla -e '.libPaths(); sessionInfo()'
 
 # run tests
