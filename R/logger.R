@@ -124,7 +124,6 @@
 #' z <- getIndexComposition()
 #'
 #' }
-NULL
 
 .log_level <- function(msg, ..., level, name, capture)
 {
@@ -147,10 +146,18 @@ NULL
 
 # Get the namespace that a function resides in. If no namespace exists, then
 # return NULL.
+# @param .where: where in the call stack should be check. 
+#             0: current function (always
+#            -1: parents of this function.
+#            -3: when used within flog.*, 
+#                it refers to the original caller of flog.*
+#            -4: when used from flogger.name within a .log_level
+#
 # <environment: namespace:lambda.r>
-flog.namespace <- function(where=1)
+flog.namespace <- function(.where=-4)
 {
-  s <- capture.output(str(topenv(environment(sys.function(where))), give.attr=FALSE))
+  sf <- sys.function(.where - 1)
+  s <- capture.output(str(topenv(environment(sf)), give.attr=FALSE))
   if (length(grep('lambda.r',s)) > 0)
     s <- attr(sys.function(-5), 'topenv')
 
@@ -159,7 +166,6 @@ flog.namespace <- function(where=1)
   ns <- sub('.*namespace:([^>]+)>.*','\\1', s)
   ifelse(is.null(ns), 'ROOT', ns)
 }
-
 
 flog.trace <- function(msg, ..., name=flog.namespace(), capture=FALSE) {
   .log_level(msg, ..., level=TRACE,name=name, capture=capture)
