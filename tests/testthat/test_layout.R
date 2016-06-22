@@ -53,3 +53,15 @@ test_that("some extra arguments are passed", {
           capture.output(
             flog.info('%s and %s equals to %s', 'foo', 'bar', 'foobar'))))
 })
+
+context("Function name and namespace detection")
+test_that("Function name detection inside nested functions", {
+    flog.layout(layout.format("[~f] ~m"))
+    a <- function() { flog.info("inside A") }
+    b <- function() { a() }
+    d <- function() { b() }
+    e <- function() { d() }
+    expect_equal('[a] inside A', capture.output(e()))
+    flog.layout(layout.simple)
+})
+
