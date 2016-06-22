@@ -124,6 +124,7 @@
 #' z <- getIndexComposition()
 #'
 #' }
+NULL
 
 .log_level <- function(msg, ..., level, name, capture)
 {
