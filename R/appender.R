@@ -118,7 +118,7 @@ appender.file2 <- function(format, console = FALSE,
   .funcwhere = -2 # ditto for the function name
   .levelwhere = -1 # ditto for the current "level"
   function(line) {
-    if (tee) cat(line, sep='')
+    if (console) cat(line, sep='')
     the.level <- tryCatch(names(get("level", env=sys.frame(.levelwhere))),
                           error = function(e) "UNK")
     the.time <- format(Sys.time(), datetime.fmt)
