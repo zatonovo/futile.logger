@@ -119,7 +119,7 @@ appender.file2 <- function(format, console = FALSE,
   .levelwhere = -1 # ditto for the current "level"
   function(line) {
     if (console) cat(line, sep='')
-    the.level <- tryCatch(names(get("level", env=sys.frame(.levelwhere))),
+    the.level <- tryCatch(names(get("level", envir=sys.frame(.levelwhere))),
                           error = function(e) "UNK")
     the.time <- format(Sys.time(), datetime.fmt)
     the.namespace <- flog.namespace(.nswhere)
