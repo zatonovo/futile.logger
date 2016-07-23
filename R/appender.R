@@ -40,7 +40,7 @@
 #'
 #' \code{appender.file2} is similar, but the filename is dynamically
 #' determined at runtime. It may include most of the same tokens as
-#' \code{\link{layout.format}} (all except \code{"~m"}, the message
+#' \code{layout.format} (all except \code{"~m"}, the message
 #' itself). This allows, for instance, having separate logfiles for
 #' each log level.
 #' 
