@@ -115,7 +115,7 @@ appender.file2 <- function(format, console = FALSE,
                            default.func = "shell", datetime.fmt = "%Y%m%dT%H%M%S"){
   .nswhere = -3 # get name of the function 2 deep in the call stack
                 # that is, the function that has called flog.*
-  .funcwhere = -2 # ditto for the function name
+  .funcwhere = -3 # ditto for the function name
   .levelwhere = -1 # ditto for the current "level"
   function(line) {
     if (console) cat(line, sep='')
