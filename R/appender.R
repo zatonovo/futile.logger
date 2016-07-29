@@ -126,10 +126,12 @@ appender.file2 <- function(format, console = FALSE,
     the.namespace <- ifelse(the.namespace == 'futile.logger', 'ROOT', the.namespace)
     the.function <- .get.parent.func.name(.funcwhere)
     the.function <- ifelse(the.function == '(shell)', default.func, the.function)
+    the.pid <- Sys.getpid()
     filename <- gsub('~l', the.level, format, fixed=TRUE)
     filename <- gsub('~t', the.time, filename, fixed=TRUE)
     filename <- gsub('~n', the.namespace, filename, fixed=TRUE)
     filename <- gsub('~f', the.function, filename, fixed=TRUE)
+    filename <- gsub('~p', the.pid, filename, fixed=TRUE)
     cat(line, file=filename, append=TRUE, sep='')
   }
 }
