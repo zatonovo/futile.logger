@@ -44,6 +44,7 @@
 #' \item{~n}{Namespace}
 #' \item{~f}{The calling function}
 #' \item{~m}{The message}
+#' \item{~p}{The process PID}
 #' }
 #'
 #' \code{layout.json} converts the message and any additional objects provided
@@ -141,6 +142,7 @@ layout.json <- function(level, msg, ...) {
 # ~n - Namespace
 # ~f - Calling function
 # ~m - Message
+# ~p - PID
 #
 # layout <- layout.format('[~l] [~t] [~n.~f] ~m')
 # flog.layout(layout)
@@ -154,7 +156,8 @@ layout.format <- function(format, datetime.fmt="%Y-%m-%d %H:%M:%S")
     the.time <- format(Sys.time(), datetime.fmt)
     the.namespace <- flog.namespace(.where)
     the.namespace <- ifelse(the.namespace == 'futile.logger', 'ROOT', the.namespace)
-    the.function <- .get.parent.func.name(.where) 
+    the.function <- .get.parent.func.name(.where)
+    the.pid <- Sys.getpid()
     #pattern <- c('~l','~t','~n','~f','~m')
     #replace <- c(the.level, the.time, the.namespace, the.function, msg)
     message <- gsub('~l',the.level, format, fixed=TRUE)
@@ -162,6 +165,7 @@ layout.format <- function(format, datetime.fmt="%Y-%m-%d %H:%M:%S")
     message <- gsub('~n',the.namespace, message, fixed=TRUE)
     message <- gsub('~f',the.function, message, fixed=TRUE)
     message <- gsub('~m',msg, message, fixed=TRUE)
+    message <- gsub('~p',the.pid, message, fixed=TRUE)
     sprintf("%s\n", message)
   }
 }
