@@ -111,12 +111,12 @@ appender.tee <- function(file){
 }
 
 # Write to a dynamically-named file (and optionally the console)
-appender.file2 <- function(format, console = FALSE,
-                           default.func = "shell", datetime.fmt = "%Y%m%dT%H%M%S"){
-  .nswhere = -3 # get name of the function 2 deep in the call stack
-                # that is, the function that has called flog.*
-  .funcwhere = -3 # ditto for the function name
-  .levelwhere = -1 # ditto for the current "level"
+appender.file2 <- function(format, console=FALSE,
+                           datetime.fmt="%Y%m%dT%H%M%S") {
+  .nswhere <- -3 # get name of the function 2 deep in the call stack
+                 # that is, the function that has called flog.*
+  .funcwhere <- -3 # ditto for the function name
+  .levelwhere <- -1 # ditto for the current "level"
   function(line) {
     if (console) cat(line, sep='')
     the.level <- tryCatch(names(get("level", envir=sys.frame(.levelwhere))),
@@ -125,7 +125,6 @@ appender.file2 <- function(format, console = FALSE,
     the.namespace <- flog.namespace(.nswhere)
     the.namespace <- ifelse(the.namespace == 'futile.logger', 'ROOT', the.namespace)
     the.function <- .get.parent.func.name(.funcwhere)
-    the.function <- ifelse(the.function == '(shell)', default.func, the.function)
     the.pid <- Sys.getpid()
     filename <- gsub('~l', the.level, format, fixed=TRUE)
     filename <- gsub('~t', the.time, filename, fixed=TRUE)
