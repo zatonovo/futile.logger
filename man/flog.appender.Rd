@@ -3,6 +3,7 @@
 \name{flog.appender}
 \alias{appender.console}
 \alias{appender.file}
+\alias{appender.null}
 \alias{appender.tee}
 \alias{flog.appender}
 \title{Manage appenders for loggers}

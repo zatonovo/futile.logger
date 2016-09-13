@@ -48,7 +48,7 @@
 #' return value.
 #'
 #' @name flog.appender
-#' @aliases appender.console appender.file appender.tee
+#' @aliases appender.console appender.null appender.file appender.tee
 #' @param \dots Used internally by lambda.r
 #' @author Brian Lee Yung Rowe
 #' @seealso \code{\link{flog.logger}} \code{\link{flog.layout}}
@@ -79,18 +79,26 @@ flog.appender(fn, name='ROOT') %as%
 
 # Some default handlers for use in futile.logger. All handlers need to conform
 # to the below signature: function(line)
+
+# Write log message to console
 appender.console <- function()
 {
   function(line) cat(line, sep='')
 }
 
-# Write to a file.
+# Write log message to a file.
 appender.file <- function(file)
 {
   function(line) cat(line, file=file, append=TRUE, sep='')
 }
 
-# Write to a file and to console 
+# Discard log message.
+appender.null <- function()
+{
+  function(line) invisible(NULL)
+}
+
+# Write log message to a file and to console 
 appender.tee <- function(file){ 
   function(line) {
     cat(line, sep='') 
