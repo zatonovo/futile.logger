@@ -106,7 +106,7 @@ an appender that logs to a URL might look like the following.
 url_appender.gen <- function(url) {
   conn <- url(url)
   function(line) {
-    file.write()
+    conn.write(line)
   }
 }
 ```
