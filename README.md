@@ -49,7 +49,7 @@ of the root logger. To explicitly create a logger call `flog.logger()`.
 ```R
 flog.logger("tawny", WARN, appender=appender.file('tawny.log'))
 ```
-Please notice that you shall not set the name as any of the following keywords:
+Please notice that you shall not set the name as any of the following keywords: \\
 'TRACE', 'trace', 'DEBUG', 'debug', 'INFO', 'info', 'WARN', 'warn', 'ERROR', 'error', 'FATAL', 'fatal'
 
 To remove a logger, use `flog.remove()`. If no such logger exists,
