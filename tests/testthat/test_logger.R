@@ -25,6 +25,14 @@ test_that("Capture works as expected", {
   expect_that(grepl('dist$',raw[3]), is_true())
   })
 
+test_that("Get threshold names", {
+  flog.threshold(ERROR)
+  expect_that(flog.threshold() == "ERROR", is_true())  
+  flog.threshold(DEBUG, name='my.package')
+  expect_that(flog.threshold(name='my.package') == "DEBUG", is_true()) 
+})
+
+
 context("new logger")
 test_that("Create new logger", {
   flog.threshold(ERROR)

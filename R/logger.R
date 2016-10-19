@@ -323,6 +323,8 @@ flog.threshold('error', name='ROOT') %as% flog.threshold(ERROR, name)
 flog.threshold('FATAL', name='ROOT') %as% flog.threshold(FATAL, name)
 flog.threshold('fatal', name='ROOT') %as% flog.threshold(FATAL, name)
 
+    
+flog.threshold(threshold, name) %::% numeric : character : .
 flog.threshold(threshold, name='ROOT') %as%
 {
   flog.logger(name, threshold=threshold)
