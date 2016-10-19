@@ -24,6 +24,9 @@ set to INFO.
 ```R
 flog.info("Hello, %s", "world")
 
+# Put pid in logging in multi-threading
+flog.info('%d message', Sys.getpid()) 
+
 # This won't print by default
 flog.debug("Goodbye, %s", "world")
 
