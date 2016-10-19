@@ -110,8 +110,8 @@ appender.tee <- function(file){
   }
 }
 
-# Write to a dynamically-named file (and optionally the console)
-appender.file2 <- function(format, console=FALSE,
+# Write to a dynamically-named file (and optionally the console), with inheritance
+appender.file2 <- function(format, console=FALSE, inherit=TRUE,
                            datetime.fmt="%Y%m%dT%H%M%S") {
   .nswhere <- -3 # get name of the function 2 deep in the call stack
                  # that is, the function that has called flog.*
