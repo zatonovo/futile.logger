@@ -81,6 +81,7 @@ test_that("carp returns output", {
   flog.carp(TRUE)
   flog.threshold(WARN)
   raw <- flog.debug("foo")
+  flog.carp(FALSE)
   expect_that(length(grep('DEBUG', raw)) > 0, is_true())
 })
 
