@@ -3,6 +3,7 @@
 \name{flog.appender}
 \alias{appender.console}
 \alias{appender.file}
+\alias{appender.file2}
 \alias{appender.tee}
 \alias{flog.appender}
 \title{Manage appenders for loggers}
@@ -27,6 +28,9 @@ appender.console()
 # Write log messages to a file\cr
 appender.file(file)
 
+# Write log messages to a dynamically-named file\cr
+appender.file2(format)
+
 # Write log messages to console and a file\cr
 appender.tee(file)
 }
@@ -48,6 +52,12 @@ via flog.appender.
 argument to the function. To change the file name, just call
 \code{flog.appender(appender.file(file))} again with a new file name.
 
+\code{appender.file2} is similar, but the filename is dynamically
+determined at runtime. It may include most of the same tokens as
+\code{layout.format} (all except \code{"~m"}, the message
+itself). This allows, for instance, having separate logfiles for
+each log level.
+
 To use your own appender create a function that takes a single argument,
 which represents the log message. You need to pass a function reference to
 \code{flog.appender}.
@@ -68,6 +78,10 @@ flog.appender(appender.console(), name='my.logger')
 # Set an appender to the logger named 'my.package'. Any log operations from
 # this package will now use this appender.
 flog.appender(appender.file('my.package.out'), 'my.package')
+
+# Set an appender to a file named using the message level and calling function.
+# Also tee the messages to the console.
+flog.appender(appender.file2('~l-~f.log', console = TRUE))
 }
 }
 \author{
