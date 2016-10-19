@@ -5,6 +5,7 @@
 \alias{layout.format}
 \alias{layout.json}
 \alias{layout.simple}
+\alias{layout.simple.parallel}
 \alias{layout.tracearg}
 \title{Manage layouts within the 'futile.logger' sub-system}
 \arguments{

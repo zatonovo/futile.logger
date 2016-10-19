@@ -8,6 +8,24 @@ test_that("Embedded format string", {
   expect_that(length(grep('log message', raw)) > 0, is_true())
 })
 
+test_that("layout.simple.parallel layout", {
+  flog.threshold(INFO)
+  flog.layout(layout.simple.parallel)
+  raw <- capture.output(flog.info("log message"))
+  flog.layout(layout.simple)
+  expect_that(length(grep(paste0('INFO [[][0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} ', Sys.getpid(), '[]]'), raw)) > 0, is_true())
+  expect_that(length(grep('log message', raw)) > 0, is_true())
+})
+
+test_that("~p token", {
+  flog.threshold(INFO)
+  flog.layout(layout.format('xxx[~l ~p]xxx'))
+  raw <- capture.output(flog.info("log message"))
+  flog.layout(layout.simple)
+  expect_that(paste0('xxx[INFO ',Sys.getpid(),']xxx') == raw, is_true())
+  expect_that(length(grep('log message', raw)) == 0, is_true())
+})
+
 test_that("Custom layout dereferences level field", {
   flog.threshold(INFO)
   flog.layout(layout.format('xxx[~l]xxx'))

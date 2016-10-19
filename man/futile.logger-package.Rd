@@ -89,6 +89,7 @@ make the log messages easy on the eyes. The package supplies several layouts:
 
 \describe{
   \item{layout.simple}{Writes messages with a default format}
+  \item{layout.simple.parallel}{Writes messages with a default format with PID}
   \item{layout.json}{Generates messages in a JSON format}
   \item{layout.format}{Define your own format}
   \item{layout.tracearg}{Print a variable name along with its value}
