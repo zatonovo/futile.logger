@@ -13,7 +13,7 @@ test_that("layout.simple.parallel layout", {
   flog.layout(layout.simple.parallel)
   raw <- capture.output(flog.info("log message"))
   flog.layout(layout.simple)
-  expect_that(length(grep(paste0('INFO [[][0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} ', Sys.getpid(), '[]]'), raw)) > 0, is_true())
+  expect_that(length(paste0('INFO [[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} ', Sys.getpid(), '] log message') ==  raw) > 0, is_true())
   expect_that(length(grep('log message', raw)) > 0, is_true())
 })
 
