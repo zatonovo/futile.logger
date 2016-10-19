@@ -29,7 +29,7 @@ test_that("Get threshold names", {
   flog.threshold(ERROR)
   expect_that(flog.threshold() == "ERROR", is_true())  
   flog.threshold(DEBUG, name='my.package')
-  expect_that(flog.threshold(name='my.package') == DEBUG, is_true()) 
+  expect_that(flog.threshold(name='my.package') == "DEBUG", is_true()) 
 })
 
 
