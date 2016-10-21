@@ -118,6 +118,26 @@ url_appender.gen <- function(url) {
 
 flog.format("futile.matrix", fn)
 
+Logging hierarchy
+-------
+We can create python-style logging hierarchy using `appender.file2`. 
+Following snippet will write to both `mylog-WARN.log` and `mylog-INFO.log`
+```R
+flog.appender(appender.file2("mylog-~l.log", console=TRUE), name='mylogger')
+flog.warn('msg1', name='mylogger')
+```
+If we change the threshold to `DEBUG`, it will also write to `mylog-DEBUG.log`. 
+```R
+flog.threshold(DEBUG, 'mylogger')
+flog.warn('msg3', name='mylogger')
+```
+
+If set inherit=FALSE, will only write to `mylog-WARN.log` 
+```R
+flog.appender(appender.file2("mylog-~l.log", console=TRUE, inherit=FALSE), name='mylogger')
+flog.warn('msg2', name='mylogger')
+```
+
 Layouts
 -------
 A layout defines how a log message is printed. The default layout.simple
