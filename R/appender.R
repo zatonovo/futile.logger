@@ -123,12 +123,11 @@ appender.file2 <- function(format, console=FALSE, inherit=TRUE,
       stop('Illegal function call, must call from flog.trace, flog.debug, flog.info, flog.warn, flog.error, flog.fatal, etc.')
     }
     the.level <- tryCatch(get("level", envir=sys.frame(.levelwhere)),error = err)
-    the.logger <- tryCatch(get('logger',envir=sys.frame(.levelwhere)), error=err)
-    the.threshold <- the.logger$threshold
+    the.threshold <- tryCatch(get('logger',envir=sys.frame(.levelwhere)), error=err)$threshold
+    LEVELS <- c(FATAL, ERROR, WARN, INFO, DEBUG, TRACE)
     if(inherit) {
       levels <- names(LEVELS[the.level <= LEVELS & LEVELS <= the.threshold])
     } else levels <- names(the.level)
-    browser()
     the.time <- format(Sys.time(), datetime.fmt)
     the.namespace <- flog.namespace(.nswhere)
     the.namespace <- ifelse(the.namespace == 'futile.logger', 'ROOT', the.namespace)
