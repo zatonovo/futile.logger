@@ -11,4 +11,5 @@ names(DEBUG) <- "DEBUG"
 TRACE <- 9L
 names(TRACE) <- "TRACE"
 
+LEVELS <- c(FATAL, ERROR, WARN, INFO, DEBUG, TRACE)
 

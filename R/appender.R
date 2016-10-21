@@ -119,18 +119,31 @@ appender.file2 <- function(format, console=FALSE, inherit=TRUE,
   .levelwhere <- -1 # ditto for the current "level"
   function(line) {
     if (console) cat(line, sep='')
-    the.level <- tryCatch(names(get("level", envir=sys.frame(.levelwhere))),
-                          error = function(e) "UNK")
+    err <- function(e) {
+      stop('Illegal function call, must call from flog.trace, flog.debug, flog.info, flog.warn, flog.error, flog.fatal, etc.')
+    }
+    the.level <- tryCatch(get("level", envir=sys.frame(.levelwhere)),error = err)
+    the.logger <- tryCatch(get('logger',envir=sys.frame(.levelwhere)), error=err)
+    the.threshold <- the.logger$threshold
+    if(inherit) {
+      levels <- names(LEVELS[the.level <= LEVELS & LEVELS <= the.threshold])
+    } else levels <- names(the.level)
+    browser()
     the.time <- format(Sys.time(), datetime.fmt)
     the.namespace <- flog.namespace(.nswhere)
     the.namespace <- ifelse(the.namespace == 'futile.logger', 'ROOT', the.namespace)
     the.function <- .get.parent.func.name(.funcwhere)
     the.pid <- Sys.getpid()
-    filename <- gsub('~l', the.level, format, fixed=TRUE)
-    filename <- gsub('~t', the.time, filename, fixed=TRUE)
+    filename <- gsub('~t', the.time, format, fixed=TRUE)
     filename <- gsub('~n', the.namespace, filename, fixed=TRUE)
     filename <- gsub('~f', the.function, filename, fixed=TRUE)
     filename <- gsub('~p', the.pid, filename, fixed=TRUE)
-    cat(line, file=filename, append=TRUE, sep='')
+    if(length(grep('~l', filename)) > 0) {
+      sapply(levels, function(level) {
+        filename <- gsub('~l', level, filename, fixed=TRUE)
+        cat(line, file=filename, append=TRUE, sep='')
+      })
+    }else cat(line, file=filename, append=TRUE, sep='')
+    invisible()
   }
 }
