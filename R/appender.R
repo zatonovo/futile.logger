@@ -124,8 +124,8 @@ appender.file2 <- function(format, console=FALSE, inherit=TRUE,
     }
     the.level <- tryCatch(get("level", envir=sys.frame(.levelwhere)),error = err)
     the.threshold <- tryCatch(get('logger',envir=sys.frame(.levelwhere)), error=err)$threshold
-    LEVELS <- c(FATAL, ERROR, WARN, INFO, DEBUG, TRACE)
     if(inherit) {
+      LEVELS <- c(FATAL, ERROR, WARN, INFO, DEBUG, TRACE)
       levels <- names(LEVELS[the.level <= LEVELS & LEVELS <= the.threshold])
     } else levels <- names(the.level)
     the.time <- format(Sys.time(), datetime.fmt)
