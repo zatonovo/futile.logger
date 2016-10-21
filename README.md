@@ -132,12 +132,12 @@ flog.threshold(DEBUG, 'mylogger')
 flog.warn('msg2', name='mylogger')
 ```
 
-If set inherit=FALSE, will only write to `mylog-WARN.log` 
+If set `inherit=FALSE`, will only write to `mylog-WARN.log` 
 ```R
 flog.appender(appender.file2("mylog-~l.log", console=TRUE, inherit=FALSE), name='mylogger')
 flog.warn('msg3', name='mylogger')
 ```
-In this scenario, if we use flog.info, it will only write to `mylog-INFO.log`.
+In this scenario, if we use `flog.info`, it will only write to `mylog-INFO.log`.
 ```R
 flog.info('msg4', name='mylogger')
 ```
