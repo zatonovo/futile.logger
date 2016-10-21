@@ -95,6 +95,7 @@ following appenders:
 + `appender.console`
 + `appender.file`
 + `appender.tee`
++ `appender.file2`
 
 To change the appenders assigned to a logger, use `flog.appender()`:
 ```R
@@ -115,8 +116,6 @@ url_appender.gen <- function(url) {
   }
 }
 ```
-
-flog.format("futile.matrix", fn)
 
 Logging hierarchy
 -------
@@ -150,6 +149,7 @@ prints log messages using the following format:
 
 The layouts included in the package are:
 + layout.simple - Use a default format
++ layout.simple.parallel - Use a default format with a process id
 + layout.format - Provide a customizable format string
 + layout.tracearg - Dump a variable with its name
 
