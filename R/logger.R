@@ -158,7 +158,7 @@ NULL
 flog.namespace <- function(.where=-4)
 {
   sf <- sys.function(.where - 1)
-  s <- capture.output(str(topenv(environment(sf)), give.attr=FALSE))
+  s <- format(topenv(environment(sf)))
   if (length(grep('lambda.r',s)) > 0)
     s <- attr(sys.function(-5), 'topenv')
 
