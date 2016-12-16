@@ -146,3 +146,14 @@ appender.file2 <- function(format, console=FALSE, inherit=TRUE,
     invisible()
   }
 }
+
+
+# Special meta appender that prints only when the internal counter mod n = 0
+appender.modulo <- function(n, appender=appender.console()) {
+  i <- 0
+  function(line) {
+    i <<- i + 1
+    if (i %% n == 0) appender(sprintf("[%s] %s", i,line))
+    invisible()
+  }
+}
