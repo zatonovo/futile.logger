@@ -157,3 +157,23 @@ appender.modulo <- function(n, appender=appender.console()) {
     invisible()
   }
 }
+
+# Write to a Graylog HTTP GELF Endpoint
+appender.graylog <- function(server, port, default_fields){ 
+  function(line) {
+    # Check if the debug line is a list of variables to log or a single text
+    # message. If so convert the text to a list for conversion to JSON
+    if (typeof(line) == "character") {
+      line <- list(msg = line)
+    }
+    # If fields have been specified to be sent with every logging message include them
+    if (!missing(default_fields)) {
+      line <- c(default_fields, line)
+    }
+    jsonlite::toJSON(x, auto_unbox = TRUE)
+    httr::POST(paste0("http://", server, ":", port, "/gelf", 
+         body = line,
+         encode='form',
+         verbose())
+  }
+}
