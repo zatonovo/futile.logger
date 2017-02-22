@@ -22,6 +22,9 @@
 #' # Write log messages to console and a file\cr
 #' appender.tee(file)
 #' 
+#' # Write log messages to a Graylog2 HTTP GELF endpoint\cr
+#' appender.graylog(server, port)
+#' 
 #' @section Details:
 #' Appenders do the actual work of writing log messages to some target.
 #' To use an appender in a logger, you must register it to a given logger.
@@ -49,6 +52,8 @@
 #' \code{flog.appender}.
 #' 
 #' \code{appender.tee} writes to both the console and file.
+#' 
+#' \code{appender.graylog} writes to a Graylog2 HTTP GELF endpoint.
 #'
 #' @section Value:
 #' When getting the appender, \code{flog.appender} returns the appender
@@ -56,7 +61,7 @@
 #' return value.
 #'
 #' @name flog.appender
-#' @aliases appender.console appender.file appender.file2 appender.tee
+#' @aliases appender.console appender.file appender.file2 appender.tee appender.graylog
 #' @param \dots Used internally by lambda.r
 #' @author Brian Lee Yung Rowe
 #' @seealso \code{\link{flog.logger}} \code{\link{flog.layout}}
@@ -158,22 +163,18 @@ appender.modulo <- function(n, appender=appender.console()) {
   }
 }
 
-# Write to a Graylog HTTP GELF Endpoint
-appender.graylog <- function(server, port, default_fields){ 
+# Write to a Graylog2 HTTP GELF Endpoint
+appender.graylog <- function(server, port) {
+
+  if (!requireNamespace("jsonlite", quietly=TRUE))
+    stop("appender.graylog requires jsonlite. Please install it.", call. = FALSE)
+  if (!requireNamespace("httr", quietly=TRUE))
+    stop("appender.graylog requires httr. Please install it.", call. = FALSE)  
+  
   function(line) {
-    # Check if the debug line is a list of variables to log or a single text
-    # message. If so convert the text to a list for conversion to JSON
-    if (typeof(line) == "character") {
-      line <- list(msg = line)
-    }
-    # If fields have been specified to be sent with every logging message include them
-    if (!missing(default_fields)) {
-      line <- c(default_fields, line)
-    }
-    jsonlite::toJSON(x, auto_unbox = TRUE)
-    httr::POST(paste0("http://", server, ":", port, "/gelf", 
-         body = line,
-         encode='form',
-         verbose())
+
+    ret <- httr::POST(paste0("http://", server, ":", port, "/gelf"), 
+                      body = line,
+                      encode = 'form')
   }
 }

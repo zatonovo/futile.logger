@@ -23,6 +23,9 @@
 #' # Show the value of a single variable
 #' layout.tracearg(level, msg, ...)
 #' 
+#' # Generate log messages in a Graylog2 HTTP GELF accetable format
+#' layout.graylog(common.fields)
+#' 
 #' @section Details:
 #' Layouts are responsible for formatting messages so they are human-readable.
 #' Similar to an appender, a layout is assigned to a logger by calling 
@@ -59,8 +62,16 @@
 #' \code{layout.tracearg} is a special layout that takes a variable
 #' and prints its name and contents.
 #' 
+#' \code{layout.graylog} is a special layout for use with the appender.graylog to
+#' generate json acceptable to a Graylog2 HTTP GELF endpoint. Standard fields to
+#' be included with every message can be included by setting the common.fields
+#' to a list of properties. E.g.: 
+#' 
+#' flog.layout(layout.graylog(common.fields = list(host_ip = "10.10.11.23", 
+#'                                                 env = "production")))
+#' 
 #' @name flog.layout
-#' @aliases layout.simple layout.format layout.tracearg layout.json
+#' @aliases layout.simple layout.format layout.tracearg layout.json layout.graylog
 #' @param \dots Used internally by lambda.r
 #' @author Brian Lee Yung Rowe
 #' @seealso \code{\link{flog.logger}} \code{\link{flog.appender}}
@@ -204,3 +215,35 @@ layout.tracearg <- function(level, msg, ...)
   }
   sprintf("%s [%s] %s\n", names(level),the.time, msg)
 }
+
+
+# This creates a json string that will work with the appender.graylog
+layout.graylog <- function(common.fields, datetime.fmt="%Y-%m-%d %H:%M:%S")
+{
+  .where = -3 # get name of the function 3 deep in the call stack
+  # that is, the function that has called flog.*
+  
+  missing.common.fields <- missing(common.fields)
+  
+  function(level, msg, ...) {
+    
+    if (! is.null(substitute(...))) msg <- sprintf(msg, ...)
+    
+    the.namespace <- flog.namespace(.where)
+    
+    output_list <- list(
+      flogger_level = names(level),
+      time = format(Sys.time(), datetime.fmt), 
+      namespace = ifelse(the.namespace == 'futile.logger', 'ROOT', the.namespace),
+      func = .get.parent.func.name(.where), 
+      pid = Sys.getpid(),
+      message = msg
+    )
+    
+    if (!missing.common.fields)
+      output_list <- c(output_list, common.fields)
+    
+    jsonlite::toJSON(output_list, auto_unbox = TRUE)
+    
+  }
+}  
