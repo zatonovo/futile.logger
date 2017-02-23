@@ -10,11 +10,11 @@ Depends:
 Imports:
     utils,
     lambda.r (>= 1.1.0),
-    futile.options,
-    httr,
-    jsonlite
+    futile.options
 Suggests:
-    testthat
+    testthat,
+    jsonlite,
+    httr
 Description: Provides a simple yet powerful logging utility. Based loosely on
     log4j, futile.logger takes advantage of R idioms to make logging a
     convenient and easy to use replacement for cat and print statements.
@@ -30,4 +30,4 @@ Collate:
     'logger.R'
     'scat.R'
     'futile.logger-package.R'
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.0
