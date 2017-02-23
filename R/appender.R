@@ -164,7 +164,7 @@ appender.modulo <- function(n, appender=appender.console()) {
 }
 
 # Write to a Graylog2 HTTP GELF Endpoint
-appender.graylog <- function(server, port) {
+appender.graylog <- function(server, port, debug = FALSE) {
 
   if (!requireNamespace("jsonlite", quietly=TRUE))
     stop("appender.graylog requires jsonlite. Please install it.", call. = FALSE)
@@ -176,5 +176,7 @@ appender.graylog <- function(server, port) {
     ret <- httr::POST(paste0("http://", server, ":", port, "/gelf"), 
                       body = line,
                       encode = 'form')
+    
+    if (debug) print(ret)
   }
 }
