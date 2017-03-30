@@ -9,9 +9,9 @@ scat(format, ..., use.newline = TRUE)
 \arguments{
 \item{format}{A format string passed to sprintf}
 
-\item{\dots}{Arguments to pass to sprintf for dereferencing}
-
 \item{use.newline}{Whether to append a new line at the end}
+
+\item{\dots}{Arguments to pass to sprintf for dereferencing}
 }
 \value{
 A formatted string printed to the console
@@ -31,3 +31,4 @@ Like \code{cat} but you can use format strings.
 Brian Lee Yung Rowe
 }
 \keyword{data}
+

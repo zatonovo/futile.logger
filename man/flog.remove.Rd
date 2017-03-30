@@ -16,7 +16,6 @@ logger will inherit the next available logger in the hierarchy.
 # Remove a logger\cr
 flog.remove(name)
 }
-
 \examples{
 flog.threshold(ERROR, name='my.logger')
 flog.info("Won't print", name='my.logger')
@@ -27,3 +26,4 @@ flog.info("Will print", name='my.logger')
 Brian Lee Yung Rowe
 }
 \keyword{data}
+

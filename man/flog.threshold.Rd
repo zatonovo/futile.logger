@@ -25,7 +25,6 @@ flog.threshold(name=ROOT)
 # Set the threshold for the given logger\cr
 flog.threshold(threshold, name=ROOT)
 }
-
 \examples{
 flog.threshold(ERROR)
 flog.info("Won't print")
@@ -36,3 +35,4 @@ flog.info("Will print")
 Brian Lee Yung Rowe
 }
 \keyword{data}
+
