@@ -4,6 +4,7 @@
 \alias{appender.console}
 \alias{appender.file}
 \alias{appender.file2}
+\alias{appender.modulo}
 \alias{appender.tee}
 \alias{flog.appender}
 \title{Manage appenders for loggers}
@@ -33,6 +34,9 @@ appender.file2(format)
 
 # Write log messages to console and a file\cr
 appender.tee(file)
+
+# Special meta appender that prints only when the internal counter mod n = 0\cr
+appender.modulo(n, appender=appender.console())
 }
 
 \section{Details}{
@@ -46,7 +50,6 @@ The ROOT logger by default uses \code{appender.console}.
 \code{appender.console} is a function that writes to the console.
 No additional arguments are necessary when registering the appender 
 via flog.appender.
-
 
 \code{appender.file} writes to a file, so you must pass an additional file
 argument to the function. To change the file name, just call
@@ -63,6 +66,7 @@ which represents the log message. You need to pass a function reference to
 \code{flog.appender}.
 
 \code{appender.tee} writes to both the console and file.
+\code{appender.modulo} is a meta appender. It calls \code{appender} every \code{n} times.
 }
 
 \section{Value}{

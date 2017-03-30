@@ -27,6 +27,9 @@ flog.layout(fn, name='ROOT')
 # Decorate log messages with a standard format\cr
 layout.simple(level, msg, ...)
 
+# Decorate log messages with a standard format and a pid\cr
+layout.simple.parallel(level, msg, ...)
+
 # Generate log messages as JSON\cr
 layout.json(level, msg, ...)
 
@@ -59,6 +62,7 @@ in printing a message. The following tokens are available.
 \item{~n}{Namespace}
 \item{~f}{The calling function}
 \item{~m}{The message}
+\item{~p}{The process PID}
 }
 
 \code{layout.json} converts the message and any additional objects provided

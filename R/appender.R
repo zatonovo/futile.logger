@@ -22,6 +22,9 @@
 #' # Write log messages to console and a file\cr
 #' appender.tee(file)
 #' 
+#' # Special meta appender that prints only when the internal counter mod n = 0\cr
+#' appender.modulo(n, appender=appender.console())
+#'
 #' @section Details:
 #' Appenders do the actual work of writing log messages to some target.
 #' To use an appender in a logger, you must register it to a given logger.
@@ -32,7 +35,6 @@
 #' \code{appender.console} is a function that writes to the console.
 #' No additional arguments are necessary when registering the appender 
 #' via flog.appender.
-#' 
 #' 
 #' \code{appender.file} writes to a file, so you must pass an additional file
 #' argument to the function. To change the file name, just call
@@ -49,6 +51,7 @@
 #' \code{flog.appender}.
 #' 
 #' \code{appender.tee} writes to both the console and file.
+#' \code{appender.modulo} is a meta appender. It calls \code{appender} every \code{n} times.
 #'
 #' @section Value:
 #' When getting the appender, \code{flog.appender} returns the appender
@@ -56,7 +59,7 @@
 #' return value.
 #'
 #' @name flog.appender
-#' @aliases appender.console appender.file appender.file2 appender.tee
+#' @aliases appender.console appender.file appender.file2 appender.tee appender.modulo
 #' @param \dots Used internally by lambda.r
 #' @author Brian Lee Yung Rowe
 #' @seealso \code{\link{flog.logger}} \code{\link{flog.layout}}
