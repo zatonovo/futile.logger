@@ -35,7 +35,7 @@ appender.file2(format)
 # Write log messages to console and a file\cr
 appender.tee(file)
 
-# Special meta appender that prints only when the internal counter mod n = 0
+# Special meta appender that prints only when the internal counter mod n = 0\cr
 appender.modulo(n, appender=appender.console())
 }
 
