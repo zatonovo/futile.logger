@@ -2,11 +2,10 @@
 % Please edit documentation in R/layout.R
 \name{flog.layout}
 \alias{flog.layout}
-\alias{layout.format}
-\alias{layout.json}
 \alias{layout.simple}
-\alias{layout.simple.parallel}
+\alias{layout.format}
 \alias{layout.tracearg}
+\alias{layout.json}
 \title{Manage layouts within the 'futile.logger' sub-system}
 \arguments{
 \item{\dots}{Used internally by lambda.r}
@@ -59,6 +58,7 @@ in printing a message. The following tokens are available.
 \item{~n}{Namespace}
 \item{~f}{The calling function}
 \item{~m}{The message}
+\item{~p}{The process PID}
 }
 
 \code{layout.json} converts the message and any additional objects provided
@@ -73,6 +73,7 @@ yields something like
 \code{layout.tracearg} is a special layout that takes a variable
 and prints its name and contents.
 }
+
 \examples{
 # Set the layout for 'my.package'
 flog.layout(layout.simple, name='my.package')
@@ -86,11 +87,10 @@ flog.layout(layout.tracearg, name='tracer')
 x <- 5
 flog.info(x, name='tracer')
 }
-\author{
-Brian Lee Yung Rowe
-}
 \seealso{
 \code{\link{flog.logger}} \code{\link{flog.appender}}
 }
+\author{
+Brian Lee Yung Rowe
+}
 \keyword{data}
-

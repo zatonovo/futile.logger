@@ -28,6 +28,7 @@ flog.carp(name=ROOT)
 # Set whether the given logger should carp\cr
 flog.carp(carp, name=ROOT)
 }
+
 \examples{
 flog.carp(TRUE)
 x <- flog.debug("Returns this message but won't print")
@@ -38,4 +39,3 @@ y <- flog.debug("Returns nothing and prints nothing")
 Brian Lee Yung Rowe
 }
 \keyword{data}
-

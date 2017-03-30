@@ -2,9 +2,9 @@
 % Please edit documentation in R/futile.logger-package.R
 \docType{package}
 \name{futile.logger-package}
-\alias{flog.namespace}
-\alias{futile.logger}
 \alias{futile.logger-package}
+\alias{futile.logger}
+\alias{flog.namespace}
 \title{A Logging Utility for R}
 \description{
 This package implements a logging system inspired by log4j. The basic idea
@@ -111,14 +111,13 @@ flog.info("This writes to a \%s", "file", name='logger.b')
 }
 
 }
-\author{
-Brian Lee Yung Rowe <r@zatonovo.com>
-}
 \seealso{
 \code{\link{flog.logger}}, \code{\link{flog.threshold}},
 \code{\link{flog.layout}}, \code{\link{flog.appender}}
 }
+\author{
+Brian Lee Yung Rowe <r@zatonovo.com>
+}
 \keyword{attribute}
 \keyword{logic}
 \keyword{package}
-
