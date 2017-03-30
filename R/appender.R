@@ -59,7 +59,7 @@
 #' return value.
 #'
 #' @name flog.appender
-#' @aliases appender.console appender.file appender.file2 appender.tee
+#' @aliases appender.console appender.file appender.file2 appender.tee appender.modulo
 #' @param \dots Used internally by lambda.r
 #' @author Brian Lee Yung Rowe
 #' @seealso \code{\link{flog.logger}} \code{\link{flog.layout}}
