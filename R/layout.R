@@ -14,6 +14,9 @@
 #' # Decorate log messages with a standard format\cr
 #' layout.simple(level, msg, ...)
 #' 
+#' # Decorate log messages with a standard format and a pid\cr
+#' layout.simple.parallel(level, msg, ...)
+#'
 #' # Generate log messages as JSON\cr
 #' layout.json(level, msg, ...)
 #'
@@ -60,7 +63,7 @@
 #' and prints its name and contents.
 #' 
 #' @name flog.layout
-#' @aliases layout.simple layout.format layout.tracearg layout.json
+#' @aliases layout.simple layout.simple.parallel layout.format layout.tracearg layout.json
 #' @param \dots Used internally by lambda.r
 #' @author Brian Lee Yung Rowe
 #' @seealso \code{\link{flog.logger}} \code{\link{flog.appender}}
