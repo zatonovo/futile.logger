@@ -101,7 +101,7 @@ layout.simple <- function(level, msg, ...)
 {
   the.time <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
   if (length(list(...)) > 0) {
-    parsed <- lapply(list(...), function(x) ifelse(is.null(x), 'NULL', x))
+    parsed <- lapply(list(...), function(x) if(is.null(x)) 'NULL' else x )
     msg <- do.call(sprintf, c(msg, parsed))
   }
   sprintf("%s [%s] %s\n", names(level),the.time, msg)
@@ -112,7 +112,7 @@ layout.simple.parallel <- function(level, msg, ...)
   the.time <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
   the.pid  <- Sys.getpid()
   if (length(list(...)) > 0) {
-    parsed <- lapply(list(...), function(x) ifelse(is.null(x), 'NULL', x))
+    parsed <- lapply(list(...), function(x) if(is.null(x)) 'NULL' else x)
     msg <- do.call(sprintf, c(msg, parsed))
   }
   sprintf("%s [%s %s] %s\n", names(level), the.time, the.pid, msg)
