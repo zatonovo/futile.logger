@@ -27,6 +27,9 @@ flog.layout(fn, name='ROOT')
 # Decorate log messages with a standard format\cr
 layout.simple(level, msg, ...)
 
+# Decorate log messages with a standard format and a pid\cr
+layout.simple.parallel(level, msg, ...)
+
 # Generate log messages as JSON\cr
 layout.json(level, msg, ...)
 

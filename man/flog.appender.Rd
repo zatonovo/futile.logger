@@ -5,6 +5,7 @@
 \alias{appender.console}
 \alias{appender.file}
 \alias{appender.file2}
+\alias{appender.modulo}
 \alias{appender.tee}
 \alias{appender.graylog}
 \title{Manage appenders for loggers}
@@ -37,6 +38,10 @@ appender.tee(file)
 
 # Write log messages to a Graylog2 HTTP GELF endpoint\cr
 appender.graylog(server, port)
+
+# Special meta appender that prints only when the internal counter mod n = 0\cr
+appender.modulo(n, appender=appender.console())
+
 }
 
 \section{Details}{
@@ -50,7 +55,6 @@ The ROOT logger by default uses \code{appender.console}.
 \code{appender.console} is a function that writes to the console.
 No additional arguments are necessary when registering the appender 
 via flog.appender.
-
 
 \code{appender.file} writes to a file, so you must pass an additional file
 argument to the function. To change the file name, just call
@@ -69,6 +73,9 @@ which represents the log message. You need to pass a function reference to
 \code{appender.tee} writes to both the console and file.
 
 \code{appender.graylog} writes to a Graylog2 HTTP GELF endpoint.
+
+\code{appender.modulo} is a meta appender. It calls \code{appender} every \code{n} times.
+
 }
 
 \section{Value}{
