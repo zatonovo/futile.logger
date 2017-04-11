@@ -22,6 +22,9 @@
 #' # Write log messages to console and a file\cr
 #' appender.tee(file)
 #' 
+#' # Write log messages to a Graylog2 HTTP GELF endpoint\cr
+#' appender.graylog(server, port)
+#' 
 #' # Special meta appender that prints only when the internal counter mod n = 0\cr
 #' appender.modulo(n, appender=appender.console())
 #'
@@ -51,6 +54,9 @@
 #' \code{flog.appender}.
 #' 
 #' \code{appender.tee} writes to both the console and file.
+#' 
+#' \code{appender.graylog} writes to a Graylog2 HTTP GELF endpoint.
+#'
 #' \code{appender.modulo} is a meta appender. It calls \code{appender} every \code{n} times.
 #'
 #' @section Value:
@@ -59,7 +65,7 @@
 #' return value.
 #'
 #' @name flog.appender
-#' @aliases appender.console appender.file appender.file2 appender.tee appender.modulo
+#' @aliases appender.console appender.file appender.file2 appender.tee appender.modulo appender.graylog
 #' @param \dots Used internally by lambda.r
 #' @author Brian Lee Yung Rowe
 #' @seealso \code{\link{flog.logger}} \code{\link{flog.layout}}
@@ -158,5 +164,23 @@ appender.modulo <- function(n, appender=appender.console()) {
     i <<- i + 1
     if (i %% n == 0) appender(sprintf("[%s] %s", i,line))
     invisible()
+  }
+}
+
+# Write to a Graylog2 HTTP GELF Endpoint
+appender.graylog <- function(server, port, debug = FALSE) {
+
+  if (!requireNamespace("jsonlite", quietly=TRUE))
+    stop("appender.graylog requires jsonlite. Please install it.", call. = FALSE)
+  if (!requireNamespace("httr", quietly=TRUE))
+    stop("appender.graylog requires httr. Please install it.", call. = FALSE)  
+  
+  function(line) {
+
+    ret <- httr::POST(paste0("http://", server, ":", port, "/gelf"), 
+                      body = line,
+                      encode = 'form')
+    
+    if (debug) print(ret)
   }
 }

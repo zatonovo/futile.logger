@@ -2,11 +2,11 @@
 % Please edit documentation in R/layout.R
 \name{flog.layout}
 \alias{flog.layout}
-\alias{layout.format}
-\alias{layout.json}
 \alias{layout.simple}
-\alias{layout.simple.parallel}
+\alias{layout.format}
 \alias{layout.tracearg}
+\alias{layout.json}
+\alias{layout.graylog}
 \title{Manage layouts within the 'futile.logger' sub-system}
 \arguments{
 \item{\dots}{Used internally by lambda.r}
@@ -38,6 +38,9 @@ layout.format(format, datetime.fmt="%Y-%m-%d %H:%M:%S")
 
 # Show the value of a single variable
 layout.tracearg(level, msg, ...)
+
+# Generate log messages in a Graylog2 HTTP GELF accetable format
+layout.graylog(common.fields)
 }
 
 \section{Details}{
@@ -76,7 +79,16 @@ yields something like
 
 \code{layout.tracearg} is a special layout that takes a variable
 and prints its name and contents.
+
+\code{layout.graylog} is a special layout for use with the appender.graylog to
+generate json acceptable to a Graylog2 HTTP GELF endpoint. Standard fields to
+be included with every message can be included by setting the common.fields
+to a list of properties. E.g.: 
+
+flog.layout(layout.graylog(common.fields = list(host_ip = "10.10.11.23", 
+                                                env = "production")))
 }
+
 \examples{
 # Set the layout for 'my.package'
 flog.layout(layout.simple, name='my.package')
@@ -90,11 +102,10 @@ flog.layout(layout.tracearg, name='tracer')
 x <- 5
 flog.info(x, name='tracer')
 }
-\author{
-Brian Lee Yung Rowe
-}
 \seealso{
 \code{\link{flog.logger}} \code{\link{flog.appender}}
 }
+\author{
+Brian Lee Yung Rowe
+}
 \keyword{data}
-
