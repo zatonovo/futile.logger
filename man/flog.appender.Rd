@@ -5,8 +5,8 @@
 \alias{appender.console}
 \alias{appender.file}
 \alias{appender.file2}
-\alias{appender.modulo}
 \alias{appender.tee}
+\alias{appender.modulo}
 \alias{appender.graylog}
 \title{Manage appenders for loggers}
 \arguments{
@@ -41,7 +41,6 @@ appender.graylog(server, port)
 
 # Special meta appender that prints only when the internal counter mod n = 0\cr
 appender.modulo(n, appender=appender.console())
-
 }
 
 \section{Details}{
@@ -75,7 +74,6 @@ which represents the log message. You need to pass a function reference to
 \code{appender.graylog} writes to a Graylog2 HTTP GELF endpoint.
 
 \code{appender.modulo} is a meta appender. It calls \code{appender} every \code{n} times.
-
 }
 
 \section{Value}{

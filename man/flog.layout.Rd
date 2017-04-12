@@ -3,6 +3,7 @@
 \name{flog.layout}
 \alias{flog.layout}
 \alias{layout.simple}
+\alias{layout.simple.parallel}
 \alias{layout.format}
 \alias{layout.tracearg}
 \alias{layout.json}
