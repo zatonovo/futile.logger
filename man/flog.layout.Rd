@@ -2,11 +2,12 @@
 % Please edit documentation in R/layout.R
 \name{flog.layout}
 \alias{flog.layout}
-\alias{layout.simple}
 \alias{layout.format}
-\alias{layout.tracearg}
-\alias{layout.json}
 \alias{layout.graylog}
+\alias{layout.json}
+\alias{layout.simple}
+\alias{layout.simple.parallel}
+\alias{layout.tracearg}
 \title{Manage layouts within the 'futile.logger' sub-system}
 \arguments{
 \item{\dots}{Used internally by lambda.r}
@@ -88,7 +89,6 @@ to a list of properties. E.g.:
 flog.layout(layout.graylog(common.fields = list(host_ip = "10.10.11.23", 
                                                 env = "production")))
 }
-
 \examples{
 # Set the layout for 'my.package'
 flog.layout(layout.simple, name='my.package')
@@ -102,10 +102,11 @@ flog.layout(layout.tracearg, name='tracer')
 x <- 5
 flog.info(x, name='tracer')
 }
-\seealso{
-\code{\link{flog.logger}} \code{\link{flog.appender}}
-}
 \author{
 Brian Lee Yung Rowe
 }
+\seealso{
+\code{\link{flog.logger}} \code{\link{flog.appender}}
+}
 \keyword{data}
+
