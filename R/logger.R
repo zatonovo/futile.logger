@@ -128,7 +128,6 @@
 #' flog.appender(appender.modulo(1000), name='counter')
 #' lapply(1:10000, function(i) flog.info("value is %s",i, name='counter'))
 #' }
-NULL
 
 .log_level <- function(msg, ..., level, name, capture)
 {
