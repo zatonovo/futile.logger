@@ -158,7 +158,7 @@ layout.json <- function(level, msg, ...) {
     func=jsonlite::unbox(the.function),
     additional=...
   )
-  jsonlite::toJSON(output_list, simplifyVector=TRUE)
+  paste0(jsonlite::toJSON(output_list, simplifyVector=TRUE), '\n')
 }
 
 # This parses and prints a user-defined format string. Available tokens are
