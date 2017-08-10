@@ -109,11 +109,11 @@
 #' @aliases flog.trace flog.debug flog.info flog.warn flog.error flog.fatal
 #' @param msg The message to log
 #' @param name The logger name to use
+#' @param capture Capture print output of variables instead of interpolate
 #' @param logger The logger to use. If \code{NULL} (the default), it is 
 #' looked up based on \code{name}. Provide \code{logger} explicitely if 
 #' the speed of the evaluation of log level is of concern (e.g., a 
 #' \code{flog.trace} call in your function which has to be run many times).
-#' @param capture Capture print output of variables instead of interpolate
 #' @param \dots Optional arguments to populate the format string
 #' @param expr An expression to evaluate
 #' @param finally An optional expression to evaluate at the end

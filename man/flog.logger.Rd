@@ -14,12 +14,12 @@
 
 \item{name}{The logger name to use}
 
+\item{capture}{Capture print output of variables instead of interpolate}
+
 \item{logger}{The logger to use. If \code{NULL} (the default), it is 
 looked up based on \code{name}. Provide \code{logger} explicitely if 
 the speed of the evaluation of log level is of concern (e.g., a 
 \code{flog.trace} call in your function which has to be run many times).}
-
-\item{capture}{Capture print output of variables instead of interpolate}
 
 \item{\dots}{Optional arguments to populate the format string}
 
