@@ -156,6 +156,28 @@ appender.file2 <- function(format, console=FALSE, inherit=TRUE,
   }
 }
 
+#taken from issue 29
+appender.rollingfile <- function(file, maxBytes=1024*1024, backupCount=10) {
+  # try to open a file. create a new file only when it does not exist
+  function(line) {
+    if (file.exists(file) && file.size(file) > maxBytes) {
+      last <-  sprintf("%s.%i", file, backupCount)
+      if (file.exists(last)) {
+        file.remove(last)
+      }
+      for (i in (backupCount - 1):1) {
+        from = sprintf("%s.%i", file, i)
+        to   = sprintf("%s.%i", file, i + 1)
+        if (file.exists(from)) {
+          file.rename(from,to)
+        }
+      }
+      file.rename(sprintf("%s", file), sprintf("%s.%i" , file, 1))
+    }
+    cat(line, file = file, append = TRUE, sep = "")
+  }
+}
+
 
 # Special meta appender that prints only when the internal counter mod n = 0
 appender.modulo <- function(n, appender=appender.console()) {
