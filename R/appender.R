@@ -19,6 +19,12 @@
 #' # Write log messages to a dynamically-named file\cr
 #' appender.file2(format)
 #' 
+#' # write log message to a rolling file\cr
+#' appender.rollingfile(file)
+#'
+#' # write log message to multiple destinations\cr
+#' appender.composite(appender.console(), appender.rollingfile(file))
+#'
 #' # Write log messages to console and a file\cr
 #' appender.tee(file)
 #' 
@@ -156,28 +162,33 @@ appender.file2 <- function(format, console=FALSE, inherit=TRUE,
   }
 }
 
-#taken from issue 29
-appender.rollingfile <- function(file, maxBytes=1024*1024, backupCount=10) {
+# rolling file appender
+appender.rollingfile <- function(file, max.size=1024, size.unit="KB", backup.count = 10) {
   # try to open a file. create a new file only when it does not exist
-  function(line) {
-    if (file.exists(file) && file.size(file) > maxBytes) {
-      last <-  sprintf("%s.%i", file, backupCount)
-      if (file.exists(last)) {
-        file.remove(last)
-      }
-      for (i in (backupCount - 1):1) {
-        from = sprintf("%s.%i", file, i)
-        to   = sprintf("%s.%i", file, i + 1)
-        if (file.exists(from)) {
-          file.rename(from,to)
+    function(line) {
+        if (file.exists(file) && file.size(file) > max.size * list(B = 1, KB = 1024, MB = 1024**2)[[size.unit]]) {
+            pattern <- "[1-9][0-9]*$"
+            all.files <- list.files(path = dirname(file), pattern = paste0(basename(file), pattern), full.names = T)
+            if (length(all.files) > 0) {
+                max.cnt.current <- max(sapply(all.files, function(x) as.numeric(regmatches(x, regexpr(pattern, x)))))
+                for (i in min(backup.count - 1, max.cnt.current, na.rm = T):1) {
+                    from <- paste0(file, i)
+                    to <- paste0(file, i + 1)
+                    if (file.exists(from)) file.rename(from, to)
+                }
+            }
+            file.rename(file, paste0(file, 1))
         }
-      }
-      file.rename(sprintf("%s", file), sprintf("%s.%i" , file, 1))
+        cat(line, file = file, append = TRUE, sep = "")
     }
-    cat(line, file = file, append = TRUE, sep = "")
-  }
 }
 
+# Create composite appender from individual ones. Non-function arguments are ignored silently.
+appender.composite <- function(...){
+    fns <- list(...)
+    fns <- fns[sapply(fns, is.function)]
+    function(line) for (fn in fns) fn(line)
+}
 
 # Special meta appender that prints only when the internal counter mod n = 0
 appender.modulo <- function(n, appender=appender.console()) {
