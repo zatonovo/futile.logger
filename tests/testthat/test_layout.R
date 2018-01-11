@@ -26,6 +26,24 @@ test_that("~p token", {
   expect_that(length(grep('log message', raw)) == 0, is_true())
 })
 
+test_that("~i token (logger name)", {
+  flog.threshold(INFO)
+  flog.layout(layout.format('<~i> ~m'))
+  # with no logger name 
+  # (perhaps due to the behavior of flog.namespace for nested function call, 
+  #  logger name becomes "base" instead of "futile.logger" 
+  #  when no name is given.  this test is currently disabled)
+  #out <- flog.info("log message")
+  #out <- sub('[[:space:]]+$', '', out)  # remove line break at end
+  #expect_equal(out, '<ROOT> log message')
+
+  # with logger name
+  out <- capture.output(flog.info("log message", name='mylogger'))
+  expect_equal(out, '<mylogger> log message')
+  
+  invisible(flog.layout(layout.simple))  # back to the default layout
+})
+
 test_that("Custom layout dereferences level field", {
   flog.threshold(INFO)
   flog.layout(layout.format('xxx[~l]xxx'))
