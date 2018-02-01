@@ -51,6 +51,7 @@
 #' \item{~f}{The calling function}
 #' \item{~m}{The message}
 #' \item{~p}{The process PID}
+#' \item{~i}{Logger name}
 #' }
 #'
 #' \code{layout.json} converts the message and any additional objects provided
@@ -111,7 +112,7 @@ flog.layout(fn, name='ROOT') %as%
 # This file provides some standard formatters
 # This prints out a string in the following format:
 #   LEVEL [timestamp] message
-layout.simple <- function(level, msg, ...)
+layout.simple <- function(level, msg, id='', ...)
 {
   the.time <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
   if (length(list(...)) > 0) {
@@ -121,7 +122,7 @@ layout.simple <- function(level, msg, ...)
   sprintf("%s [%s] %s\n", names(level),the.time, msg)
 }
 
-layout.simple.parallel <- function(level, msg, ...)
+layout.simple.parallel <- function(level, msg, id='', ...)
 {
   the.time <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
   the.pid  <- Sys.getpid()
@@ -144,7 +145,7 @@ layout.simple.parallel <- function(level, msg, ...)
 }
 
 # Generates a list object, then converts it to JSON and outputs it
-layout.json <- function(level, msg, ...) {
+layout.json <- function(level, msg, id='', ...) {
   if (!requireNamespace("jsonlite", quietly=TRUE))
     stop("layout.json requires jsonlite. Please install it.", call.=FALSE)
   
@@ -175,7 +176,7 @@ layout.format <- function(format, datetime.fmt="%Y-%m-%d %H:%M:%S")
 {
   .where = -3 # get name of the function 3 deep in the call stack
               # that is, the function that has called flog.*
-  function(level, msg, ...) {
+  function(level, msg, id='', ...) {
     if (! is.null(substitute(...))) msg <- sprintf(msg, ...)
     the.level <- names(level)
     the.time <- format(Sys.time(), datetime.fmt)
@@ -183,6 +184,7 @@ layout.format <- function(format, datetime.fmt="%Y-%m-%d %H:%M:%S")
     the.namespace <- ifelse(the.namespace == 'futile.logger', 'ROOT', the.namespace)
     the.function <- .get.parent.func.name(.where)
     the.pid <- Sys.getpid()
+    the.id <- ifelse(id %in% c('', 'futile.logger'), 'ROOT', id) 
     #pattern <- c('~l','~t','~n','~f','~m')
     #replace <- c(the.level, the.time, the.namespace, the.function, msg)
     message <- gsub('~l',the.level, format, fixed=TRUE)
@@ -191,11 +193,12 @@ layout.format <- function(format, datetime.fmt="%Y-%m-%d %H:%M:%S")
     message <- gsub('~f',the.function, message, fixed=TRUE)
     message <- gsub('~m',msg, message, fixed=TRUE)
     message <- gsub('~p',the.pid, message, fixed=TRUE)
+    message <- gsub('~i',the.id, message, fixed=TRUE)
     sprintf("%s\n", message)
   }
 }
 
-layout.tracearg <- function(level, msg, ...)
+layout.tracearg <- function(level, msg, id='', ...)
 {
   the.time <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
   if (is.character(msg)) {
@@ -228,7 +231,7 @@ layout.graylog <- function(common.fields, datetime.fmt="%Y-%m-%d %H:%M:%S")
   
   missing.common.fields <- missing(common.fields)
   
-  function(level, msg, ...) {
+  function(level, msg, id='', ...) {
     
     if (! is.null(substitute(...))) msg <- sprintf(msg, ...)
     

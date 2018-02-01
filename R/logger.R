@@ -141,9 +141,9 @@ NULL
   layout <- flog.layout(name)
   if (capture) {
     values <- paste(capture.output(print(...)), collapse='\n')
-    message <- c(layout(level, msg), "\n", values, "\n")
+    message <- c(layout(level, msg, name), "\n", values, "\n")
   } else {
-    message <- layout(level, msg, ...)
+    message <- layout(level, msg, name, ...)
   }
   if (level <= logger$threshold) appender(message)
   invisible(message)
