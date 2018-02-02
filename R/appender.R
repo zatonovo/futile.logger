@@ -178,8 +178,8 @@ appender.graylog <- function(server, port, debug = FALSE) {
   function(line) {
 
     ret <- httr::POST(paste0("http://", server, ":", port, "/gelf"), 
-                      body = line,
-                      encode = 'form')
+                      body = list(short_message = line),
+                      encode = 'json')
     
     if (debug) print(ret)
   }
