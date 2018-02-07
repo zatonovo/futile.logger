@@ -253,3 +253,11 @@ layout.graylog <- function(common.fields, datetime.fmt="%Y-%m-%d %H:%M:%S")
     
   }
 }  
+
+layout.glue <- function(level, msg, id='', ...)
+{
+  if (!requireNamespace("glue", quietly=TRUE))
+    stop("layout.glue requires glue. Please install it.", call.=FALSE)
+  msg <- do.call(glue::glue, c(msg, list(...)), envir = parent.frame(3))
+  layout.simple(level, msg)
+}
