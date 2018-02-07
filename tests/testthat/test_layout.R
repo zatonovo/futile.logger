@@ -53,6 +53,7 @@ test_that("Custom layout dereferences level field", {
 })
 
 context("null values")
+flog.layout(default.layout)
 test_that("Raw null value is printed", {
   raw <- capture.output(flog.info('xxx[%s]xxx', NULL))
   expect_that(length(grep('xxx[NULL]xxx', raw, fixed=TRUE)) == 1, is_true())
