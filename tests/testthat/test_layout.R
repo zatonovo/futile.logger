@@ -117,6 +117,8 @@ test_that("glue features work", {
   expect_equal(drop_log_prefix(capture.output(flog.info('foo{b}'))),
                'foobar')
   rm(b)
+  expect_equal(drop_log_prefix(capture.output(flog.info('foo', 'bar'))),
+               'foobar')
 })
 
 ## back to the default layout
