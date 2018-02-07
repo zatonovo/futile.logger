@@ -16,6 +16,11 @@
 
 \item{capture}{Capture print output of variables instead of interpolate}
 
+\item{logger}{The logger to use. If \code{NULL} (the default), it is 
+looked up based on \code{name}. Provide \code{logger} explicitely if 
+the speed of the evaluation of log level is of concern (e.g., a 
+\code{flog.trace} call in your function which has to be run many times).}
+
 \item{\dots}{Optional arguments to populate the format string}
 
 \item{expr}{An expression to evaluate}
@@ -30,22 +35,22 @@ in conjunction with flog.threshold to interactively change the log level.
 \section{Usage}{
 
 # Conditionally print a log statement at TRACE log level\cr
-flog.trace(msg, ..., name=flog.namespace(), capture=FALSE)
+flog.trace(msg, ..., name=flog.namespace(), logger=NULL, capture=FALSE)
 
 # Conditionally print a log statement at DEBUG log level\cr
-flog.debug(msg, ..., name=flog.namespace(), capture=FALSE)
+flog.debug(msg, ..., name=flog.namespace(), logger=NULL, capture=FALSE)
 
 # Conditionally print a log statement at INFO log level\cr
-flog.info(msg, ..., name=flog.namespace(), capture=FALSE)
+flog.info(msg, ..., name=flog.namespace(), logger=NULL, capture=FALSE)
 
 # Conditionally print a log statement at WARN log level\cr
-flog.warn(msg, ..., name=flog.namespace(), capture=FALSE)
+flog.warn(msg, ..., name=flog.namespace(), logger=NULL, capture=FALSE)
 
 # Conditionally print a log statement at ERROR log level\cr
-flog.error(msg, ..., name=flog.namespace(), capture=FALSE)
+flog.error(msg, ..., name=flog.namespace(), logger=NULL, capture=FALSE)
 
 # Print a log statement at FATAL log level\cr
-flog.fatal(msg, ..., name=flog.namespace(), capture=FALSE)
+flog.fatal(msg, ..., name=flog.namespace(), logger=NULL, capture=FALSE)
 
 # Execute an expression and capture any warnings or errors
 ftry(expr, error=stop, finally=NULL)
@@ -101,6 +106,25 @@ are copied from the parent logger.
 > flog.threshold(ERROR, name='my.logger') \cr
 > flog.info("This won't print", name='my.logger') \cr
 > flog.error("This %s print to a file", 'will', name='my.logger') \cr
+
+If you have a function which gets called many times, it is a good strategy 
+to pass the logger directly instead of its name.
+
+Instead of this:
+> simulation_fun <- function(i) {
+>   flog.trace("We are in loop %d", i, name='my.logger')
+>   i
+> }
+
+... you can do this::
+> my_logger <- flog.logger("my.logger")
+> simulation_fun2 <- function(i) {
+>   flog.trace("We are in loop %d", i, logger=my_logger)
+>   i
+> }
+
+> system.time(for (i in 1:1000) simulation_fun(i))
+> system.time(for (i in 1:1000) simulation_fun2(i))
 
 If you define a logger that you later want to remove, use flog.remove.
 

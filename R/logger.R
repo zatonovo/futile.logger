@@ -6,22 +6,22 @@
 #' 
 #' @section Usage:
 #' # Conditionally print a log statement at TRACE log level\cr
-#' flog.trace(msg, ..., name=flog.namespace(), capture=FALSE)
+#' flog.trace(msg, ..., name=flog.namespace(), logger=NULL, capture=FALSE)
 #'
 #' # Conditionally print a log statement at DEBUG log level\cr
-#' flog.debug(msg, ..., name=flog.namespace(), capture=FALSE)
+#' flog.debug(msg, ..., name=flog.namespace(), logger=NULL, capture=FALSE)
 #'
 #' # Conditionally print a log statement at INFO log level\cr
-#' flog.info(msg, ..., name=flog.namespace(), capture=FALSE)
+#' flog.info(msg, ..., name=flog.namespace(), logger=NULL, capture=FALSE)
 #'
 #' # Conditionally print a log statement at WARN log level\cr
-#' flog.warn(msg, ..., name=flog.namespace(), capture=FALSE)
+#' flog.warn(msg, ..., name=flog.namespace(), logger=NULL, capture=FALSE)
 #'
 #' # Conditionally print a log statement at ERROR log level\cr
-#' flog.error(msg, ..., name=flog.namespace(), capture=FALSE)
+#' flog.error(msg, ..., name=flog.namespace(), logger=NULL, capture=FALSE)
 #'
 #' # Print a log statement at FATAL log level\cr
-#' flog.fatal(msg, ..., name=flog.namespace(), capture=FALSE)
+#' flog.fatal(msg, ..., name=flog.namespace(), logger=NULL, capture=FALSE)
 #'
 #' # Execute an expression and capture any warnings or errors
 #' ftry(expr, error=stop, finally=NULL)
@@ -74,6 +74,25 @@
 #' > flog.info("This won't print", name='my.logger') \cr
 #' > flog.error("This %s print to a file", 'will', name='my.logger') \cr
 #' 
+#' If you have a function which gets called many times, it is a good strategy 
+#' to pass the logger directly instead of its name.
+#' 
+#' Instead of this:
+#' > simulation_fun <- function(i) {
+#' >   flog.trace("We are in loop %d", i, name='my.logger')
+#' >   i
+#' > }
+#' 
+#' ... you can do this::
+#' > my_logger <- flog.logger("my.logger")
+#' > simulation_fun2 <- function(i) {
+#' >   flog.trace("We are in loop %d", i, logger=my_logger)
+#' >   i
+#' > }
+#' 
+#' > system.time(for (i in 1:1000) simulation_fun(i))
+#' > system.time(for (i in 1:1000) simulation_fun2(i))
+#' 
 #' If you define a logger that you later want to remove, use flog.remove.
 #' 
 #' The option 'capture' allows you to print out more complicated data
@@ -91,6 +110,10 @@
 #' @param msg The message to log
 #' @param name The logger name to use
 #' @param capture Capture print output of variables instead of interpolate
+#' @param logger The logger to use. If \code{NULL} (the default), it is 
+#' looked up based on \code{name}. Provide \code{logger} explicitely if 
+#' the speed of the evaluation of log level is of concern (e.g., a 
+#' \code{flog.trace} call in your function which has to be run many times).
 #' @param \dots Optional arguments to populate the format string
 #' @param expr An expression to evaluate
 #' @param finally An optional expression to evaluate at the end
@@ -130,9 +153,9 @@
 #' }
 NULL
 
-.log_level <- function(msg, ..., level, name, capture)
+.log_level <- function(msg, ..., level, name, capture, logger = NULL)
 {
-  logger <- flog.logger(name)
+  if (is.null(logger)) logger <- flog.logger(name)
   if (level > logger$threshold && (is.null(logger$carp) || !logger$carp)) {
     return(invisible())
   }
@@ -172,28 +195,28 @@ flog.namespace <- function(.where=-4)
   ifelse(is.null(ns), 'ROOT', ns)
 }
 
-flog.trace <- function(msg, ..., name=flog.namespace(), capture=FALSE) {
-  .log_level(msg, ..., level=TRACE,name=name, capture=capture)
+flog.trace <- function(msg, ..., name=flog.namespace(), capture=FALSE, logger=NULL) {
+  .log_level(msg, ..., level=TRACE,name=name, capture=capture, logger=logger)
 }
 
-flog.debug <- function(msg, ..., name=flog.namespace(), capture=FALSE) {
-  .log_level(msg, ..., level=DEBUG,name=name, capture=capture)
+flog.debug <- function(msg, ..., name=flog.namespace(), capture=FALSE, logger=NULL) {
+  .log_level(msg, ..., level=DEBUG,name=name, capture=capture, logger=logger)
 }
 
-flog.info <- function(msg, ..., name=flog.namespace(), capture=FALSE) {
-  .log_level(msg, ..., level=INFO,name=name, capture=capture)
+flog.info <- function(msg, ..., name=flog.namespace(), capture=FALSE, logger=NULL) {
+  .log_level(msg, ..., level=INFO,name=name, capture=capture, logger=logger)
 }
 
-flog.warn <- function(msg, ..., name=flog.namespace(), capture=FALSE) {
-  .log_level(msg, ..., level=WARN,name=name, capture=capture)
+flog.warn <- function(msg, ..., name=flog.namespace(), capture=FALSE, logger=NULL) {
+  .log_level(msg, ..., level=WARN,name=name, capture=capture, logger=logger)
 }
 
-flog.error <- function(msg, ..., name=flog.namespace(), capture=FALSE) {
-  .log_level(msg, ..., level=ERROR,name=name, capture=capture)
+flog.error <- function(msg, ..., name=flog.namespace(), capture=FALSE, logger=NULL) {
+  .log_level(msg, ..., level=ERROR,name=name, capture=capture, logger=logger)
 }
 
-flog.fatal <- function(msg, ..., name=flog.namespace(), capture=FALSE) {
-  .log_level(msg, ..., level=FATAL,name=name, capture=capture)
+flog.fatal <- function(msg, ..., name=flog.namespace(), capture=FALSE, logger=NULL) {
+  .log_level(msg, ..., level=FATAL,name=name, capture=capture, logger=logger)
 }
 
 #' Wrap a try block in futile.logger

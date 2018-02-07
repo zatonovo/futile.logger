@@ -93,3 +93,26 @@ test_that("carp returns output", {
   expect_that(length(grep('DEBUG', raw)) > 0, is_true())
 })
 
+context("logger passed explicitely")
+test_that("logger can be provided explicitely", {
+  flog.threshold(DEBUG, name='my.package')
+  my_logger <- flog.logger('my.package')
+  with_logger <- capture.output(flog.info("log message", logger=my_logger))
+  expect_that(length(grep('INFO', with_logger)) > 0, is_true())
+  expect_that(length(grep('log message', with_logger)) > 0, is_true())
+})
+test_that("logger provided explicitely is much faster if nothing has to be logged", {
+  flog.threshold(INFO, name='my.package')
+  my_logger <- flog.logger('my.package')
+  fun_wn <- function(i) {
+    flog.debug("step %d", i, name='my.package')
+    i
+  }
+  fun_wl <- function(i) {
+    flog.debug("step %d", i, logger=my_logger)
+    i
+  }
+  tw <- system.time(for (i in 1:10000) fun_wn(i))["elapsed"]
+  tl <- system.time(for (i in 1:10000) fun_wl(i))["elapsed"]
+  expect_true(tw > tl*10)
+})
