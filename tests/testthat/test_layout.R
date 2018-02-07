@@ -100,11 +100,23 @@ test_that("Function name detection inside nested functions", {
     expect_equal('[a] inside A', capture.output(e()))
 })
 
+drop_log_prefix <- function(msg) {
+    sub('[A-Z]* \\[.*\\] ', '', msg)
+}
+
 context("glue layout")
 flog.layout(layout.glue)
 test_that("glue features work", {
-  expect_equal(sub('[A-Z]* \\[.*\\] ', '', capture.output(flog.info('foobar'))),
+  expect_equal(drop_log_prefix(capture.output(flog.info('foobar'))),
                'foobar')
+  expect_equal(drop_log_prefix(capture.output(flog.info('{a}{b}', a = 'foo', b = 'bar'))),
+               'foobar')
+  expect_equal(drop_log_prefix(capture.output(flog.info('foo{b}', b = 'bar'))),
+               'foobar')
+  b <- 'bar'
+  expect_equal(drop_log_prefix(capture.output(flog.info('foo{b}'))),
+               'foobar')
+  rm(b)
 })
 
 ## back to the default layout
