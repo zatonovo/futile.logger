@@ -101,3 +101,11 @@ test_that("Function name detection inside nested functions", {
     flog.layout(layout.simple)
 })
 
+context("glue layout")
+default.layout <- flog.layout()
+flog.layout(layout.glue)
+test_that("glue features work", {
+  expect_equal(sub('[A-Z]* \\[.*\\] ', '', capture.output(flog.info('foobar'))),
+               'foobar')
+})
+invisible(flog.layout(default.layout))
