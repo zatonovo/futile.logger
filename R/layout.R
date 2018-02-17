@@ -14,6 +14,9 @@
 #' # Decorate log messages with a standard format\cr
 #' layout.simple(level, msg, ...)
 #' 
+#' # Decorate log messages with a standard format using glue instead of sprintf\cr
+#' layout.glue(level, msg, ...)
+#'
 #' # Decorate log messages with a standard format and a pid\cr
 #' layout.simple.parallel(level, msg, ...)
 #'
@@ -75,7 +78,7 @@
 #'                                                 env = "production")))
 #' 
 #' @name flog.layout
-#' @aliases layout.simple layout.simple.parallel layout.format layout.tracearg layout.json layout.graylog
+#' @aliases layout.simple layout.simple.parallel layout.format layout.tracearg layout.json layout.graylog layout.glue
 #' @param \dots Used internally by lambda.r
 #' @author Brian Lee Yung Rowe
 #' @seealso \code{\link{flog.logger}} \code{\link{flog.appender}}
