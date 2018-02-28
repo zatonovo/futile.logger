@@ -160,8 +160,8 @@ NULL
     return(invisible())
   }
 
-  appender <- flog.appender(name)
-  layout <- flog.layout(name)
+  appender <- logger$appender
+  layout <- logger$layout
   if (capture) {
     values <- paste(capture.output(print(...)), collapse='\n')
     message <- c(layout(level, msg, name), "\n", values, "\n")
