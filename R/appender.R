@@ -25,6 +25,9 @@
 #' # Write log messages to a Graylog2 HTTP GELF endpoint\cr
 #' appender.graylog(server, port)
 #' 
+#' # Write log message to syslog. Arguments are passed on to \code{\link[rsyslog]{open_syslog}}.\cr
+#' appender.syslog(identifier, ...)
+#'
 #' # Special meta appender that prints only when the internal counter mod n = 0\cr
 #' appender.modulo(n, appender=appender.console())
 #'
@@ -57,6 +60,8 @@
 #' 
 #' \code{appender.graylog} writes to a Graylog2 HTTP GELF endpoint.
 #'
+#' \code{appender.syslog} writes to the POSIX system logger.
+#'
 #' \code{appender.modulo} is a meta appender. It calls \code{appender} every \code{n} times.
 #'
 #' @section Value:
@@ -65,7 +70,7 @@
 #' return value.
 #'
 #' @name flog.appender
-#' @aliases appender.console appender.file appender.file2 appender.tee appender.modulo appender.graylog
+#' @aliases appender.console appender.file appender.file2 appender.tee appender.modulo appender.graylog appender.syslog
 #' @param \dots Used internally by lambda.r
 #' @author Brian Lee Yung Rowe
 #' @seealso \code{\link{flog.logger}} \code{\link{flog.layout}}
@@ -182,5 +187,26 @@ appender.graylog <- function(server, port, debug = FALSE) {
                       encode = 'json')
     
     if (debug) print(ret)
+  }
+}
+
+# Append to the POSIX System Logger
+#
+# @param identifier A string identifying the application.
+# @param ... Further arguments passed on to \code{\link[rsyslog]{open_syslog}}.
+appender.syslog <- function(identifier, ...) {
+  if (!requireNamespace("rsyslog", quietly = TRUE)) {
+    stop("appender.syslog requires the 'rsyslog' package.", call. = FALSE)
+  }
+  rsyslog::open_syslog(identifier = identifier, ...)
+
+  function(line) {
+    level <- tryCatch(get("level", envir = sys.frame(-1)), error = INFO)
+    # Translate between futile.logger levels and syslog priority levels.
+    level <- switch(
+      names(level), "TRACE" = "DEBUG", "DEBUG" = "DEBUG", "INFO" = "INFO",
+      "WARN" = "WARNING", "ERROR" = "ERR", "FATAL" = "CRITICAL"
+    )
+    rsyslog::syslog(line, level = level)
   }
 }
