@@ -184,3 +184,15 @@ appender.graylog <- function(server, port, debug = FALSE) {
     if (debug) print(ret)
   }
 }
+
+appender.kinesis_handler <- function(stream,region_name,partition_key)
+{
+
+  function(line) {
+      library(AWR.Kinesis)
+      AWR.Kinesis::kinesis_put_record(stream,region = region_name,line,partition_key)
+
+
+  }
+}
+
