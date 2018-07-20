@@ -203,7 +203,7 @@ appender.kinesis_handler <- function(stream,region_name,partition_key)
   
 
   }
-}
+}}
 
 
 
