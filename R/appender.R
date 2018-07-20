@@ -184,15 +184,37 @@ appender.graylog <- function(server, port, debug = FALSE) {
     if (debug) print(ret)
   }
 }
-
+ You need the suggested package(AWR.Kinesis) for this function
 appender.kinesis_handler <- function(stream,region_name,partition_key)
 {
 
   function(line) {
-      library(AWR.Kinesis)
-      AWR.Kinesis::kinesis_put_record(stream,region = region_name,line,partition_key)
+    
+      
+    if(requireNamespace("AWR.Kinesis")) {
+  library(AWR.Kinesis)
+  
+  AWR.Kinesis::kinesis_put_record(stream,region = region_name,line,partition_key)
+    }else{ 
+    stop("AWR.Kinesis pkg needed for kinesis streaming work. Please install it.",
+    }
 
+
+
+  
 
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
