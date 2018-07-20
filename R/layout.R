@@ -151,7 +151,7 @@ layout.json <- function(level, msg, id='', ...) {
   
   the.function <- .get.parent.func.name(-3) # get name of the function 
                                             # 3 deep in the call stack
-  
+  the.pid <- Sys.getpid()
   output_list <- list(
     level=jsonlite::unbox(names(level)),
     timestamp=jsonlite::unbox(format(Sys.time(), "%Y-%m-%d %H:%M:%S %z")),
