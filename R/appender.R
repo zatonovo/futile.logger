@@ -196,9 +196,8 @@ appender.kinesis_handler <- function(stream,region_name,partition_key)
   
   AWR.Kinesis::kinesis_put_record(stream,region = region_name,line,partition_key)
     }else{ 
-    stop("AWR.Kinesis pkg needed for kinesis streaming work. Please install it.",
-    }
-
+    stop("AWR.Kinesis package is needed for this function to work. Please install it.",
+    call. = FALSE)
 
 
   
