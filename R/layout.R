@@ -155,8 +155,9 @@ layout.json <- function(level, msg, id='', ...) {
   output_list <- list(
     level=jsonlite::unbox(names(level)),
     timestamp=jsonlite::unbox(format(Sys.time(), "%Y-%m-%d %H:%M:%S %z")),
+    function=jsonlite::unbox(the.function),
+    process_id=jsonlite::unbox(the.pid),
     message=jsonlite::unbox(msg),
-    func=jsonlite::unbox(the.function),
     additional=...
   )
   paste0(jsonlite::toJSON(output_list, simplifyVector=TRUE), '\n')
