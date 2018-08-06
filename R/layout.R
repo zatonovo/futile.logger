@@ -154,12 +154,12 @@ layout.json <- function(level, msg, id='', ...) {
   the.pid <- Sys.getpid()
   the.id <- ifelse(id %in% c('', 'futile.logger'), 'ROOT', id) 
   
-  the.namespace <- flog.namespace(.where)
-  the.namespace <- ifelse(the.namespace == 'futile.logger', 'ROOT', the.namespace)
+
+ 
   
   output_list <- list(
     appname=jsonlite::unbox(the.id),
-    namespace=jsonlite::unbox(the.namespace),
+   
     
     level=jsonlite::unbox(names(level)),
     timestamp=jsonlite::unbox(format(Sys.time(), "%Y-%m-%d %H:%M:%S %z")),
