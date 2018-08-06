@@ -145,26 +145,26 @@ layout.simple.parallel <- function(level, msg, id='', ...)
 }
 
 # Generates a list object, then converts it to JSON and outputs it
-layout.json <- function(level, msg, id='', ...) {
+layout.json <- function(level, msg, id='',user_id='',session_id='', ...) {
   if (!requireNamespace("jsonlite", quietly=TRUE))
     stop("layout.json requires jsonlite. Please install it.", call.=FALSE)
   
   the.function <- .get.parent.func.name(-3) # get name of the function 
                                             # 3 deep in the call stack
-  the.pid <- Sys.getpid()
   the.id <- ifelse(id %in% c('', 'futile.logger'), 'ROOT', id) 
-  
-
- 
+  the.user_id <- ifelse(user_id %in% c('', 'futile.logger'), 'ROOT', user_id) 
+  the.session_id<- ifelse(session_id %in% c('', 'futile.logger'), 'ROOT', session_id) 
   
   output_list <- list(
-    appname=jsonlite::unbox(the.id),
-   
+    app_name=jsonlite::unbox(the.id),
+    
+    user_id=jsonlite::unbox(the.user_id)
+    session_id=jsonlite::unbox(the.session_id)
+    
     
     level=jsonlite::unbox(names(level)),
     timestamp=jsonlite::unbox(format(Sys.time(), "%Y-%m-%d %H:%M:%S %z")),
     calling_function=jsonlite::unbox(the.function),
-    process_id=jsonlite::unbox(the.pid),
     message=jsonlite::unbox(msg),
     additional=...
   )
