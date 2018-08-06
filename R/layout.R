@@ -145,15 +145,21 @@ layout.simple.parallel <- function(level, msg, id='', ...)
 }
 
 # Generates a list object, then converts it to JSON and outputs it
-layout.json <- function(level, msg, id='',user_id='',session_id='', ...) {
+layout.json <- function(user_id,session_id){
+
+
+the.user_id <- ifelse(user_id %in% c('', 'futile.logger'), 'ROOT', user_id) 
+the.session_id<- ifelse(session_id %in% c('', 'futile.logger'), 'ROOT', session_id) 
+
+
+function(level, msg, id='', ...) {
   if (!requireNamespace("jsonlite", quietly=TRUE))
     stop("layout.json requires jsonlite. Please install it.", call.=FALSE)
   
   the.function <- .get.parent.func.name(-3) # get name of the function 
                                             # 3 deep in the call stack
   the.id <- ifelse(id %in% c('', 'futile.logger'), 'ROOT', id) 
-  the.user_id <- ifelse(user_id %in% c('', 'futile.logger'), 'ROOT', user_id) 
-  the.session_id<- ifelse(session_id %in% c('', 'futile.logger'), 'ROOT', session_id) 
+  
   
   output_list <- list(
     app_name=jsonlite::unbox(the.id),
@@ -170,6 +176,8 @@ layout.json <- function(level, msg, id='',user_id='',session_id='', ...) {
   )
   paste0(jsonlite::toJSON(output_list, simplifyVector=TRUE), '\n')
 }
+}
+
 
 # This parses and prints a user-defined format string. Available tokens are
 # ~l - Log level
