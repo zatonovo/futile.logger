@@ -158,8 +158,8 @@ layout.json <- function(level, msg, id='',user_id='',session_id='', ...) {
   output_list <- list(
     app_name=jsonlite::unbox(the.id),
     
-    user_id=jsonlite::unbox(the.user_id)
-    session_id=jsonlite::unbox(the.session_id)
+    user_id=jsonlite::unbox(the.user_id),
+    session_id=jsonlite::unbox(the.session_id),
     
     
     level=jsonlite::unbox(names(level)),
