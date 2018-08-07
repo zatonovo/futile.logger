@@ -28,6 +28,17 @@ layout.simple <- function(level, msg, id='', ...)
   }
   sprintf("%s [%s] %s\n", names(level),the.time, msg)
 }
+                     
+ # Get name of a parent function in call stack
+# @param .where: where in the call stack. -1 means parent of the caller.
+.get.parent.func.name <- function(.where) {
+  the.function <- tryCatch(deparse(sys.call(.where - 1)[[1]]), 
+        error=function(e) "(shell)")
+  the.function <- ifelse(
+    length(grep('flog\\.',the.function)) == 0, the.function, '(shell)')
+
+  the.function
+}
 
 
 
