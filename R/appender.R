@@ -191,18 +191,26 @@ appender.kinesis <- function(stream, region_name)
   }
 }
 
+appender.kinesis <- function(stream, region_name)
+{
+  function(line) {
+    #rcticloud::Firehose@put_record(stream, region = region_name, line)
+  }
+}
+
 #' Kinesis Firehose and console appender
 #' 
 #' @param stream Firehose stream name
 #' @param region_name Firehose stream region
 #' @export
-appender.kinesis_tee <- function(stream, region_name){ 
+appender.kinesis_tee <- function(mykey, secret_key){ 
   function(line) {
     cat(line, sep='') 
-    #rcticloud::Firehose@put_record(stream, region = region_name, line)
+    myhose <- rcticloud:: RFIREHOSE$new(key =mykey , secret = secret_key)
+ myhose$put_record(data = line)
+
   }
 }
-
 
 
 
