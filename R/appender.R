@@ -184,26 +184,24 @@ appender.graylog <- function(server, port, debug = FALSE) {
     if (debug) print(ret)
   }
 }
-#You need the suggested package(AWR.Kinesis) for this function
-appender.kinesis_handler <- function(stream,region_name,partition_key)
+appender.kinesis <- function(stream, region_name)
 {
-
   function(line) {
-    
-      
-    if(requireNamespace("AWR.Kinesis")) {
-  library(AWR.Kinesis)
-  
-  AWR.Kinesis::kinesis_put_record(stream,region = region_name,line,partition_key)
-    }else{ 
-    stop("AWR.Kinesis package is needed for this function to work. Please install it.",
-    call. = FALSE)
-
-
-  
-
+    #rcticloud::Firehose@put_record(stream, region = region_name, line)
   }
-}}
+}
+
+#' Kinesis Firehose and console appender
+#' 
+#' @param stream Firehose stream name
+#' @param region_name Firehose stream region
+#' @export
+appender.kinesis_tee <- function(stream, region_name){ 
+  function(line) {
+    cat(line, sep='') 
+    #rcticloud::Firehose@put_record(stream, region = region_name, line)
+  }
+}
 
 
 
