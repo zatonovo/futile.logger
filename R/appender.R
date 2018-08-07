@@ -207,8 +207,17 @@ appender.kinesis_tee <- function(mykey, secret_key){
   library(rcticloud)
   function(line) {
     cat(line, sep='') 
-    myhose <- rcticloud:: RFIREHOSE$new(key =mykey , secret = secret_key)
+    
+    myhose <- RFIREHOSE$new(uid = mykey, pwd = secret_key)
+
+
+    
+    
+    
  myhose$put_record(data = line)
+    
+    
+    
 
   }
 }
