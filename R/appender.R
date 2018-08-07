@@ -204,6 +204,7 @@ appender.kinesis <- function(stream, region_name)
 #' @param region_name Firehose stream region
 #' @export
 appender.kinesis_tee <- function(mykey, secret_key){ 
+  library(rcticloud)
   function(line) {
     cat(line, sep='') 
     myhose <- rcticloud:: RFIREHOSE$new(key =mykey , secret = secret_key)
