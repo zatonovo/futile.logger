@@ -15,6 +15,26 @@ flog.layout(fn, name='ROOT') %as%
 }
 
 
+
+# This file provides some standard formatters
+# This prints out a string in the following format:
+#   LEVEL [timestamp] message
+layout.simple <- function(level, msg, id='', ...)
+{
+  the.time <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
+  if (length(list(...)) > 0) {
+    parsed <- lapply(list(...), function(x) if(is.null(x)) 'NULL' else x )
+    msg <- do.call(sprintf, c(msg, parsed))
+  }
+  sprintf("%s [%s] %s\n", names(level),the.time, msg)
+}
+
+
+
+
+
+
+
 # Generates a list object, then converts it to JSON and outputs it
 layout.json <- function(user_id,session_id){
 
