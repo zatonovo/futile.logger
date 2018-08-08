@@ -47,7 +47,7 @@ layout.simple <- function(level, msg, id='', ...)
 
 
 # Generates a list object, then converts it to JSON and outputs it
-layout.json <- function(user_id,session_id){
+layout.json <- function(user_id=NULL,session_id=NULL){
 
 
 the.user_id <- ifelse(user_id %in% c('', 'futile.logger'), 'ROOT', user_id) 
