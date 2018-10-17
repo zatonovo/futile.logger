@@ -14,6 +14,9 @@
 #' # Decorate log messages with a standard format\cr
 #' layout.simple(level, msg, ...)
 #' 
+#' # Decorate log messages with a standard format colored by log level\cr
+#' layout.colored(level, msg, ...)
+#'
 #' # Decorate log messages with a standard format and a pid\cr
 #' layout.simple.parallel(level, msg, ...)
 #'
@@ -253,3 +256,31 @@ layout.graylog <- function(common.fields, datetime.fmt="%Y-%m-%d %H:%M:%S")
     
   }
 }  
+layout.colored <- function(level, msg, id='', ...)
+{
+
+  if (!requireNamespace("crayon", quietly = TRUE)) {
+    stop("Colored logging requires the 'crayon' package to be installed.")
+  }
+
+  the.time <- format(Sys.time(), "[%Y-%m-%d %H:%M:%S]")
+
+  if (length(list(...)) > 0) {
+    parsed <- lapply(list(...), function(x) if(is.null(x)) 'NULL' else x )
+    msg <- do.call(sprintf, c(msg, parsed))
+  }
+
+  color <- switch(
+    names(level),
+    'FATAL' = function(x) crayon::bgRed(crayon::black(x)),
+    'ERROR' = crayon::red,
+    'WARN'  = crayon::yellow,
+    'INFO'  = crayon::blue,
+    'DEBUG' = crayon::silver,
+    'TRACE' = crayon::blurred,
+    crayon::white
+    )
+
+  color(paste(crayon::bold(names(level)), the.time, msg, crayon::reset('\n')))
+
+}

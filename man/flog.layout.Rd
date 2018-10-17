@@ -8,6 +8,7 @@
 \alias{layout.tracearg}
 \alias{layout.json}
 \alias{layout.graylog}
+\alias{layout.colored}
 \title{Manage layouts within the 'futile.logger' sub-system}
 \arguments{
 \item{\dots}{Used internally by lambda.r}
@@ -27,6 +28,9 @@ flog.layout(fn, name='ROOT')
 
 # Decorate log messages with a standard format\cr
 layout.simple(level, msg, ...)
+
+# Decorate log messages with a standard format colored by log level\cr
+layout.colored(level, msg, ...)
 
 # Decorate log messages with a standard format and a pid\cr
 layout.simple.parallel(level, msg, ...)
