@@ -8,6 +8,7 @@
 \alias{appender.tee}
 \alias{appender.modulo}
 \alias{appender.graylog}
+\alias{appender.syslog}
 \title{Manage appenders for loggers}
 \arguments{
 \item{\dots}{Used internally by lambda.r}
@@ -38,6 +39,9 @@ appender.tee(file)
 
 # Write log messages to a Graylog2 HTTP GELF endpoint\cr
 appender.graylog(server, port)
+
+# Write log message to syslog. Arguments are passed on to \code{\link[rsyslog]{open_syslog}}.\cr
+appender.syslog(identifier, ...)
 
 # Special meta appender that prints only when the internal counter mod n = 0\cr
 appender.modulo(n, appender=appender.console())
@@ -72,6 +76,8 @@ which represents the log message. You need to pass a function reference to
 \code{appender.tee} writes to both the console and file.
 
 \code{appender.graylog} writes to a Graylog2 HTTP GELF endpoint.
+
+\code{appender.syslog} writes to the POSIX system logger.
 
 \code{appender.modulo} is a meta appender. It calls \code{appender} every \code{n} times.
 }
