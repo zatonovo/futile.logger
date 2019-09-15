@@ -1,4 +1,8 @@
 # :vim set ff=R
+
+## record default layout so that we can restore later
+default.layout <- flog.layout()
+
 context("format string")
 test_that("Embedded format string", {
   flog.threshold(INFO)
@@ -12,7 +16,6 @@ test_that("layout.simple.parallel layout", {
   flog.threshold(INFO)
   flog.layout(layout.simple.parallel)
   raw <- capture.output(flog.info("log message"))
-  flog.layout(layout.simple)
   expect_that(length(paste0('INFO [[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} ', Sys.getpid(), '] log message') ==  raw) > 0, is_true())
   expect_that(length(grep('log message', raw)) > 0, is_true())
 })
@@ -21,7 +24,6 @@ test_that("~p token", {
   flog.threshold(INFO)
   flog.layout(layout.format('xxx[~l ~p]xxx'))
   raw <- capture.output(flog.info("log message"))
-  flog.layout(layout.simple)
   expect_that(paste0('xxx[INFO ',Sys.getpid(),']xxx') == raw, is_true())
   expect_that(length(grep('log message', raw)) == 0, is_true())
 })
@@ -40,20 +42,18 @@ test_that("~i token (logger name)", {
   # with logger name
   out <- capture.output(flog.info("log message", name='mylogger'))
   expect_equal(out, '<mylogger> log message')
-  
-  invisible(flog.layout(layout.simple))  # back to the default layout
 })
 
 test_that("Custom layout dereferences level field", {
   flog.threshold(INFO)
   flog.layout(layout.format('xxx[~l]xxx'))
   raw <- capture.output(flog.info("log message"))
-  flog.layout(layout.simple)
   expect_that('xxx[INFO]xxx' == raw, is_true())
   expect_that(length(grep('log message', raw)) == 0, is_true())
 })
 
 context("null values")
+flog.layout(default.layout)
 test_that("Raw null value is printed", {
   raw <- capture.output(flog.info('xxx[%s]xxx', NULL))
   expect_that(length(grep('xxx[NULL]xxx', raw, fixed=TRUE)) == 1, is_true())
@@ -98,6 +98,28 @@ test_that("Function name detection inside nested functions", {
     d <- function() { b() }
     e <- function() { d() }
     expect_equal('[a] inside A', capture.output(e()))
-    flog.layout(layout.simple)
 })
 
+drop_log_prefix <- function(msg) {
+    sub('[A-Z]* \\[.*\\] ', '', msg)
+}
+
+context("glue layout")
+flog.layout(layout.glue)
+test_that("glue features work", {
+  expect_equal(drop_log_prefix(capture.output(flog.info('foobar'))),
+               'foobar')
+  expect_equal(drop_log_prefix(capture.output(flog.info('{a}{b}', a = 'foo', b = 'bar'))),
+               'foobar')
+  expect_equal(drop_log_prefix(capture.output(flog.info('foo{b}', b = 'bar'))),
+               'foobar')
+  b <- 'bar'
+  expect_equal(drop_log_prefix(capture.output(flog.info('foo{b}'))),
+               'foobar')
+  rm(b)
+  expect_equal(drop_log_prefix(capture.output(flog.info('foo', 'bar'))),
+               'foobar')
+})
+
+## back to the default layout
+invisible(flog.layout(default.layout))

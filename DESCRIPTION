@@ -15,7 +15,8 @@ Suggests:
     testthat,
     jsonlite,
     httr,
-    rsyslog
+    rsyslog,
+    glue
 Description: Provides a simple yet powerful logging utility. Based loosely on
     log4j, futile.logger takes advantage of R idioms to make logging a
     convenient and easy to use replacement for cat and print statements.
