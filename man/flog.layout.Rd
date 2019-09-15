@@ -9,6 +9,7 @@
 \alias{layout.json}
 \alias{layout.graylog}
 \alias{layout.colored}
+\alias{layout.glue}
 \title{Manage layouts within the 'futile.logger' sub-system}
 \arguments{
 \item{\dots}{Used internally by lambda.r}
@@ -31,6 +32,9 @@ layout.simple(level, msg, ...)
 
 # Decorate log messages with a standard format colored by log level\cr
 layout.colored(level, msg, ...)
+
+# Decorate log messages with a standard format using glue instead of sprintf\cr
+layout.glue(level, msg, ...)
 
 # Decorate log messages with a standard format and a pid\cr
 layout.simple.parallel(level, msg, ...)
