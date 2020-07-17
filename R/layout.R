@@ -115,6 +115,11 @@ flog.layout(fn, name='ROOT') %as%
   invisible()
 }
 
+prepare_arg <- function(x) {
+  if (is.null(x) || length(x) == 0) return(deparse(substitute(x)))
+  x
+}
+
 # This file provides some standard formatters
 # This prints out a string in the following format:
 #   LEVEL [timestamp] message
@@ -122,7 +127,7 @@ layout.simple <- function(level, msg, id='', ...)
 {
   the.time <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
   if (length(list(...)) > 0) {
-    parsed <- lapply(list(...), function(x) if(is.null(x)) 'NULL' else x )
+    parsed <- lapply(list(...), prepare_arg)
     msg <- do.call(sprintf, c(msg, parsed))
   }
   sprintf("%s [%s] %s\n", names(level),the.time, msg)
@@ -133,7 +138,7 @@ layout.simple.parallel <- function(level, msg, id='', ...)
   the.time <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
   the.pid  <- Sys.getpid()
   if (length(list(...)) > 0) {
-    parsed <- lapply(list(...), function(x) if(is.null(x)) 'NULL' else x)
+    parsed <- lapply(list(...), prepare_arg)
     msg <- do.call(sprintf, c(msg, parsed))
   }
   sprintf("%s [%s %s] %s\n", names(level), the.time, the.pid, msg)
