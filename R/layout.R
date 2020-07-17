@@ -116,7 +116,7 @@ flog.layout(fn, name='ROOT') %as%
 }
 
 prepare_arg <- function(x) {
-  if (is.null(x) || length(x) == 0) return(deparse(substitute(x)))
+  if (is.null(x) || length(x) == 0) return(deparse(x))
   x
 }
 
