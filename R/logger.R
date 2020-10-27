@@ -24,7 +24,7 @@
 #' flog.fatal(msg, ..., name=flog.namespace(), logger=NULL, capture=FALSE)
 #'
 #' # Execute an expression and capture any warnings or errors
-#' ftry(expr, error=stop, finally=NULL)
+#' ftry(expr, error=stop, silent=FALSE, finally=NULL)
 #'
 #' @section Additional Usage:
 #' These functions generally do not need to be called by an end user.
@@ -228,15 +228,32 @@ flog.fatal <- function(msg, ..., name=flog.namespace(), capture=FALSE, logger=NU
 #' @name ftry
 #' @param expr The expression to evaluate in a try block
 #' @param error An error handler
+#' @param silent Boolean - should errors be rethrown? The same as the silent option on `try`.
+#' If a custom error handler is being used that takes control over this option. Note you should
+#' test the return value if you are dependent on it.
 #' @param finally Pass-through to tryCatch finally
 #' @author Brian Lee Yung Rowe
 #' @keywords data
 #' @examples
-#' ftry(log(-1))
-ftry <- function(expr, error=stop, finally=NULL) {
+#' ftry(log("a")) # logs the warning (but the warning still bubbles)
+#' ftry(log(-1),silent=TRUE) # logs the error and silently continues
+#' ftry(log(-1)) # logs the error and rethrows it
+ftry <- function(expr, error = stop, silent = FALSE, finally = NULL) {
   w.handler <- function(e) flog.warn("%s", e)
-  e.handler <- function(e) { flog.error("%s", e); error(e) }
-  tryCatch(expr, warning=w.handler, error=e.handler, finally)
+    e.handler <- function(e) {
+      flog.error("%s", e)
+      if (!silent | !isTRUE(all.equal(error, stop))) {
+        error(e)
+      }
+  }
+  tryCatch(
+    withCallingHandlers(
+      expr,
+      warning = w.handler
+    ),
+    error = e.handler,
+    finally
+  )
 }
 
 # By default, use the package namespace or use the 'ROOT' logger.
@@ -256,7 +273,7 @@ flog.logger(name) %as%
   if (! is.null(os)) return(os)
   if (name == 'ROOT') {
     logger <- list(name=name,
-      threshold=INFO, 
+      threshold=INFO,
       appender=appender.console(),
       layout=layout.simple)
     logger.options(update=list(key, logger))
@@ -275,7 +292,7 @@ flog.logger(name, threshold=NULL, appender=NULL, layout=NULL, carp=NULL) %as%
   if (!is.null(appender)) logger$appender <- appender
   if (!is.null(layout)) logger$layout <- layout
   if (!is.null(carp)) logger$carp <- carp
-  
+
   key <- paste("logger", name, sep='.')
   logger.options(update=list(key, logger))
   invisible()
@@ -302,7 +319,7 @@ flog.logger(name, threshold=NULL, appender=NULL, layout=NULL, carp=NULL) %as%
 #' flog.remove('my.logger')
 #' flog.info("Will print", name='my.logger')
 flog.remove('ROOT') %as% { invisible() }
-flog.remove(name) %as% 
+flog.remove(name) %as%
 {
   key <- paste("logger", name, sep='.')
   logger.options(update=list(key, NULL))
@@ -350,7 +367,7 @@ flog.threshold('error', name='ROOT') %as% flog.threshold(ERROR, name)
 flog.threshold('FATAL', name='ROOT') %as% flog.threshold(FATAL, name)
 flog.threshold('fatal', name='ROOT') %as% flog.threshold(FATAL, name)
 
-    
+
 flog.threshold(threshold, name) %::% numeric : character : .
 flog.threshold(threshold, name='ROOT') %as%
 {
