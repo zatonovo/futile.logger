@@ -228,17 +228,17 @@ flog.fatal <- function(msg, ..., name=flog.namespace(), capture=FALSE, logger=NU
 #' @name ftry
 #' @param expr The expression to evaluate in a try block
 #' @param error An error handler
+#' @param finally Pass-through to tryCatch finally
 #' @param silent Boolean - should errors be rethrown? The same as the silent option on `try`.
 #' If a custom error handler is being used that takes control over this option. Note you should
 #' test the return value if you are dependent on it.
-#' @param finally Pass-through to tryCatch finally
 #' @author Brian Lee Yung Rowe
 #' @keywords data
 #' @examples
 #' ftry(log("a")) # logs the warning (but the warning still bubbles)
 #' ftry(log(-1),silent=TRUE) # logs the error and silently continues
 #' ftry(log(-1)) # logs the error and rethrows it
-ftry <- function(expr, error = stop, silent = FALSE, finally = NULL) {
+ftry <- function(expr, error = stop, finally = NULL, silent = FALSE) {
   w.handler <- function(e) flog.warn("%s", e)
     e.handler <- function(e) {
       flog.error("%s", e)
