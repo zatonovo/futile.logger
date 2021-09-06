@@ -6,6 +6,9 @@
 \usage{
 prepare_arg(x)
 }
+\arguments{
+\item{x}{The argument to prepare}
+}
 \description{
 Return name of argument if arg is empty. Otherwise return the value.
 }
