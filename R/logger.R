@@ -235,9 +235,11 @@ flog.fatal <- function(msg, ..., name=flog.namespace(), capture=FALSE, logger=NU
 #' @author Brian Lee Yung Rowe
 #' @keywords data
 #' @examples
+#' \dontrun{
 #' ftry(log("a")) # logs the warning (but the warning still bubbles)
-#' ftry(log(-1),silent=TRUE) # logs the error and silently continues
 #' ftry(log(-1)) # logs the error and rethrows it
+#' }
+#' ftry(log(-1),silent=TRUE) # logs the error and silently continues
 ftry <- function(expr, error = stop, finally = NULL, silent = FALSE) {
   w.handler <- function(e) flog.warn("%s", e)
     e.handler <- function(e) {

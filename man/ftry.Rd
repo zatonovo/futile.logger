@@ -23,9 +23,11 @@ so problems can be caught both in the standard R warning system, while
 also being emitted via futile.logger.
 }
 \examples{
+\dontrun{
 ftry(log("a")) # logs the warning (but the warning still bubbles)
-ftry(log(-1),silent=TRUE) # logs the error and silently continues
 ftry(log(-1)) # logs the error and rethrows it
+}
+ftry(log(-1),silent=TRUE) # logs the error and silently continues
 }
 \author{
 Brian Lee Yung Rowe
