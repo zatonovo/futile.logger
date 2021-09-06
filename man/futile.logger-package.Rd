@@ -41,7 +41,7 @@ Thresholds range from most verbose to least verbose: TRACE, DEBUG, INFO,
 WARN, ERROR, FATAL. You can easily change the threshold of the ROOT logger
 by calling > flog.threshold(TRACE) which changes will print all log messages
 from every package. To suppress most logging by default but turn on all
-debugging for a logger 'my.logger', you would execute
+debugging for a logger 'my.logger', you would execute 
 
 > flog.threshold(ERROR)\cr
 > flog.threshold(TRACE, name='my.logger')

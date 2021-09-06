@@ -53,7 +53,7 @@ flog.error(msg, ..., name=flog.namespace(), logger=NULL, capture=FALSE)
 flog.fatal(msg, ..., name=flog.namespace(), logger=NULL, capture=FALSE)
 
 # Execute an expression and capture any warnings or errors
-ftry(expr, error=stop, finally=NULL)
+ftry(expr, error=stop, silent=FALSE, finally=NULL)
 }
 
 \section{Additional Usage}{

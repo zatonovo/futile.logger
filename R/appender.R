@@ -107,7 +107,7 @@ flog.appender(fn, name='ROOT') %as%
 # to the below signature: function(line)
 appender.console <- function()
 {
-  function(line) cat(line, sep='')
+  function(line) .write_to_console(line)
 }
 
 # Write to a file.
@@ -119,7 +119,7 @@ appender.file <- function(file)
 # Write to a file and to console 
 appender.tee <- function(file){ 
   function(line) {
-    cat(line, sep='') 
+    .write_to_console(line)
     cat(line, file=file, append=TRUE, sep='')
   }
 }
@@ -132,16 +132,23 @@ appender.file2 <- function(format, console=FALSE, inherit=TRUE,
   .funcwhere <- -3 # ditto for the function name
   .levelwhere <- -1 # ditto for the current "level"
   function(line) {
-    if (console) cat(line, sep='')
+    if (console) .write_to_console(line)
+
     err <- function(e) {
       stop('Illegal function call, must call from flog.trace, flog.debug, flog.info, flog.warn, flog.error, flog.fatal, etc.')
     }
-    the.level <- tryCatch(get("level", envir=sys.frame(.levelwhere)),error = err)
-    the.threshold <- tryCatch(get('logger',envir=sys.frame(.levelwhere)), error=err)$threshold
-    if(inherit) {
+    the.level <- tryCatch(get("level",
+      envir=sys.frame(.levelwhere)), error=err)
+    the.threshold <- tryCatch(get('logger',
+      envir=sys.frame(.levelwhere)), error=err)$threshold
+
+    if (inherit) {
       LEVELS <- c(FATAL, ERROR, WARN, INFO, DEBUG, TRACE)
       levels <- names(LEVELS[the.level <= LEVELS & LEVELS <= the.threshold])
-    } else levels <- names(the.level)
+    } else {
+      levels <- names(the.level)
+    }
+
     the.time <- format(Sys.time(), datetime.fmt)
     the.namespace <- flog.namespace(.nswhere)
     the.namespace <- ifelse(the.namespace == 'futile.logger', 'ROOT', the.namespace)
@@ -151,12 +158,14 @@ appender.file2 <- function(format, console=FALSE, inherit=TRUE,
     filename <- gsub('~n', the.namespace, filename, fixed=TRUE)
     filename <- gsub('~f', the.function, filename, fixed=TRUE)
     filename <- gsub('~p', the.pid, filename, fixed=TRUE)
-    if(length(grep('~l', filename)) > 0) {
+    if (length(grep('~l', filename)) > 0) {
       sapply(levels, function(level) {
         filename <- gsub('~l', level, filename, fixed=TRUE)
         cat(line, file=filename, append=TRUE, sep='')
       })
-    }else cat(line, file=filename, append=TRUE, sep='')
+    } else {
+      cat(line, file=filename, append=TRUE, sep='')
+    }
     invisible()
   }
 }

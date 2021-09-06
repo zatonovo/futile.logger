@@ -4,7 +4,7 @@ flog.threshold(INFO)
 flog.layout(layout.json)
 
 test_that("simple string", {
-  raw <- capture.output(flog.info("log message"))
+  raw <- get_log_output(flog.info("log message"))
   aslist <- jsonlite::fromJSON(raw)
   expect_equal(aslist$level, "INFO")
   expect_equal(aslist$message, "log message")
@@ -14,7 +14,7 @@ test_that("simple string", {
 })
 
 test_that("additional objects", {
-  raw <- capture.output(
+  raw <- get_log_output(
     flog.info("log message", pet="hamster", weight=12, stuff=c("a", "b")))
   aslist <- jsonlite::fromJSON(raw)
   expect_equal(aslist$level, "INFO")
@@ -33,7 +33,7 @@ context("JSON: NULL values")
 #})
 
 test_that("NULL additional objects", {
-  raw <- capture.output(flog.info("log message", nullthing=NULL))
+  raw <- get_log_output(flog.info("log message", nullthing=NULL))
   aslist <- jsonlite::fromJSON(raw)
   expect_equal(length(aslist$nullthing), 0)
 })

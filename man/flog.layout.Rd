@@ -8,7 +8,6 @@
 \alias{layout.tracearg}
 \alias{layout.json}
 \alias{layout.graylog}
-\alias{layout.colored}
 \alias{layout.glue}
 \title{Manage layouts within the 'futile.logger' sub-system}
 \arguments{
@@ -75,6 +74,7 @@ in printing a message. The following tokens are available.
 \item{~f}{The calling function}
 \item{~m}{The message}
 \item{~p}{The process PID}
+\item{~i}{Logger name}
 }
 
 \code{layout.json} converts the message and any additional objects provided

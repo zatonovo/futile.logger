@@ -81,7 +81,7 @@
 #'                                                 env = "production")))
 #' 
 #' @name flog.layout
-#' @aliases layout.simple layout.simple.parallel layout.format layout.tracearg layout.json layout.graylog layout.glue
+#' @aliases layout.simple layout.simple.parallel layout.format layout.tracearg layout.json layout.graylog layout.glue layout.colored
 #' @param \dots Used internally by lambda.r
 #' @author Brian Lee Yung Rowe
 #' @seealso \code{\link{flog.logger}} \code{\link{flog.appender}}
@@ -115,6 +115,11 @@ flog.layout(fn, name='ROOT') %as%
   invisible()
 }
 
+#' Provide basic parsing for layout string
+#'
+#' Return name of argument if arg is empty. Otherwise return the value.
+#'
+#' @param x The argument to prepare
 prepare_arg <- function(x) {
   if (is.null(x) || length(x) == 0) return(deparse(x))
   x
