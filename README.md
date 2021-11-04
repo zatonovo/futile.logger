@@ -160,6 +160,6 @@ What's New
 + Capture output for print statements (for more complex objects)
 + New layout.tracearg
 
-See the [NEWS](NEWS.md) file for a detalled list of most recent changes.
+See the [NEWS](NEWS.md) file for a detailed list of most recent changes.
 
 
