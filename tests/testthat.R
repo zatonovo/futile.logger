@@ -1,4 +1,4 @@
-# library(testthat)
+library(testthat)
 library(futile.logger)
 
 
