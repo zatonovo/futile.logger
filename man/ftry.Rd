@@ -4,7 +4,7 @@
 \alias{ftry}
 \title{Wrap a try block in futile.logger}
 \usage{
-ftry(expr, error = stop, finally = NULL, silent = FALSE)
+ftry(expr, error = stop, finally = NULL, silent = FALSE, details = "")
 }
 \arguments{
 \item{expr}{The expression to evaluate in a try block}
@@ -16,6 +16,8 @@ ftry(expr, error = stop, finally = NULL, silent = FALSE)
 \item{silent}{Boolean - should errors be rethrown? The same as the silent option on `try`.
 If a custom error handler is being used that takes control over this option. Note you should
 test the return value if you are dependent on it.}
+
+\item{details}{An extra string to print when there's a warning message}
 }
 \description{
 This function integrates futile.logger with the error and warning system
@@ -24,8 +26,13 @@ also being emitted via futile.logger.
 }
 \examples{
 \dontrun{
-ftry(log("a")) # logs the warning (but the warning still bubbles)
-ftry(log(-1)) # logs the error and rethrows it
+ftry(log("a")) # Logs the warning (but the warning still bubbles)
+
+x <- 'a'
+y <- 2 # Some ID associated with x value
+ftry(log("a"), details=sprintf("y = \%s",y))
+
+ftry(log(-1)) # Logs the error and rethrows it
 }
 ftry(log(-1),silent=TRUE) # logs the error and silently continues
 }

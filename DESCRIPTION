@@ -34,4 +34,4 @@ Collate:
     'scat.R'
     'util.R'
     'futile.logger-package.R'
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
