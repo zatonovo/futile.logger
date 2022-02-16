@@ -246,12 +246,12 @@ flog.fatal <- function(msg, ..., name=flog.namespace(), capture=FALSE, logger=NU
 #' ftry(log(-1)) # Logs the error and rethrows it
 #' }
 #' ftry(log(-1),silent=TRUE) # logs the error and silently continues
-ftry <- function(expr, error = stop, finally = NULL, silent = FALSE, details='') {
+ftry <- function(expr, error=stop, finally=NULL, silent=FALSE, details='') {
   w.handler <- function(e) {
-    flog.warn(paste("%s (",details,")", sep=''), e)
+    flog.warn(paste("(",details,") %s", sep=''), e)
   }
   e.handler <- function(e) {
-    flog.error("%s", e)
+    flog.error(paste("(",details,") %s", sep=''), e)
     if (!silent | !isTRUE(all.equal(error, stop))) { error(e) }
   }
   tryCatch(
