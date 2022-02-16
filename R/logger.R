@@ -24,7 +24,7 @@
 #' flog.fatal(msg, ..., name=flog.namespace(), logger=NULL, capture=FALSE)
 #'
 #' # Execute an expression and capture any warnings or errors
-#' ftry(expr, error=stop, silent=FALSE, finally=NULL)
+#' ftry(expr, error=stop, silent=FALSE, finally=NULL, details='')
 #'
 #' @section Additional Usage:
 #' These functions generally do not need to be called by an end user.
@@ -232,21 +232,27 @@ flog.fatal <- function(msg, ..., name=flog.namespace(), capture=FALSE, logger=NU
 #' @param silent Boolean - should errors be rethrown? The same as the silent option on `try`.
 #' If a custom error handler is being used that takes control over this option. Note you should
 #' test the return value if you are dependent on it.
+#' @param details An extra string to print when there's a warning message
 #' @author Brian Lee Yung Rowe
 #' @keywords data
 #' @examples
 #' \dontrun{
-#' ftry(log("a")) # logs the warning (but the warning still bubbles)
-#' ftry(log(-1)) # logs the error and rethrows it
+#' ftry(log("a")) # Logs the warning (but the warning still bubbles)
+#'
+#' x <- 'a'
+#' y <- 2 # Some ID associated with x value
+#' ftry(log("a"), details=sprintf("y = %s",y))
+#'
+#' ftry(log(-1)) # Logs the error and rethrows it
 #' }
 #' ftry(log(-1),silent=TRUE) # logs the error and silently continues
-ftry <- function(expr, error = stop, finally = NULL, silent = FALSE) {
-  w.handler <- function(e) flog.warn("%s", e)
-    e.handler <- function(e) {
-      flog.error("%s", e)
-      if (!silent | !isTRUE(all.equal(error, stop))) {
-        error(e)
-      }
+ftry <- function(expr, error = stop, finally = NULL, silent = FALSE, details='') {
+  w.handler <- function(e) {
+    flog.warn(paste("%s (",details,")", sep=''), e)
+  }
+  e.handler <- function(e) {
+    flog.error("%s", e)
+    if (!silent | !isTRUE(all.equal(error, stop))) { error(e) }
   }
   tryCatch(
     withCallingHandlers(
