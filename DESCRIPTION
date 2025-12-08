@@ -35,3 +35,4 @@ Collate:
     'util.R'
     'futile.logger-package.R'
 RoxygenNote: 7.1.2
+URL: https://github.com/zatonovo/futile.logger
