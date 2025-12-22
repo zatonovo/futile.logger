@@ -3,7 +3,6 @@ Type: Package
 Title: A Logging Utility for R
 Version: 1.4.7
 Date: 2025-12-22
-Author: Brian Lee Yung Rowe
 Maintainer: Brian Lee Yung Rowe <r@zatonovo.com>
 Authors@R:
   person(given=c("Brian", "Lee", "Yung"), family="Rowe",
