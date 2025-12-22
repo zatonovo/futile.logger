@@ -111,17 +111,17 @@ If you have a function which gets called many times, it is a good strategy
 to pass the logger directly instead of its name.
 
 Instead of this:
-> simulation_fun <- function(i) {
->   flog.trace("We are in loop %d", i, name='my.logger')
->   i
-> }
+> simulation_fun <- function(i) { \cr
+>   flog.trace("We are in loop %d", i, name='my.logger') \cr
+>   i \cr
+> } \cr
 
 ... you can do this::
-> my_logger <- flog.logger("my.logger")
-> simulation_fun2 <- function(i) {
->   flog.trace("We are in loop %d", i, logger=my_logger)
->   i
-> }
+> my_logger <- flog.logger("my.logger") \cr
+> simulation_fun2 <- function(i) { \cr
+>   flog.trace("We are in loop %d", i, logger=my_logger) \cr
+>   i \cr
+> } \cr
 
 > system.time(for (i in 1:1000) simulation_fun(i))
 > system.time(for (i in 1:1000) simulation_fun2(i))
